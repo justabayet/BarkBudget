@@ -54,16 +54,6 @@ To deploy the app to Github Pages:
 
 Note that the deployment process requires a `BUILDER_TOKEN` secret, which is used for authentication. This token is stored securely in the Github repository settings and is not visible to anyone except the repository owner.
 
-## Contributing
-
-Contributions to the project are welcome. To contribute, please follow these steps:
-
-1. Fork the repository
-2. Create a new branch for your feature or bug fix
-3. Make your changes and commit them
-4. Push your changes to your forked repository
-5. Submit a pull request to the `main` branch of the original repository
-
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
