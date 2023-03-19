@@ -30,6 +30,26 @@ INAB is built using the following technologies:
 
 - **Github Pages**: A free web hosting service provided by Github.
 
+## Future Enhancements
+
+INAB has the potential for further enhancements, such as:
+
+- **Reminders and Notifications**: The ability for the app to send reminders and notifications to users about upcoming bills or payments.
+
+- **Integration with Financial Institutions**: The ability for users to connect their bank accounts and credit cards to the app, allowing for automatic tracking of expenses.
+
+- **Multiple Currency Support**: The ability for the app to support multiple currencies, making it easier for users who travel or have international transactions.
+
+- **Goal-Specific Savings**: The ability for users to set savings goals for specific purposes, such as a vacation or a down payment on a house, and track their progress towards those goals.
+
+- **Machine Learning-Based Insights**: The ability for the app to provide personalized insights and recommendations based on a user's spending habits and financial goals, using machine learning algorithms.
+
+- **Expense Sharing**: The ability for users to share expenses and split bills with friends and family members, making it easier to manage group expenses.
+
+- **Investment Tracking**: The ability for users to track their investments and monitor their portfolio performance, providing a comprehensive view of their overall financial status.
+
+- **Expense Analytics**: The ability for users to analyze their expenses and identify patterns or trends, helping them make informed decisions about their spending habits.
+
 ## Installation and Setup
 
 To run the app locally, you'll need to have Node.js and npm installed on your computer. 
