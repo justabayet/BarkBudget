@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, addDoc, collection } from "firebase/firestore";
 import { db, auth } from './firebase';
-import Transactions from './Components/transactions';
+import TransactionsDashboard from './Components/transactionDashboard';
 import ExpenseGraph from './Components/graph';
 import { Button, Typography } from '@mui/material';
 import { data } from './data';
@@ -39,7 +39,7 @@ function App() {
           return snapshot.data(options);
         }
       };
-      
+
       const docRef = doc(db, 'users', user.uid).withConverter(firestoreConverter);
       setDatabase(docRef);
     }
@@ -56,7 +56,7 @@ function App() {
   };
 
   const handleAddEntry = () => {
-    const newTransactions = [...transactions, transactions.length+1]
+    const newTransactions = [...transactions, transactions.length + 1]
     const entry = {
       name: "Los Angeles",
       state: "CA",
@@ -65,20 +65,25 @@ function App() {
       cities: newTransactions
     }
 
-    setDoc(database, entry);
+    setDoc(database, entry)
     setTransactions(newTransactions)
+    addDoc(collection(database, "values"), {
+      date: "2023-09-01",
+      amount: newTransactions.length
+    })
 
   };
 
   const handleGetEntry = () => {
     getDoc(database)
-    .then((querySnapshot)=>{
-      console.log("Get entry:", querySnapshot.data())
-      setTransactions(querySnapshot.data().cities)
-    })
+      .then((querySnapshot) => {
+        const entryData = querySnapshot.data()
+        console.log("Get entry:", entryData)
+        setTransactions(entryData.cities)
+      })
   };
 
-  return  (
+  return (
     <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <Typography variant="h4" style={{ marginRight: 20 }}>
@@ -100,6 +105,9 @@ function App() {
         )}
       </div>
       <ExpenseGraph data={data}></ExpenseGraph>
+
+      <TransactionsDashboard expenses={data} targets={data} values={data}></TransactionsDashboard>
+
       <div style={{ marginBottom: 20 }}>
         <Button variant="contained" color="primary" style={{ marginRight: 10 }} onClick={handleAddEntry}>
           Add Entry
@@ -108,7 +116,6 @@ function App() {
           Get Entry
         </Button>
       </div>
-      <Transactions transactions={transactions}></Transactions>
     </div>
   );
 }
