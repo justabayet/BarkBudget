@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Box } from '@mui/material';
+import { Tabs, Tab, Box, Typography } from '@mui/material';
 import TransactionList from './transactionList';
 
 const TransactionsDashboard = ({ expenses, targets, values }) => {
@@ -10,8 +10,9 @@ const TransactionsDashboard = ({ expenses, targets, values }) => {
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Tabs value={tabIndex} onChange={handleTabChange} aria-label="tabs">
+        <Box sx={{ width: '100%', mt: 3 }}>
+            <Typography variant="h4">Data</Typography>
+            <Tabs value={tabIndex} onChange={handleTabChange} aria-label="tabs" variant='fullWidth'>
                 <Tab label="Expenses" />
                 <Tab label="Targets" />
                 <Tab label="Values" />
