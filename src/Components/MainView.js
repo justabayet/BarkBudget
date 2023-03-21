@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Typography, Button } from '@mui/material'
 import Authentication from './Authentication'
+import TransactionDashboard from './TransactionDashboard'
 import ExpenseGraph from './ExpenseGraph'
-import TransactionsDashboard from './TransactionDashboard'
 import { useDatabase } from '../Providers/DatabaseProvider'
 import { addDoc, collection, getDoc, setDoc } from 'firebase/firestore'
 
@@ -50,7 +50,7 @@ const MainView = ({ data }) => {
 
             <ExpenseGraph data={data}></ExpenseGraph>
 
-            <TransactionsDashboard expenses={data} targets={data} values={data}></TransactionsDashboard>
+            <TransactionDashboard expenses={data} targets={data} values={data}></TransactionDashboard>
 
             <div style={{ marginBottom: 20 }}>
                 <Button variant="contained" color="primary" style={{ marginRight: 10 }} onClick={handleAddEntry}>

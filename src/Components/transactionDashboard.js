@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Tabs, Tab, Box, Typography } from '@mui/material'
 import TransactionList from './TransactionList'
 
-const TransactionsDashboard = ({ expenses, targets, values }) => {
+const TransactionDashboard = ({ expenses, targets, values }) => {
     const [tabIndex, setTabIndex] = useState(0)
 
     const handleTabChange = (event, newValue) => {
@@ -26,4 +26,4 @@ const TransactionsDashboard = ({ expenses, targets, values }) => {
     )
 }
 
-export default TransactionsDashboard
+export default TransactionDashboard
