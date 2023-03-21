@@ -3,6 +3,7 @@ import { doc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
 import { db } from '../firebase'
 import { useAuthentication } from "./AuthenticationProvider"
+import { ExpensesProvider } from "./ExpensesProvider"
 
 class Database {
     constructor(database) {
@@ -10,7 +11,7 @@ class Database {
     }
 }
 
-const DatabaseContext = createContext(new Database(undefined))
+const DatabaseContext = createContext(new Database([], [], []))
 
 export const DatabaseProvider = (props) => {
     const { user } = useAuthentication()
@@ -19,27 +20,19 @@ export const DatabaseProvider = (props) => {
 
     useEffect(() => {
         if (user) {
-            const firestoreConverter = {
-                toFirestore: (entry) => {
-                    entry.uid = user.uid
-                    return entry
-                },
-                fromFirestore: (snapshot, options) => {
-                    return snapshot.data(options)
-                }
-            }
-
-            const docRef = doc(db, 'users', user.uid).withConverter(firestoreConverter)
-            setDatabase(docRef)
+            const userDoc = doc(db, 'users', user.uid)
+            setDatabase(userDoc)
+        } else {
+            setDatabase(null)
         }
 
     }, [user])
 
     return (
-        <DatabaseContext.Provider
-            value={(new Database(database))}
-        >
-            {props.children}
+        <DatabaseContext.Provider value={(new Database(database))}>
+            <ExpensesProvider>
+                {props.children}
+            </ExpensesProvider>
         </DatabaseContext.Provider>
     )
 

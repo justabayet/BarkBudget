@@ -19,10 +19,10 @@ export const AuthenticationProvider = (props) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in
+        console.log("Signed in")
         setUser(user)
       } else {
-        // User is signed out
+        console.log("Signed out")
         setUser(null)
       }
     })

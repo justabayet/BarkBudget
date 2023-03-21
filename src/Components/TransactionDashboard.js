@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Tabs, Tab, Box, Typography } from '@mui/material'
 import TransactionList from './TransactionList'
+import { useExpenses } from '../Providers/ExpensesProvider'
 
-const TransactionDashboard = ({ expenses, targets, values }) => {
+const TransactionDashboard = () => {
     const [tabIndex, setTabIndex] = useState(0)
 
     const handleTabChange = (event, newValue) => {
@@ -18,9 +19,9 @@ const TransactionDashboard = ({ expenses, targets, values }) => {
                 <Tab label="Values" />
             </Tabs>
             <Box sx={{ p: 1, width: '100%' }}>
-                {tabIndex === 0 && <TransactionList expenses={expenses} />}
-                {tabIndex === 1 && <TransactionList expenses={targets} />}
-                {tabIndex === 2 && <TransactionList expenses={values} />}
+                {tabIndex === 0 && <TransactionList useValues={useExpenses} />}
+                {tabIndex === 1 && <TransactionList useValues={useExpenses} />}
+                {tabIndex === 2 && <TransactionList useValues={useExpenses} />}
             </Box>
         </Box>
     )

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { IconButton, TableCell, TableRow, TextField } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
+import { getFormattedDate } from "../helpers"
 
 const textFieldStyle = {
     "& .MuiOutlinedInput-root": {
@@ -18,25 +19,30 @@ const textFieldStyle = {
 }
 
 const Transaction = ({ expense, index, handleDelete, handleSave }) => {
-    const [date, setDate] = useState(expense.date)
+    const [date, setDate] = useState(getFormattedDate(new Date(expense.date)))
     const [amount, setAmount] = useState(expense.amount)
 
     useEffect(() => {
-        setDate(expense.date)
+        const formattedDate = getFormattedDate(new Date(expense.date))
+        setDate(formattedDate)
         setAmount(expense.amount)
     }, [expense])
 
 
-    const Field = (value, set) => {
+    const Field = (value, fieldSetter) => {
         return (
             <TextField
                 variant="outlined"
                 sx={textFieldStyle}
                 size="small"
-                name="date"
                 value={value}
-                onChange={(event) => set(event.target.value)}
-                onBlur={() => { handleSave(date, amount) }}
+                onChange={(event) => fieldSetter(event.target.value)}
+                onBlur={() => {
+                    const { ...updatedExpense } = expense
+                    updatedExpense.date = date
+                    updatedExpense.amount = amount
+                    handleSave(updatedExpense)
+                }}
             />
         )
     }
