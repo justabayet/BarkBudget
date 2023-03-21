@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import Transaction from "./transaction";
+import { useState } from "react"
+import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import AddIcon from '@mui/icons-material/Add'
+import Transaction from "./Transaction"
 
 
 function TransactionList() {
@@ -9,30 +9,30 @@ function TransactionList() {
         { date: "2022-01-01", amount: "100" },
         { date: "2022-01-02", amount: "200" },
         { date: "2022-01-03", amount: "300" }
-    ]);
-    const [newExpense, setNewExpense] = useState({ date: "2022-01-03", amount: "0" });
+    ])
+    const [newExpense, setNewExpense] = useState({ date: "2022-01-03", amount: "0" })
 
     const handleAddExpense = () => {
-        setExpenses([newExpense, ...expenses]);
-        setNewExpense({ date: "2022-01-03", amount: "0" });
-    };
+        setExpenses([newExpense, ...expenses])
+        setNewExpense({ date: "2022-01-03", amount: "0" })
+    }
 
     const handleDeleteExpense = (index) => {
-        const updatedExpenses = [...expenses];
-        updatedExpenses.splice(index, 1);
-        setExpenses(updatedExpenses);
-    };
+        const updatedExpenses = [...expenses]
+        updatedExpenses.splice(index, 1)
+        setExpenses(updatedExpenses)
+    }
 
     const handleSaveRow = (date, amount, index) => {
         const oDate = expenses[index].date
         const oAmount = expenses[index].amount
 
         if (oDate !== date || oAmount !== amount) {
-            const updatedExpenses = [...expenses];
-            updatedExpenses[index] = { date, amount };
-            setExpenses(updatedExpenses);
+            const updatedExpenses = [...expenses]
+            updatedExpenses[index] = { date, amount }
+            setExpenses(updatedExpenses)
         }
-    };
+    }
 
     return (
         <TableContainer>
@@ -61,7 +61,7 @@ function TransactionList() {
                 </TableBody>
             </Table>
         </TableContainer>
-    );
+    )
 }
 
-export default TransactionList;
+export default TransactionList

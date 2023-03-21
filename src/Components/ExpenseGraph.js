@@ -1,22 +1,22 @@
-import React, { useEffect, useRef } from "react";
-import { Chart, registerables } from "chart.js";
-import 'chartjs-adapter-moment';
+import React, { useEffect, useRef } from "react"
+import { Chart, registerables } from "chart.js"
+import 'chartjs-adapter-moment'
 
-Chart.register(...registerables);
+Chart.register(...registerables)
 const ExpenseGraph = ({ data }) => {
-  const chartRef = useRef(null);
+  const chartRef = useRef(null)
 
   useEffect(() => {
     const chart = () => {
-      let ctx = document.getElementById("expenseChart").getContext("2d");
+      let ctx = document.getElementById("expenseChart").getContext("2d")
       if (chartRef.current) {
-        chartRef.current.destroy();
+        chartRef.current.destroy()
       }
 
       const parsedData = data.map((entry) => {
         return {
-            x: new Date(entry.date),
-            y: entry.amount,
+          x: new Date(entry.date),
+          y: entry.amount,
         }
       })
 
@@ -42,31 +42,31 @@ const ExpenseGraph = ({ data }) => {
           },
           scales: {
             x: {
-                gridLines: {
-                  color: 'rgba(0, 0, 0, 0.05)',
-                  lineWidth: 1,
-                },
-                type: 'time',
-                time: {
-                  unit: 'month',
-                  displayFormats: {
-                    month: 'MMM YYYY',
-                  },
+              gridLines: {
+                color: 'rgba(0, 0, 0, 0.05)',
+                lineWidth: 1,
+              },
+              type: 'time',
+              time: {
+                unit: 'month',
+                displayFormats: {
+                  month: 'MMM YYYY',
                 },
               },
+            },
             y:
-              {
-                ticks: {
-                  callback: function (value, index, values) {
-                    return value + '€';
-                  },
+            {
+              ticks: {
+                callback: function (value, index, values) {
+                  return value + '€'
                 },
-                gridLines: {
-                  color: 'rgba(0, 0, 0, 0.05)',
-                  lineWidth: 1,
-                },
-                beginAtZero: true
               },
+              gridLines: {
+                color: 'rgba(0, 0, 0, 0.05)',
+                lineWidth: 1,
+              },
+              beginAtZero: true
+            },
           },
           hover: {
             mode: 'x',
@@ -81,17 +81,17 @@ const ExpenseGraph = ({ data }) => {
             intersect: false,
           },
         },
-      });
-    };
-  
-    chart();
-  }, [data]);
+      })
+    }
+
+    chart()
+  }, [data])
 
   return (
     <div>
       <canvas id="expenseChart" />
     </div>
-  );
-};
+  )
+}
 
-export default ExpenseGraph;
+export default ExpenseGraph

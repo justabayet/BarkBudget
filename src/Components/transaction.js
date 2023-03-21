@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { IconButton, TableCell, TableRow, TextField } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useEffect, useState } from "react"
+import { IconButton, TableCell, TableRow, TextField } from "@mui/material"
+import DeleteIcon from '@mui/icons-material/Delete'
 
 const textFieldStyle = {
     "& .MuiOutlinedInput-root": {
@@ -55,8 +55,8 @@ const Transaction = ({ expense, index, handleDelete, handleSave }) => {
                 </IconButton>
             </TableCell>
         </TableRow>
-    );
-};
+    )
+}
 
-export default Transaction;
+export default Transaction
 

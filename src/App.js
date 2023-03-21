@@ -1,123 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc, addDoc, collection } from "firebase/firestore";
-import { db, auth } from './firebase';
-import TransactionsDashboard from './Components/transactionDashboard';
-import ExpenseGraph from './Components/graph';
-import { Button, Typography } from '@mui/material';
-import { data } from './data';
+import React from 'react'
+import './App.css'
+import { data } from './data'
+import MainView from './Components/MainView'
+import { AuthenticationProvider } from './Providers/AuthenticationProvider'
+import { DatabaseProvider } from './Providers/DatabaseProvider'
 
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [database, setDatabase] = useState(null);
-  const [transactions, setTransactions] = useState([]);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in
-        setUser(user);
-      } else {
-        // User is signed out
-        setUser(null);
-      }
-    });
-
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      const firestoreConverter = {
-        toFirestore: (entry) => {
-          entry.uid = user.uid;
-          return entry;
-        },
-        fromFirestore: (snapshot, options) => {
-          return snapshot.data(options);
-        }
-      };
-
-      const docRef = doc(db, 'users', user.uid).withConverter(firestoreConverter);
-      setDatabase(docRef);
-    }
-
-  }, [user])
-
-  const handleSignIn = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
-  };
-
-  const handleSignOut = () => {
-    signOut(auth);
-  };
-
-  const handleAddEntry = () => {
-    const newTransactions = [...transactions, transactions.length + 1]
-    const entry = {
-      name: "Los Angeles",
-      state: "CA",
-      date: new Date(),
-      country: "USA",
-      cities: newTransactions
-    }
-
-    setDoc(database, entry)
-    setTransactions(newTransactions)
-    addDoc(collection(database, "values"), {
-      date: "2023-09-01",
-      amount: newTransactions.length
-    })
-
-  };
-
-  const handleGetEntry = () => {
-    getDoc(database)
-      .then((querySnapshot) => {
-        const entryData = querySnapshot.data()
-        console.log("Get entry:", entryData)
-        setTransactions(entryData.cities)
-      })
-  };
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <Typography variant="h4" style={{ marginRight: 20 }}>
-          Welcome to INAB
-        </Typography>
-        {user ? (
-          <div>
-            <Typography variant="subtitle1" style={{ marginRight: 20 }}>
-              Signed in as {user.displayName}
-            </Typography>
-            <Button variant="contained" color="secondary" onClick={handleSignOut}>
-              Sign Out
-            </Button>
-          </div>
-        ) : (
-          <Button variant="contained" color="primary" onClick={handleSignIn}>
-            Sign In with Google
-          </Button>
-        )}
-      </div>
-      <ExpenseGraph data={data}></ExpenseGraph>
-
-      <TransactionsDashboard expenses={data} targets={data} values={data}></TransactionsDashboard>
-
-      <div style={{ marginBottom: 20 }}>
-        <Button variant="contained" color="primary" style={{ marginRight: 10 }} onClick={handleAddEntry}>
-          Add Entry
-        </Button>
-        <Button variant="contained" color="primary" onClick={handleGetEntry}>
-          Get Entry
-        </Button>
-      </div>
-    </div>
-  );
+    <AuthenticationProvider>
+      <DatabaseProvider>
+        <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+          <MainView data={data} />
+        </div>
+      </DatabaseProvider>
+    </AuthenticationProvider>
+  )
 }
 
-export default App;
+export default App

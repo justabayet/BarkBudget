@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Tabs, Tab, Box, Typography } from '@mui/material';
-import TransactionList from './transactionList';
+import React, { useState } from 'react'
+import { Tabs, Tab, Box, Typography } from '@mui/material'
+import TransactionList from './TransactionList'
 
 const TransactionsDashboard = ({ expenses, targets, values }) => {
-    const [tabIndex, setTabIndex] = useState(0);
+    const [tabIndex, setTabIndex] = useState(0)
 
     const handleTabChange = (event, newValue) => {
-        setTabIndex(newValue);
-    };
+        setTabIndex(newValue)
+    }
 
     return (
         <Box sx={{ width: '100%', mt: 3 }}>
@@ -23,7 +23,7 @@ const TransactionsDashboard = ({ expenses, targets, values }) => {
                 {tabIndex === 2 && <TransactionList expenses={values} />}
             </Box>
         </Box>
-    );
-};
+    )
+}
 
-export default TransactionsDashboard;
+export default TransactionsDashboard
