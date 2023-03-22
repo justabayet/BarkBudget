@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react"
 import { IconButton, TableCell, TableRow, TextField } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
 import { getFormattedDate } from "../helpers"
+import dayjs from 'dayjs';
+import { DatePicker } from "@mui/x-date-pickers"
 
 const textFieldStyle = {
     "& .MuiOutlinedInput-root": {
@@ -28,32 +30,43 @@ const Transaction = ({ expense, index, handleDelete, handleSave }) => {
         setAmount(expense.amount)
     }, [expense])
 
-
-    const Field = (value, fieldSetter) => {
-        return (
-            <TextField
-                variant="outlined"
-                sx={textFieldStyle}
-                size="small"
-                value={value}
-                onChange={(event) => fieldSetter(event.target.value)}
-                onBlur={() => {
-                    const { ...updatedExpense } = expense
-                    updatedExpense.date = date
-                    updatedExpense.amount = amount
-                    handleSave(updatedExpense)
-                }}
-            />
-        )
-    }
-
     return (
         <TableRow key={index}>
             <TableCell>
-                {Field(date, setDate)}
+                <DatePicker 
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    onChange={(newValue) => setDate(newValue.format('YYYY-MM-DD'))}
+                    value={dayjs(date)}
+                    onBlur={() => {
+                        const { ...updatedExpense } = expense
+                        updatedExpense.date = date
+                        updatedExpense.amount = amount
+                        handleSave(updatedExpense)
+                    }}
+                    slotProps={{ textField: { size:"small" } }}
+                    format="DD-MM-YYYY"
+                    disableOpenPicker/>
             </TableCell>
             <TableCell>
-                {Field(amount, setAmount)}
+                <TextField
+                    variant="outlined"
+                    sx={textFieldStyle}
+                    size="small"
+                    value={amount}
+                    onChange={(event) => {
+                        const regex =  /^(?!^0\d)-?\d*\.?\d*$|^$/;
+                        if (event.target.value === "" || regex.test(event.target.value)) {
+                            setAmount(event.target.value)
+                        }
+                    }}
+                    onBlur={() => {
+                        const { ...updatedExpense } = expense
+                        updatedExpense.date = date
+                        updatedExpense.amount = amount
+                        handleSave(updatedExpense)
+                    }}
+                />
             </TableCell>
             <TableCell align="right">
                 <IconButton onClick={() => handleDelete(index)}>
