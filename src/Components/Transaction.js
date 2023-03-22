@@ -34,18 +34,32 @@ const Transaction = ({ expense, index, handleDelete, handleSave }) => {
     return (
         <TableRow key={index}>
             <TableCell style={tableCellStyle}>
-                <DatePicker 
+                <DatePicker
                     sx={textFieldStyle}
-                    onChange={(newValue) => setDate(newValue.format('YYYY-MM-DD'))}
-                    value={dayjs(date)}
-                    onBlur={() => {
+                    onAccept={(newValue) => {
+                        setDate(newValue.format('YYYY-MM-DD'))
+
                         const { ...updatedExpense } = expense
-                        updatedExpense.date = date
+                        updatedExpense.date = newValue.format('YYYY-MM-DD')
                         updatedExpense.amount = amount
                         handleSave(updatedExpense)
                     }}
-                    slotProps={{ textField: { size:"small" } }}
-                    format="DD-MM-YYYY"/>
+                    value={dayjs(date)}
+                    slotProps={{
+                        textField: {
+                            size: "small",
+                            onChange: (newValue) => {
+                                setDate(newValue.format('YYYY-MM-DD'))
+                            },
+                            onBlur:() => {
+                                const { ...updatedExpense } = expense
+                                updatedExpense.date = date
+                                updatedExpense.amount = amount
+                                handleSave(updatedExpense)
+                            }
+                        }
+                    }}
+                    format="DD-MM-YYYY" />
             </TableCell>
             <TableCell style={tableCellStyle}>
                 <TextField
@@ -54,7 +68,7 @@ const Transaction = ({ expense, index, handleDelete, handleSave }) => {
                     size="small"
                     value={amount}
                     onChange={(event) => {
-                        const regex =  /^(?!^0\d)-?\d*\.?\d*$|^$/;
+                        const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/;
                         if (event.target.value === "" || regex.test(event.target.value)) {
                             setAmount(event.target.value)
                         }
