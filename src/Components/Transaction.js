@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { getFormattedDate } from "../helpers"
 import dayjs from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers"
+import { actionButtonStyle, tableCellStyle } from "./TransactionList";
 
 const textFieldStyle = {
     "& .MuiOutlinedInput-root": {
@@ -32,9 +33,8 @@ const Transaction = ({ expense, index, handleDelete, handleSave }) => {
 
     return (
         <TableRow key={index}>
-            <TableCell>
+            <TableCell style={tableCellStyle}>
                 <DatePicker 
-                    variant="outlined"
                     sx={textFieldStyle}
                     onChange={(newValue) => setDate(newValue.format('YYYY-MM-DD'))}
                     value={dayjs(date)}
@@ -45,10 +45,9 @@ const Transaction = ({ expense, index, handleDelete, handleSave }) => {
                         handleSave(updatedExpense)
                     }}
                     slotProps={{ textField: { size:"small" } }}
-                    format="DD-MM-YYYY"
-                    disableOpenPicker/>
+                    format="DD-MM-YYYY"/>
             </TableCell>
-            <TableCell>
+            <TableCell style={tableCellStyle}>
                 <TextField
                     variant="outlined"
                     sx={textFieldStyle}
@@ -68,7 +67,7 @@ const Transaction = ({ expense, index, handleDelete, handleSave }) => {
                     }}
                 />
             </TableCell>
-            <TableCell align="right">
+            <TableCell align="right" style={actionButtonStyle}>
                 <IconButton onClick={() => handleDelete(index)}>
                     <DeleteIcon />
                 </IconButton>
