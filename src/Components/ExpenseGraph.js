@@ -8,12 +8,12 @@ import { useValues } from '../Providers/ValuesProvider'
       
 function compare( a, b ) {
   if ( a.x < b.x ){
-    return -1;
+    return -1
   }
   if ( a.x > b.x ){
-    return 1;
+    return 1
   }
-  return 0;
+  return 0
 }
 
 Chart.register(...registerables)
@@ -41,7 +41,7 @@ const ExpenseGraph = () => {
       }
     })
       
-    updatedParsedExpenses?.sort(compare);
+    updatedParsedExpenses?.sort(compare)
     setParsedExpenses(updatedParsedExpenses)
   }, [expenses])
   
@@ -53,7 +53,7 @@ const ExpenseGraph = () => {
       }
     })
       
-    updatedParsedValues?.sort(compare);
+    updatedParsedValues?.sort(compare)
     setParsedValues(updatedParsedValues)
   }, [values])
   
@@ -65,7 +65,7 @@ const ExpenseGraph = () => {
       }
     })
       
-    updatedParsedTargets?.sort(compare);
+    updatedParsedTargets?.sort(compare)
     setParsedTargets(updatedParsedTargets)
   }, [targets])
 
@@ -78,7 +78,35 @@ const ExpenseGraph = () => {
     chartRef.current = new Chart(ctx, {
       type: 'line',
       data: {
-        datasets: [],
+        datasets: [
+          {
+            label: 'Target',
+            data: [],
+            backgroundColor: 'rgba(230, 0, 230, 0.5)',
+            borderColor: 'rgba(230, 0, 230, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            fill: false,
+          },
+          {
+            label: 'Value',
+            data: [],
+            backgroundColor: 'rgba(230, 230, 0, 0.5)',
+            borderColor: 'rgba(230, 230, 0, 1)',
+            borderWidth: 2,
+            pointRadius: 5,
+            fill: false,
+          },
+          {
+            label: 'Expense',
+            data: [],
+            backgroundColor: 'rgba(100, 0, 230, 0.5)',
+            borderColor: 'rgba(100, 0, 230, 1)',
+            borderWidth: 2,
+            pointRadius: 0,
+            fill: true,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -131,36 +159,10 @@ const ExpenseGraph = () => {
 
   useEffect(() => {
     if(!chartRef.current) return
-    chartRef.current.data.datasets = [
-      {
-        label: 'Target',
-        data: parsedTargets,
-        backgroundColor: 'rgba(230, 0, 230, 0.5)',
-        borderColor: 'rgba(230, 0, 230, 1)',
-        borderWidth: 2,
-        pointRadius: 5,
-        fill: false,
-      },
-      {
-        label: 'Value',
-        data: parsedValues,
-        backgroundColor: 'rgba(230, 230, 0, 0.5)',
-        borderColor: 'rgba(230, 230, 0, 1)',
-        borderWidth: 2,
-        pointRadius: 5,
-        fill: false,
-      },
-      {
-        label: 'Expense',
-        data: parsedExpenses,
-        backgroundColor: 'rgba(100, 0, 230, 0.5)',
-        borderColor: 'rgba(100, 0, 230, 1)',
-        borderWidth: 2,
-        pointRadius: 0,
-        fill: true,
-      },
-    ]
-    chartRef.current.update('none');
+    chartRef.current.data.datasets[0].data = parsedTargets
+    chartRef.current.data.datasets[1].data = parsedValues
+    chartRef.current.data.datasets[2].data = parsedExpenses
+    chartRef.current.update()
   }, [parsedExpenses, parsedTargets, parsedValues, chartRef])
 
   return (
