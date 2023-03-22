@@ -23,7 +23,7 @@ export const ExpensesProvider = (props) => {
     const [expenses, setExpenses] = useState(null)
     const [expensesCollection, setExpensesCollection] = useState(null)
 
-    const [newValue, setNewValue] = useState({ date: currentDate, amount: "0" })
+    const [newValue, setNewValue] = useState({ date: currentDate, amount: 0 })
 
     useEffect(() => {
         if(database) {
@@ -65,7 +65,7 @@ export const ExpensesProvider = (props) => {
             newValue.id = document.id
         })
         setExpenses([newValue, ...expenses])
-        setNewValue({ date: currentDate, amount: "0" })
+        setNewValue({ date: currentDate, amount: 0 })
     }
 
     const deleteExpense = (expense, index) => {

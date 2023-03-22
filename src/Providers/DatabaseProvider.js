@@ -4,6 +4,8 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { db } from '../firebase'
 import { useAuthentication } from "./AuthenticationProvider"
 import { ExpensesProvider } from "./ExpensesProvider"
+import { TargetsProvider } from "./TargetsProvider"
+import { ValuesProvider } from "./ValuesProvider"
 
 class Database {
     constructor(database) {
@@ -30,9 +32,13 @@ export const DatabaseProvider = (props) => {
 
     return (
         <DatabaseContext.Provider value={(new Database(database))}>
-            <ExpensesProvider>
-                {props.children}
-            </ExpensesProvider>
+            <TargetsProvider>
+                <ExpensesProvider>
+                    <ValuesProvider>
+                        {props.children}
+                    </ValuesProvider>
+                </ExpensesProvider>
+            </TargetsProvider>
         </DatabaseContext.Provider>
     )
 

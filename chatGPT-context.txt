@@ -29,5 +29,9 @@ service cloud.firestore {
     match /targets/{targetId} {
       allow read, write, create, update, delete: if request.auth.uid == resource.data.userId;
     }
+    
+    match /values/{valueId} {
+      allow read, write, create, update, delete: if request.auth.uid == resource.data.userId;
+    }
   }
 }"
