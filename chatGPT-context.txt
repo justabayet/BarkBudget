@@ -1,16 +1,20 @@
-The User is a software engineer that wants to develop an app called INAB.
+The User is a software engineer that wants to develop an app called INAB (I Need A Budget).
 
-INAB is a React.js budgeting app that helps users track expenses, set financial targets, and monitor their financial status with a secure login system. 
+INAB is a React.js budgeting app that helps users track expenses, set financial targets, monitor their financial status and forecast based on estimated incoming costs and incomes entered manually by the User. 
 
-Features include expense tracking, financial target setting, graphical representation of financial status, expense categorization, adding, editing, and deleting financial data, and more. 
+The code is hosted in a public repo on Github.com: https://github.com/justabayet/INAB
 
-The app is built with React.js, React Router, React Bootstrap, Axios, Github Pages, Firebase Authentication, Firebase Realtime Database, Chart.js, and CSS. 
+And the github page link is: https://justabayet.github.io/INAB/
 
-Future enhancements include reminders, financial institution integration, multiple currency support, goal-specific savings, machine learning-based insights, expense sharing, investment tracking, expense analytics, and more.
+Features include expense tracking, financial target setting, graphical representation of financial status, expense categorization, compare forecast based on different estimated incoming costs and incomes. 
+
+The app is built with React.js, React Router, React Bootstrap, Axios, Github Pages, Firebase Authentication, Firebase Realtime Database, Chart.js, and MUI. 
+
+Future enhancements include reminders, financial institution integration, multiple currency support, machine learning-based insights, expense sharing, investment tracking, expense analytics, and more.
 
 The features are not yet implemented.
 
-The frontend code is hosted on Github and a action is performed on each push to the main branch. The action creates a build of the frontend and push it to the gh-pages branch, which will be hosted on Github Pages.
+The frontend code is hosted on Github and a action is performed on each push to the main branch. The action creates a build of the frontend and push it to the gh-pages branch, which is hosted on Github Pages.
 
 The authentication is performed by the Google Provider.
 

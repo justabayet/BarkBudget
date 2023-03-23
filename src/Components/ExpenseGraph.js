@@ -4,6 +4,8 @@ import 'chartjs-adapter-moment'
 import { useExpenses } from '../Providers/ExpensesProvider'
 import { useTargets } from '../Providers/TargetsProvider'
 import { useValues } from '../Providers/ValuesProvider'
+import { ForecastEngine } from "../Modes/ForecastEngine"
+import { OneTime } from "../Modes/OneTime"
 
       
 function compare( a, b ) {
@@ -17,6 +19,7 @@ function compare( a, b ) {
 }
 
 Chart.register(...registerables)
+
 const ExpenseGraph = () => {
   const chartRef = useRef(null)
 
@@ -32,12 +35,17 @@ const ExpenseGraph = () => {
   const targets = useTarg.values
   const [parsedTargets, setParsedTargets] = useState([])
 
-  
   useEffect(() => {
-    const updatedParsedExpenses = expenses?.map(expense => {
+    const engine = new ForecastEngine(new Date("2022-01-01"), new Date("2022-10-10"), 100)
+
+    engine.cleanEntries()
+    engine.addEntry(new OneTime({ date: new Date("2022-01-03"), amount: 15 }))
+
+    engine.iterate()
+    const updatedParsedExpenses = engine.values?.map(expense => {
       return {
         x: new Date(expense.date),
-        y: expense.amount,
+        y: expense.value,
       }
     })
       
@@ -163,7 +171,7 @@ const ExpenseGraph = () => {
     chartRef.current.data.datasets[1].data = parsedValues
     chartRef.current.data.datasets[2].data = parsedExpenses
     chartRef.current.update()
-  }, [parsedExpenses, parsedTargets, parsedValues, chartRef])
+  }, [parsedExpenses, parsedTargets, parsedValues])
 
   return (
     <div>
