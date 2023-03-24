@@ -15,7 +15,29 @@ class Values {
     }
 }
 
+class Value {
+    constructor({ date, amount, id }) {
+        this.date = date
+        this.amount = amount
+        this.id = id
+    }
+}
+
 const ValuesContext = createContext(new Values([], () => {}, () => {}, () => {}))
+
+const converter = {
+    toFirestore(value) {
+        console.log(value)
+        return { date: getFormattedDate(value.date), amount: value.amount };
+    },
+    fromFirestore(snapshot, options) {
+        const valueDb = snapshot.data()
+        const date = new Date(valueDb.date)
+        const amount = valueDb.amount
+        const id = snapshot.id
+        return new Value({ date, amount, id })
+    }
+}
 
 export const ValuesProvider = (props) => {
     const { database } = useDatabase()
@@ -23,11 +45,11 @@ export const ValuesProvider = (props) => {
     const [values, setValues] = useState(null)
     const [valuesCollection, setValuesCollection] = useState(null)
 
-    const [newValue, setNewValue] = useState({ date: currentDate, amount: 0 })
+    const [newValue, setNewValue] = useState(new Value({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
         if(database) {
-            setValuesCollection(collection(database, 'values'))
+            setValuesCollection(collection(database, 'values').withConverter(converter))
         } else {
             setValuesCollection(null)
         }
@@ -44,10 +66,7 @@ export const ValuesProvider = (props) => {
                     const valuesQueried = []
 
                     querySnapshot.forEach(doc => {
-                        const data = doc.data()
-                        data.id = doc.id
-
-                        valuesQueried.push(data)
+                        valuesQueried.push(converter.fromFirestore(doc))
                     })
 
                     setValues(valuesQueried)
@@ -65,7 +84,7 @@ export const ValuesProvider = (props) => {
             newValue.id = document.id
         })
         setValues([newValue, ...values])
-        setNewValue({ date: currentDate, amount: 0 })
+        setNewValue(new Value({ date: currentDate, amount: 0 }))
     }
 
     const deleteValue = (value, index) => {
@@ -83,9 +102,7 @@ export const ValuesProvider = (props) => {
         updatedValues[index] = value
         setValues(updatedValues)
 
-        const { id, ...newValue } = value
-
-        setDoc(doc(valuesCollection, id), newValue)
+        setDoc(doc(valuesCollection, value.id), value)
     }
 
     return (

@@ -1,10 +1,10 @@
 
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
-import { useDatabase } from "./DatabaseProvider"
 import { getFormattedDate } from "../helpers"
+import { useDatabase } from "./DatabaseProvider"
 
-const currentDate = getFormattedDate(new Date())
+const currentDate = new Date()
 
 class Expenses {
     constructor(expenses, addExpense, deleteExpense, updateExpense) {
@@ -15,7 +15,29 @@ class Expenses {
     }
 }
 
-const ExpensesContext = createContext(new Expenses([], () => {}, () => {}, () => {}))
+class Expense {
+    constructor({ date, amount, id }) {
+        this.date = date
+        this.amount = amount
+        this.id = id
+    }
+}
+
+const ExpensesContext = createContext(new Expenses([], () => { }, () => { }, () => { }))
+
+const converter = {
+    toFirestore(expense) {
+        console.log(expense)
+        return { date: getFormattedDate(expense.date), amount: expense.amount };
+    },
+    fromFirestore(snapshot, options) {
+        const expenseDb = snapshot.data()
+        const date = new Date(expenseDb.date)
+        const amount = expenseDb.amount
+        const id = snapshot.id
+        return new Expense({ date, amount, id })
+    }
+}
 
 export const ExpensesProvider = (props) => {
     const { database } = useDatabase()
@@ -23,11 +45,11 @@ export const ExpensesProvider = (props) => {
     const [expenses, setExpenses] = useState(null)
     const [expensesCollection, setExpensesCollection] = useState(null)
 
-    const [newValue, setNewValue] = useState({ date: currentDate, amount: 0 })
+    const [newExpense, setNewExpense] = useState(new Expense({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
-        if(database) {
-            setExpensesCollection(collection(database, 'expenses'))
+        if (database) {
+            setExpensesCollection(collection(database, 'expenses').withConverter(converter))
         } else {
             setExpensesCollection(null)
         }
@@ -42,12 +64,8 @@ export const ExpensesProvider = (props) => {
                     console.log("Get", querySnapshot.size)
 
                     const expensesQueried = []
-
                     querySnapshot.forEach(doc => {
-                        const data = doc.data()
-                        data.id = doc.id
-
-                        expensesQueried.push(data)
+                        expensesQueried.push(converter.fromFirestore(doc))
                     })
 
                     setExpenses(expensesQueried)
@@ -60,12 +78,12 @@ export const ExpensesProvider = (props) => {
     }, [expensesCollection])
 
     const addExpense = () => {
-        console.log("add", newValue)
-        addDoc(expensesCollection, newValue).then(document => {
-            newValue.id = document.id
+        console.log("add", newExpense)
+        addDoc(expensesCollection, newExpense).then(document => {
+            newExpense.id = document.id
         })
-        setExpenses([newValue, ...expenses])
-        setNewValue({ date: currentDate, amount: 0 })
+        setExpenses([newExpense, ...expenses])
+        setNewExpense(new Expense({ date: currentDate, amount: 0 }))
     }
 
     const deleteExpense = (expense, index) => {
@@ -83,9 +101,7 @@ export const ExpensesProvider = (props) => {
         updatedExpenses[index] = expense
         setExpenses(updatedExpenses)
 
-        const { id, ...newExpense } = expense
-
-        setDoc(doc(expensesCollection, id), newExpense)
+        setDoc(doc(expensesCollection, expense.id), expense)
     }
 
     return (

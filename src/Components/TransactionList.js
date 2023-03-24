@@ -11,7 +11,7 @@ function TransactionList({ useValues }) {
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
                 <Typography>Entries</Typography>
 
-                <IconButton color="primary" onClick={addValue} style={{ "margin-left": "auto" }}>
+                <IconButton color="primary" onClick={addValue} style={{ "marginLeft": "auto" }}>
                     <AddIcon />
                 </IconButton>
             </Box>

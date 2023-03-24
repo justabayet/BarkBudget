@@ -15,7 +15,29 @@ class Targets {
     }
 }
 
+class Target {
+    constructor({ date, amount, id }) {
+        this.date = date
+        this.amount = amount
+        this.id = id
+    }
+}
+
 const TargetsContext = createContext(new Targets([], () => {}, () => {}, () => {}))
+
+const converter = {
+    toFirestore(target) {
+        console.log(target)
+        return { date: getFormattedDate(target.date), amount: target.amount };
+    },
+    fromFirestore(snapshot, options) {
+        const targetDb = snapshot.data()
+        const date = new Date(targetDb.date)
+        const amount = targetDb.amount
+        const id = snapshot.id
+        return new Target({ date, amount, id })
+    }
+}
 
 export const TargetsProvider = (props) => {
     const { database } = useDatabase()
@@ -23,11 +45,11 @@ export const TargetsProvider = (props) => {
     const [targets, setTargets] = useState(null)
     const [targetsCollection, setTargetsCollection] = useState(null)
 
-    const [newValue, setNewValue] = useState({ date: currentDate, amount: 0 })
+    const [newTarget, setNewTarget] = useState(new Target({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
         if(database) {
-            setTargetsCollection(collection(database, 'targets'))
+            setTargetsCollection(collection(database, 'targets').withConverter(converter))
         } else {
             setTargetsCollection(null)
         }
@@ -42,12 +64,8 @@ export const TargetsProvider = (props) => {
                     console.log("Get", querySnapshot.size)
 
                     const targetsQueried = []
-
                     querySnapshot.forEach(doc => {
-                        const data = doc.data()
-                        data.id = doc.id
-
-                        targetsQueried.push(data)
+                        targetsQueried.push(converter.fromFirestore(doc))
                     })
 
                     setTargets(targetsQueried)
@@ -60,12 +78,12 @@ export const TargetsProvider = (props) => {
     }, [targetsCollection])
 
     const addTarget = () => {
-        console.log("add", newValue)
-        addDoc(targetsCollection, newValue).then(document => {
-            newValue.id = document.id
+        console.log("add", newTarget)
+        addDoc(targetsCollection, newTarget).then(document => {
+            newTarget.id = document.id
         })
-        setTargets([newValue, ...targets])
-        setNewValue({ date: currentDate, amount: 0 })
+        setTargets([newTarget, ...targets])
+        setNewTarget(new Target({ date: currentDate, amount: 0 }))
     }
 
     const deleteTarget = (target, index) => {
@@ -83,9 +101,7 @@ export const TargetsProvider = (props) => {
         updatedTargets[index] = target
         setTargets(updatedTargets)
 
-        const { id, ...newTarget } = target
-
-        setDoc(doc(targetsCollection, id), newTarget)
+        setDoc(doc(targetsCollection, target.id), target)
     }
 
     return (
