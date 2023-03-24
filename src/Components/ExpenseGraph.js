@@ -27,6 +27,16 @@ const ExpenseGraph = () => {
   const expenses = useExp.values
   const [parsedExpenses, setParsedExpenses] = useState([])
 
+  const [startAmount, setStartAmount] = useState(0)
+  const [startDate, setStartDate] = useState("2022-01-01")
+  const [endDate, setEndDate] = useState("2022-10-10")
+
+  const engineRef = useRef(new ForecastEngine(new Date(startDate), new Date(endDate), startAmount))
+
+  useEffect(() => {
+    engineRef.current = new ForecastEngine(new Date(startDate), new Date(endDate), startAmount)
+  }, [startAmount, startDate, endDate])
+
   const useVal = useValues()
   const values = useVal.values
   const [parsedValues, setParsedValues] = useState([])
@@ -36,9 +46,11 @@ const ExpenseGraph = () => {
   const [parsedTargets, setParsedTargets] = useState([])
 
   useEffect(() => {
-    const engine = new ForecastEngine(new Date("2022-01-01"), new Date("2022-10-10"), 100)
+    const engine = engineRef.current
 
     engine.cleanEntries()
+
+    // Add expected expenses
     engine.addEntry(new OneTime({ date: new Date("2022-01-03"), amount: 15 }))
 
     engine.iterate()
@@ -51,7 +63,7 @@ const ExpenseGraph = () => {
       
     updatedParsedExpenses?.sort(compare)
     setParsedExpenses(updatedParsedExpenses)
-  }, [expenses])
+  }, [expenses, engineRef.current])
   
   useEffect(() => {
     const updatedParsedValues = values?.map(value => {
