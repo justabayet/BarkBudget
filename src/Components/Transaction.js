@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { IconButton, TableCell, TableRow, TextField } from "@mui/material"
+import { Box, IconButton, TextField } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
 import { getFormattedDate } from "../helpers"
 import dayjs from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers"
-import { actionButtonStyle, tableCellStyle } from "./TransactionList";
 
 const textFieldStyle = {
     "& .MuiOutlinedInput-root": {
@@ -21,7 +20,7 @@ const textFieldStyle = {
     },
 }
 
-const Transaction = ({ expense, index, handleDelete, handleSave }) => {
+const Transaction = ({ expense, handleDelete, handleSave }) => {
     const [date, setDate] = useState(getFormattedDate(new Date(expense.date)))
     const [amount, setAmount] = useState(expense.amount)
 
@@ -32,61 +31,55 @@ const Transaction = ({ expense, index, handleDelete, handleSave }) => {
     }, [expense])
 
     return (
-        <TableRow key={index}>
-            <TableCell style={tableCellStyle}>
-                <DatePicker
-                    sx={textFieldStyle}
-                    onAccept={(newValue) => {
-                        setDate(newValue.format('YYYY-MM-DD'))
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+            <DatePicker
+                sx={textFieldStyle}
+                onAccept={(newValue) => {
+                    setDate(newValue.format('YYYY-MM-DD'))
 
-                        const { ...updatedExpense } = expense
-                        updatedExpense.date = newValue.format('YYYY-MM-DD')
-                        updatedExpense.amount = amount
-                        handleSave(updatedExpense)
-                    }}
-                    value={dayjs(date)}
-                    slotProps={{
-                        textField: {
-                            size: "small",
-                            onChange: (newValue) => {
-                                setDate(newValue.format('YYYY-MM-DD'))
-                            },
-                            onBlur:() => {
-                                const { ...updatedExpense } = expense
-                                updatedExpense.date = date
-                                updatedExpense.amount = amount
-                                handleSave(updatedExpense)
-                            }
+                    const { ...updatedExpense } = expense
+                    updatedExpense.date = newValue.format('YYYY-MM-DD')
+                    updatedExpense.amount = amount
+                    handleSave(updatedExpense)
+                }}
+                value={dayjs(date)}
+                slotProps={{
+                    textField: {
+                        size: "small",
+                        onChange: (newValue) => {
+                            setDate(newValue.format('YYYY-MM-DD'))
+                        },
+                        onBlur: () => {
+                            const { ...updatedExpense } = expense
+                            updatedExpense.date = date
+                            updatedExpense.amount = amount
+                            handleSave(updatedExpense)
                         }
-                    }}
-                    format="DD-MM-YYYY" />
-            </TableCell>
-            <TableCell style={tableCellStyle}>
-                <TextField
-                    variant="outlined"
-                    sx={textFieldStyle}
-                    size="small"
-                    value={amount}
-                    onChange={(event) => {
-                        const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/;
-                        if (event.target.value === "" || regex.test(event.target.value)) {
-                            setAmount(event.target.value)
-                        }
-                    }}
-                    onBlur={() => {
-                        const { ...updatedExpense } = expense
-                        updatedExpense.date = date
-                        updatedExpense.amount = amount
-                        handleSave(updatedExpense)
-                    }}
-                />
-            </TableCell>
-            <TableCell align="right" style={actionButtonStyle}>
-                <IconButton onClick={() => handleDelete(index)}>
-                    <DeleteIcon />
-                </IconButton>
-            </TableCell>
-        </TableRow>
+                    }
+                }}
+                format="DD-MM-YYYY" />
+            <TextField
+                variant="outlined"
+                sx={textFieldStyle}
+                size="small"
+                value={amount}
+                onChange={(event) => {
+                    const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/;
+                    if (event.target.value === "" || regex.test(event.target.value)) {
+                        setAmount(event.target.value)
+                    }
+                }}
+                onBlur={() => {
+                    const { ...updatedExpense } = expense
+                    updatedExpense.date = date
+                    updatedExpense.amount = amount
+                    handleSave(updatedExpense)
+                }}
+            />
+            <IconButton onClick={handleDelete} style={{ "margin-left": "auto"}}>
+                <DeleteIcon />
+            </IconButton>
+        </Box>
     )
 }
 

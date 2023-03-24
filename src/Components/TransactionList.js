@@ -1,47 +1,33 @@
-import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { Box, Typography, Collapse, IconButton, List } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add'
 import Transaction from "./Transaction"
-
-const tableCellPadding = 5
-
-export const tableCellStyle = {
-    padding: tableCellPadding
-}
-export const actionButtonStyle = {
-    padding: tableCellPadding,
-    width: "max-content"
-}
+import { TransitionGroup } from "react-transition-group"
 
 function TransactionList({ useValues }) {
     const { values, addValue, deleteValue, updateValue } = useValues()
 
     return (
-        <TableContainer>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell style={tableCellStyle}>Date</TableCell>
-                        <TableCell style={tableCellStyle}>Amount</TableCell>
-                        <TableCell align="right" style={actionButtonStyle}>
-                            <IconButton color="primary" onClick={addValue}>
-                                <AddIcon />
-                            </IconButton>
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {values?.map((expense, index) => (
+        <List>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+                <Typography>Entries</Typography>
+
+                <IconButton color="primary" onClick={addValue} style={{ "margin-left": "auto" }}>
+                    <AddIcon />
+                </IconButton>
+            </Box>
+
+            <TransitionGroup>
+                {values?.map((value, index) => (
+                    <Collapse key={index}>
                         <Transaction
-                            key={index}
-                            expense={expense}
-                            index={index}
-                            handleDelete={() => { deleteValue(expense, index) }}
-                            handleSave={(updatedExpense) => { updateValue(updatedExpense, index) }}
+                            value={value}
+                            handleDelete={() => { deleteValue(value, index) }}
+                            handleSave={(updatedValue) => { updateValue(updatedValue, index) }}
                         ></Transaction>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+                    </Collapse>
+                ))}
+            </TransitionGroup>
+        </List>
     )
 }
 
