@@ -9,13 +9,13 @@ export class ForecastEngine {
     }
 
     iterate() {
-        let currentDate = this.startDate
+        let currentDate = new Date(this.startDate)
 
         this.values = []
 
         let currentBalance = this.startAmount
 
-        while (this.startDate <= this.endDate) {
+        while (currentDate <= this.endDate) {
 
             let diff = 0
             this.modeEntries.map((modeEntry) => diff += modeEntry.getAmount(currentDate))
@@ -23,7 +23,7 @@ export class ForecastEngine {
             currentBalance += diff
 
             this.values.push(new AmountEntry(new Date(currentDate), currentBalance))
-            // Increment current date by 1 day
+            
             currentDate.setDate(currentDate.getDate() + 1)
         }
     }
