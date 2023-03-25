@@ -4,8 +4,8 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { useUserDoc } from "./UserDocProvider"
 
 class Scenarios {
-    constructor(scenarioIds, scenariosCollection) {
-        this.scenarioIds = scenarioIds
+    constructor(scenarios, scenariosCollection) {
+        this.scenarios = scenarios
         this.scenariosCollection = scenariosCollection
     }
 }
@@ -16,7 +16,7 @@ export const ScenariosProvider = (props) => {
     const { userDoc } = useUserDoc(null)
 
     const [scenariosCollection, setScenariosCollection] = useState(null)
-    const [scenarioIds, setScenariosId] = useState([])
+    const [scenarios, setScenarios] = useState([])
 
     useEffect(() => {
         if (userDoc) {
@@ -33,21 +33,23 @@ export const ScenariosProvider = (props) => {
                 .then((querySnapshot) => {
                     console.log("ScenariosProvider get:", querySnapshot.size)
 
-                    const scenarioIdsQueried = []
+                    const scenariosQueried = []
                     querySnapshot.forEach(doc => {
-                        scenarioIdsQueried.push(doc.id)
+                        const data = doc.data()
+                        data.id = doc.id
+                        scenariosQueried.push(data)
                     })
 
-                    setScenariosId(scenarioIdsQueried)
+                    setScenarios(scenariosQueried)
                 })
                 .catch(reason => console.log(reason))
         } else {
-            setScenariosId([])
+            setScenarios([])
         }
     }, [scenariosCollection])
 
     return (
-        <ScenariosContext.Provider value={(new Scenarios(scenarioIds, scenariosCollection))}>
+        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection))}>
             {props.children}
         </ScenariosContext.Provider>
     )

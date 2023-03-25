@@ -40,7 +40,7 @@ const converter = {
 }
 
 export const TargetsProvider = (props) => {
-    const { scenarioCollection } = useScenario()
+    const { scenarioDoc } = useScenario()
 
     const [targets, setTargets] = useState(null)
     const [targetsCollection, setTargetsCollection] = useState(null)
@@ -48,13 +48,13 @@ export const TargetsProvider = (props) => {
     const [newTarget, setNewTarget] = useState(new Target({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
-        if(scenarioCollection) {
-            setTargetsCollection(collection(scenarioCollection, 'targets').withConverter(converter))
+        if(scenarioDoc) {
+            setTargetsCollection(collection(scenarioDoc, 'targets').withConverter(converter))
         } else {
             setTargetsCollection(null)
         }
 
-    }, [scenarioCollection])
+    }, [scenarioDoc])
 
     useEffect(() => {
         if (targetsCollection) {

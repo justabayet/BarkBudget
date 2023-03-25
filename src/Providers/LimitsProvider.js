@@ -40,7 +40,7 @@ const converter = {
 }
 
 export const LimitsProvider = (props) => {
-    const { scenarioCollection } = useScenario()
+    const { scenarioDoc } = useScenario()
 
     const [limits, setLimits] = useState(null)
     const [limitsCollection, setLimitsCollection] = useState(null)
@@ -48,13 +48,13 @@ export const LimitsProvider = (props) => {
     const [newLimit, setNewLimit] = useState(new Limit({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
-        if (scenarioCollection) {
-            setLimitsCollection(collection(scenarioCollection, 'limits').withConverter(converter))
+        if (scenarioDoc) {
+            setLimitsCollection(collection(scenarioDoc, 'limits').withConverter(converter))
         } else {
             setLimitsCollection(null)
         }
 
-    }, [scenarioCollection])
+    }, [scenarioDoc])
 
     useEffect(() => {
         if (limitsCollection) {

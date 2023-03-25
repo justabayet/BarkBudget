@@ -40,7 +40,7 @@ const converter = {
 }
 
 export const ExpensesProvider = (props) => {
-    const { scenarioCollection } = useScenario()
+    const { scenarioDoc } = useScenario()
 
     const [expenses, setExpenses] = useState(null)
     const [expensesCollection, setExpensesCollection] = useState(null)
@@ -48,13 +48,13 @@ export const ExpensesProvider = (props) => {
     const [newExpense, setNewExpense] = useState(new Expense({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
-        if (scenarioCollection) {
-            setExpensesCollection(collection(scenarioCollection, 'expenses').withConverter(converter))
+        if (scenarioDoc) {
+            setExpensesCollection(collection(scenarioDoc, 'expenses').withConverter(converter))
         } else {
             setExpensesCollection(null)
         }
 
-    }, [scenarioCollection])
+    }, [scenarioDoc])
 
     useEffect(() => {
         if (expensesCollection) {

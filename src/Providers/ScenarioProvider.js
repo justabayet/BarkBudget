@@ -8,8 +8,8 @@ import { TargetsProvider } from "./TargetsProvider"
 import { ValuesProvider } from "./ValuesProvider"
 
 class Scenario {
-    constructor(scenarioCollection) {
-        this.scenarioCollection = scenarioCollection
+    constructor(scenarioDoc) {
+        this.scenarioDoc = scenarioDoc
     }
 }
 
@@ -19,18 +19,19 @@ export const ScenarioProvider = (props) => {
     const scenarioId = props.id
     const { scenariosCollection } = useScenarios()
 
-    const [scenarioCollection, setScenarioCollection] = useState(null)
+    const [scenarioDoc, setScenarioDoc] = useState(null)
 
     useEffect(() => {
         if (scenariosCollection && scenarioId) {
-            setScenarioCollection(doc(scenariosCollection, scenarioId))
+            console.log("ScenarioProvider setScenarioDoc:", scenarioId)
+            setScenarioDoc(doc(scenariosCollection, scenarioId))
         } else {
-            setScenarioCollection(null)
+            setScenarioDoc(null)
         }
     }, [scenariosCollection, scenarioId])
 
     return (
-        <ScenarioContext.Provider value={(new Scenario(scenarioCollection))}>
+        <ScenarioContext.Provider value={(new Scenario(scenarioDoc))}>
             <ValuesProvider>
                 <ExpensesProvider>
                     <TargetsProvider>
