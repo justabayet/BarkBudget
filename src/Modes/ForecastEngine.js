@@ -23,7 +23,7 @@ export class ForecastEngine {
             currentBalance += diff
 
             this.values.push(new AmountEntry(new Date(currentDate), currentBalance))
-            
+
             currentDate.setDate(currentDate.getDate() + 1)
         }
     }

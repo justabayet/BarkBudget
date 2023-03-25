@@ -53,7 +53,7 @@ export const ExpensesProvider = (props) => {
     let startAmount = 0
 
     const { graphValues } = useValues()
-    if(graphValues.length > 0){
+    if (graphValues.length > 0) {
         const lastValue = graphValues[graphValues.length - 1]
         startDate = lastValue.x
         startAmount = lastValue.y
@@ -126,26 +126,26 @@ export const ExpensesProvider = (props) => {
     const [engine, setEngine] = useState(new ForecastEngine(startDate, endDate, startAmount))
 
     useEffect(() => {
-      setEngine(new ForecastEngine(startDate, endDate, startAmount))
+        setEngine(new ForecastEngine(startDate, endDate, startAmount))
     }, [startAmount, startDate, endDate])
 
-  
+
     useEffect(() => {
-      engine.cleanEntries()
-  
-      // Add expected expenses
-      engine.addEntry(new OneTime({ date: new Date("2022-01-03"), amount: 15 }))
-  
-      engine.iterate()
-      const updatedGraphExpenses = engine.values?.map(expense => {
-        return {
-          x: new Date(expense.date),
-          y: expense.value,
-        }
-      })
-  
-      updatedGraphExpenses?.sort(compareGraphValues)
-      setGraphExpenses(updatedGraphExpenses)
+        engine.cleanEntries()
+
+        // Add expected expenses
+        engine.addEntry(new OneTime({ date: new Date("2022-01-03"), amount: 15 }))
+
+        engine.iterate()
+        const updatedGraphExpenses = engine.values?.map(expense => {
+            return {
+                x: new Date(expense.date),
+                y: expense.value,
+            }
+        })
+
+        updatedGraphExpenses?.sort(compareGraphValues)
+        setGraphExpenses(updatedGraphExpenses)
     }, [expenses, engine])
 
 

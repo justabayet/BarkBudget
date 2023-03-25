@@ -13,23 +13,23 @@ const MainView = () => {
     const [scenarioIndex, setScenarioIndex] = useState(null)
 
     useEffect(() => {
-        if(scenarios.length === 0) {
+        if (scenarios.length === 0) {
             setScenarioIndex(null)
-    
-        } else if(scenarioIndex === null) {
+
+        } else if (scenarioIndex === null) {
             setScenarioIndex(0)
         }
     }, [scenarios.length, scenarioIndex])
-    
+
 
     return (
         <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
             <MainHeader />
 
             {user && scenarioIndex !== null
-                ? 
+                ?
                 <ScenarioProvider scenario={scenarios[scenarioIndex]}>
-                    <ScenarioView setScenarioIndex={setScenarioIndex}/>
+                    <ScenarioView setScenarioIndex={setScenarioIndex} />
                 </ScenarioProvider>
 
                 : <Typography>Create your first scenario to get started</Typography>

@@ -31,7 +31,7 @@ const Transaction = ({ value, handleDelete, handleSave }) => {
 
     const save = () => {
         const newDate = new Date(date)
-        if(isNaN(newDate)) {
+        if (isNaN(newDate)) {
             console.log("Invalid date", date)
             return
         }
@@ -49,7 +49,7 @@ const Transaction = ({ value, handleDelete, handleSave }) => {
                     setDate(newValue.format('YYYY-MM-DD'))
 
                     const newDate = new Date(newValue)
-                    if(isNaN(newDate)) {
+                    if (isNaN(newDate)) {
                         console.log("Invalid date", newValue)
                         return
                     }
@@ -82,7 +82,7 @@ const Transaction = ({ value, handleDelete, handleSave }) => {
                 }}
                 onBlur={save}
             />
-            <IconButton onClick={handleDelete} style={{ "marginLeft": "auto"}}>
+            <IconButton onClick={handleDelete} style={{ "marginLeft": "auto" }}>
                 <DeleteIcon />
             </IconButton>
         </Box>
