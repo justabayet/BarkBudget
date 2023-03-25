@@ -1,11 +1,10 @@
 
-import { collection, doc } from "firebase/firestore"
+import { doc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
 import { ExpensesProvider } from "./ExpensesProvider"
 import { LimitsProvider } from "./LimitsProvider"
 import { useScenarios } from "./ScenariosProvider"
 import { TargetsProvider } from "./TargetsProvider"
-import { useDatabase } from "./UserDocProvider"
 import { ValuesProvider } from "./ValuesProvider"
 
 class Scenario {

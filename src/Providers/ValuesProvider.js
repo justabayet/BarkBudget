@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
 import { useScenario } from "./ScenarioProvider"
 
-const currentDate = getFormattedDate(new Date())
+const currentDate = new Date()
 
 class Values {
     constructor(values, addValue, deleteValue, updateValue) {

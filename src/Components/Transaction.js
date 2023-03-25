@@ -5,7 +5,7 @@ import { getFormattedDate } from "../helpers"
 import dayjs from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers"
 
-const textFieldStyle = {
+export const textFieldStyle = {
     "& .MuiOutlinedInput-root": {
         "& > fieldset": {
             borderColor: 'rgba(0, 0, 0, 0)',
@@ -48,8 +48,13 @@ const Transaction = ({ value, handleDelete, handleSave }) => {
                 onAccept={(newValue) => {
                     setDate(newValue.format('YYYY-MM-DD'))
 
+                    const newDate = new Date(newValue)
+                    if(isNaN(newDate)) {
+                        console.log("Invalid date", newValue)
+                        return
+                    }
                     const { ...updatedValue } = value
-                    updatedValue.date = new Date(newValue)
+                    updatedValue.date = newDate
                     updatedValue.amount = amount
                     handleSave(updatedValue)
                 }}

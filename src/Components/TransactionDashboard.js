@@ -4,6 +4,7 @@ import TransactionList from './TransactionList'
 import { useExpenses } from '../Providers/ExpensesProvider'
 import { useTargets } from '../Providers/TargetsProvider'
 import { useValues } from '../Providers/ValuesProvider'
+import { useLimits } from '../Providers/LimitsProvider'
 
 const TransactionDashboard = () => {
     const [tabIndex, setTabIndex] = useState(0)
@@ -19,11 +20,13 @@ const TransactionDashboard = () => {
                 <Tab label="Expenses" />
                 <Tab label="Targets" />
                 <Tab label="Values" />
+                <Tab label="Limits" />
             </Tabs>
             <Box sx={{ p: 1, width: '100%' }}>
                 {tabIndex === 0 && <TransactionList useValues={useExpenses} />}
                 {tabIndex === 1 && <TransactionList useValues={useTargets} />}
                 {tabIndex === 2 && <TransactionList useValues={useValues} />}
+                {tabIndex === 3 && <TransactionList useValues={useLimits} />}
             </Box>
         </Box>
     )
