@@ -3,15 +3,17 @@ import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/fi
 import { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
 import { useScenario } from "./ScenarioProvider"
+import { compareGraphValues } from "./GraphProvider"
 
 const currentDate = new Date()
 
 class Targets {
-    constructor(targets, addTarget, deleteTarget, updateTarget) {
+    constructor(targets, graphTargets, addTarget, deleteTarget, updateTarget) {
         this.values = targets
         this.addValue = addTarget
         this.deleteValue = deleteTarget
         this.updateValue = updateTarget
+        this.graphValues = graphTargets
     }
 }
 
@@ -23,7 +25,7 @@ class Target {
     }
 }
 
-const TargetsContext = createContext(new Targets([], () => {}, () => {}, () => {}))
+const TargetsContext = createContext(new Targets([], () => { }, () => { }, () => { }))
 
 const converter = {
     toFirestore(target) {
@@ -33,22 +35,23 @@ const converter = {
     fromFirestore(snapshot, options) {
         const targetDb = snapshot.data()
         const date = new Date(targetDb.date)
-        const amount = targetDb.amount
+        const amount = parseInt(targetDb.amount)
         const id = snapshot.id
         return new Target({ date, amount, id })
     }
 }
 
 export const TargetsProvider = (props) => {
-    const { scenarioDoc } = useScenario()
+    const { scenarioDoc, startDate, endDate } = useScenario()
 
-    const [targets, setTargets] = useState(null)
+    const [targets, setTargets] = useState([])
+    const [graphTargets, setGraphTargets] = useState([])
     const [targetsCollection, setTargetsCollection] = useState(null)
 
     const [newTarget, setNewTarget] = useState(new Target({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
-        if(scenarioDoc) {
+        if (scenarioDoc) {
             setTargetsCollection(collection(scenarioDoc, 'targets').withConverter(converter))
         } else {
             setTargetsCollection(null)
@@ -103,9 +106,26 @@ export const TargetsProvider = (props) => {
         setDoc(doc(targetsCollection, target.id), target)
     }
 
+
+    useEffect(() => {
+        const updatedGraphTargets = []
+
+        targets?.forEach(target => {
+            if (target.date >= startDate && target.date <= endDate) {
+                updatedGraphTargets.push({
+                    x: new Date(target.date),
+                    y: target.amount,
+                })
+            }
+        })
+
+        updatedGraphTargets.sort(compareGraphValues)
+        setGraphTargets(updatedGraphTargets)
+    }, [targets, startDate, endDate])
+
     return (
         <TargetsContext.Provider
-            value={(new Targets(targets, addTarget, deleteTarget, updateTarget))}
+            value={(new Targets(targets, graphTargets, addTarget, deleteTarget, updateTarget))}
         >
             {props.children}
         </TargetsContext.Provider>

@@ -2,13 +2,15 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
+import { compareGraphValues } from "./GraphProvider"
 import { useScenario } from "./ScenarioProvider"
 
 const currentDate = new Date()
 
 class Values {
-    constructor(values, addValue, deleteValue, updateValue) {
+    constructor(values, graphValues, addValue, deleteValue, updateValue) {
         this.values = values
+        this.graphValues = graphValues
         this.addValue = addValue
         this.deleteValue = deleteValue
         this.updateValue = updateValue
@@ -23,7 +25,7 @@ class Value {
     }
 }
 
-const ValuesContext = createContext(new Values([], () => {}, () => {}, () => {}))
+const ValuesContext = createContext(new Values([], [], () => { }, () => { }, () => { }))
 
 const converter = {
     toFirestore(value) {
@@ -33,22 +35,23 @@ const converter = {
     fromFirestore(snapshot, options) {
         const valueDb = snapshot.data()
         const date = new Date(valueDb.date)
-        const amount = valueDb.amount
+        const amount = parseInt(valueDb.amount)
         const id = snapshot.id
         return new Value({ date, amount, id })
     }
 }
 
 export const ValuesProvider = (props) => {
-    const { scenarioDoc } = useScenario()
+    const { scenarioDoc, startDate, endDate } = useScenario()
 
-    const [values, setValues] = useState(null)
+    const [values, setValues] = useState([])
+    const [graphValues, setGraphValues] = useState([])
     const [valuesCollection, setValuesCollection] = useState(null)
 
     const [newValue, setNewValue] = useState(new Value({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
-        if(scenarioDoc) {
+        if (scenarioDoc) {
             setValuesCollection(collection(scenarioDoc, 'values').withConverter(converter))
         } else {
             setValuesCollection(null)
@@ -105,8 +108,25 @@ export const ValuesProvider = (props) => {
         setDoc(doc(valuesCollection, value.id), value)
     }
 
+
+    useEffect(() => {
+        const updatedGraphValues = []
+
+        values?.forEach(value => {
+            if (value.date >= startDate && value.date <= endDate) {
+                updatedGraphValues.push({
+                    x: new Date(value.date),
+                    y: value.amount,
+                })
+            }
+        })
+
+        updatedGraphValues.sort(compareGraphValues)
+        setGraphValues(updatedGraphValues)
+    }, [values, startDate, endDate])
+
     return (
-        <ValuesContext.Provider value={(new Values(values, addValue, deleteValue, updateValue))}>
+        <ValuesContext.Provider value={(new Values(values, graphValues, addValue, deleteValue, updateValue))}>
             {props.children}
         </ValuesContext.Provider>
     )

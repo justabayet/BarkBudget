@@ -2,6 +2,16 @@
 import { Chart } from "chart.js"
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 
+export function compareGraphValues(a, b) {
+    if (a.x < b.x) {
+        return -1
+    }
+    if (a.x > b.x) {
+        return 1
+    }
+    return 0
+}
+
 class Graph {
     constructor(chartRef, setCanvas, tooglePinnedScenario, pinnedScenarios) {
         this.chartRef = chartRef
@@ -41,7 +51,7 @@ export const GraphProvider = (props) => {
     const [canvas, setCanvas] = useState(null)
 
     useEffect(() => {
-        if(!canvas) return
+        if (!canvas) return
         let ctx = canvas.getContext("2d")
         if (chartRef.current) {
             chartRef.current.destroy()

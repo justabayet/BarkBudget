@@ -2,16 +2,21 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
+import { ForecastEngine } from "../Modes/ForecastEngine"
+import { OneTime } from "../Modes/OneTime"
+import { compareGraphValues } from "./GraphProvider"
 import { useScenario } from "./ScenarioProvider"
+import { useValues } from "./ValuesProvider"
 
 const currentDate = new Date()
 
 class Expenses {
-    constructor(expenses, addExpense, deleteExpense, updateExpense) {
+    constructor(expenses, graphExpenses, addExpense, deleteExpense, updateExpense) {
         this.values = expenses
         this.addValue = addExpense
         this.deleteValue = deleteExpense
         this.updateValue = updateExpense
+        this.graphValues = graphExpenses
     }
 }
 
@@ -33,16 +38,29 @@ const converter = {
     fromFirestore(snapshot, options) {
         const expenseDb = snapshot.data()
         const date = new Date(expenseDb.date)
-        const amount = expenseDb.amount
+        const amount = parseInt(expenseDb.amount)
         const id = snapshot.id
         return new Expense({ date, amount, id })
     }
 }
 
 export const ExpensesProvider = (props) => {
-    const { scenarioDoc } = useScenario()
+    const scenarioProvider = useScenario()
+    const scenarioDoc = scenarioProvider.scenarioDoc
 
-    const [expenses, setExpenses] = useState(null)
+    let startDate = scenarioProvider.startDate
+    let endDate = scenarioProvider.endDate
+    let startAmount = 0
+
+    const { graphValues } = useValues()
+    if(graphValues.length > 0){
+        const lastValue = graphValues[graphValues.length - 1]
+        startDate = lastValue.x
+        startAmount = lastValue.y
+    }
+
+    const [expenses, setExpenses] = useState([])
+    const [graphExpenses, setGraphExpenses] = useState([])
     const [expensesCollection, setExpensesCollection] = useState(null)
 
     const [newExpense, setNewExpense] = useState(new Expense({ date: currentDate, amount: 0 }))
@@ -104,9 +122,36 @@ export const ExpensesProvider = (props) => {
         setDoc(doc(expensesCollection, expense.id), expense)
     }
 
+
+    const [engine, setEngine] = useState(new ForecastEngine(startDate, endDate, startAmount))
+
+    useEffect(() => {
+      setEngine(new ForecastEngine(startDate, endDate, startAmount))
+    }, [startAmount, startDate, endDate])
+
+  
+    useEffect(() => {
+      engine.cleanEntries()
+  
+      // Add expected expenses
+      engine.addEntry(new OneTime({ date: new Date("2022-01-03"), amount: 15 }))
+  
+      engine.iterate()
+      const updatedGraphExpenses = engine.values?.map(expense => {
+        return {
+          x: new Date(expense.date),
+          y: expense.value,
+        }
+      })
+  
+      updatedGraphExpenses?.sort(compareGraphValues)
+      setGraphExpenses(updatedGraphExpenses)
+    }, [expenses, engine])
+
+
     return (
         <ExpensesContext.Provider
-            value={(new Expenses(expenses, addExpense, deleteExpense, updateExpense))}
+            value={(new Expenses(expenses, graphExpenses, addExpense, deleteExpense, updateExpense))}
         >
             {props.children}
         </ExpensesContext.Provider>
