@@ -1,8 +1,8 @@
 
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
-import { useDatabase } from "./DatabaseProvider"
 import { getFormattedDate } from "../helpers"
+import { useScenario } from "./ScenarioProvider"
 
 const currentDate = getFormattedDate(new Date())
 
@@ -40,7 +40,7 @@ const converter = {
 }
 
 export const TargetsProvider = (props) => {
-    const { database } = useDatabase()
+    const { scenarioCollection } = useScenario()
 
     const [targets, setTargets] = useState(null)
     const [targetsCollection, setTargetsCollection] = useState(null)
@@ -48,13 +48,13 @@ export const TargetsProvider = (props) => {
     const [newTarget, setNewTarget] = useState(new Target({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
-        if(database) {
-            setTargetsCollection(collection(database, 'targets').withConverter(converter))
+        if(scenarioCollection) {
+            setTargetsCollection(collection(scenarioCollection, 'targets').withConverter(converter))
         } else {
             setTargetsCollection(null)
         }
 
-    }, [database])
+    }, [scenarioCollection])
 
     useEffect(() => {
         if (targetsCollection) {
@@ -74,7 +74,6 @@ export const TargetsProvider = (props) => {
         } else {
             setTargets(null)
         }
-
     }, [targetsCollection])
 
     const addTarget = () => {

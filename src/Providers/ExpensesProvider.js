@@ -2,7 +2,7 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
-import { useDatabase } from "./DatabaseProvider"
+import { useScenario } from "./ScenarioProvider"
 
 const currentDate = new Date()
 
@@ -40,7 +40,7 @@ const converter = {
 }
 
 export const ExpensesProvider = (props) => {
-    const { database } = useDatabase()
+    const { scenarioCollection } = useScenario()
 
     const [expenses, setExpenses] = useState(null)
     const [expensesCollection, setExpensesCollection] = useState(null)
@@ -48,13 +48,13 @@ export const ExpensesProvider = (props) => {
     const [newExpense, setNewExpense] = useState(new Expense({ date: currentDate, amount: 0 }))
 
     useEffect(() => {
-        if (database) {
-            setExpensesCollection(collection(database, 'expenses').withConverter(converter))
+        if (scenarioCollection) {
+            setExpensesCollection(collection(scenarioCollection, 'expenses').withConverter(converter))
         } else {
             setExpensesCollection(null)
         }
 
-    }, [database])
+    }, [scenarioCollection])
 
     useEffect(() => {
         if (expensesCollection) {
