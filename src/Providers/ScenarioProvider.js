@@ -8,15 +8,18 @@ import { TargetsProvider } from "./TargetsProvider"
 import { ValuesProvider } from "./ValuesProvider"
 
 class Scenario {
-    constructor(scenarioDoc) {
+    constructor(scenarioDoc, scenarioId, scenario) {
         this.scenarioDoc = scenarioDoc
+        this.scenarioId = scenarioId
+        this.scenario = scenario
     }
 }
 
-const ScenarioContext = createContext(new Scenario([], [], []))
+const ScenarioContext = createContext(new Scenario(undefined, undefined, undefined))
 
 export const ScenarioProvider = (props) => {
-    const scenarioId = props.id
+    const scenario = props.scenario
+    const scenarioId = scenario.id
     const { scenariosCollection } = useScenarios()
 
     const [scenarioDoc, setScenarioDoc] = useState(null)
@@ -31,7 +34,7 @@ export const ScenarioProvider = (props) => {
     }, [scenariosCollection, scenarioId])
 
     return (
-        <ScenarioContext.Provider value={(new Scenario(scenarioDoc))}>
+        <ScenarioContext.Provider value={(new Scenario(scenarioDoc, scenarioId, scenario))}>
             <ValuesProvider>
                 <ExpensesProvider>
                     <TargetsProvider>

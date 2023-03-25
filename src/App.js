@@ -6,6 +6,7 @@ import { UserDocProvider } from './Providers/UserDocProvider'
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { ScenariosProvider } from './Providers/ScenariosProvider'
+import { GraphProvider } from './Providers/GraphProvider'
 
 function App() {
 
@@ -14,7 +15,9 @@ function App() {
       <AuthenticationProvider>
         <UserDocProvider>
           <ScenariosProvider>
-            <MainView />
+            <GraphProvider>
+              <MainView />
+            </GraphProvider>
           </ScenariosProvider>
         </UserDocProvider>
       </AuthenticationProvider>

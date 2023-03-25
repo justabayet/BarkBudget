@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Chart, registerables } from "chart.js"
 import 'chartjs-adapter-moment'
 import { useExpenses } from '../Providers/ExpensesProvider'
@@ -6,13 +6,16 @@ import { useTargets } from '../Providers/TargetsProvider'
 import { useValues } from '../Providers/ValuesProvider'
 import { ForecastEngine } from "../Modes/ForecastEngine"
 import { OneTime } from "../Modes/OneTime"
+import { useGraph } from "../Providers/GraphProvider"
+import { useScenario } from "../Providers/ScenarioProvider"
+import { Button } from "@mui/material"
 
-      
-function compare( a, b ) {
-  if ( a.x < b.x ){
+
+function compare(a, b) {
+  if (a.x < b.x) {
     return -1
   }
-  if ( a.x > b.x ){
+  if (a.x > b.x) {
     return 1
   }
   return 0
@@ -21,33 +24,29 @@ function compare( a, b ) {
 Chart.register(...registerables)
 
 const ExpenseGraph = () => {
-  const chartRef = useRef(null)
+  const [startAmount, setStartAmount] = useState(0)
+  const [startDate, setStartDate] = useState(new Date("2022-01-01"))
+  const [startScenarioDate] = useState(new Date("2022-01-01"))
+  const [endDate] = useState(new Date("2022-10-10"))
 
-  const useExp = useExpenses()
-  const expenses = useExp.values
+  const { scenarioId, scenario } = useScenario()
+
+  const { chartRef, setCanvas, pinnedScenarios, tooglePinnedScenario } = useGraph()
+
+  useEffect(() => {
+    setCanvas(document.getElementById("expenseChart"))
+  }, [setCanvas])
+
+  
+  const expenses = useExpenses().values
   const [parsedExpenses, setParsedExpenses] = useState([])
 
-  const [startAmount, setStartAmount] = useState(0)
-  const [startDate, setStartDate] = useState("2022-01-01")
-  const [endDate, setEndDate] = useState("2022-10-10")
-
-  const engineRef = useRef(new ForecastEngine(new Date(startDate), new Date(endDate), startAmount))
-
+  const [engine, setEngine] = useState(new ForecastEngine(startDate, endDate, startAmount))
   useEffect(() => {
-    engineRef.current = new ForecastEngine(new Date(startDate), new Date(endDate), startAmount)
+    setEngine(new ForecastEngine(startDate, endDate, startAmount))
   }, [startAmount, startDate, endDate])
 
-  const useVal = useValues()
-  const values = useVal.values
-  const [parsedValues, setParsedValues] = useState([])
-
-  const useTarg = useTargets()
-  const targets = useTarg.values
-  const [parsedTargets, setParsedTargets] = useState([])
-
   useEffect(() => {
-    const engine = engineRef.current
-
     engine.cleanEntries()
 
     // Add expected expenses
@@ -60,23 +59,43 @@ const ExpenseGraph = () => {
         y: expense.value,
       }
     })
-      
+
     updatedParsedExpenses?.sort(compare)
     setParsedExpenses(updatedParsedExpenses)
-  }, [expenses, engineRef.current])
-  
+  }, [expenses, engine])
+
+
+  const values = useValues().values
+  const [parsedValues, setParsedValues] = useState([])
+
   useEffect(() => {
-    const updatedParsedValues = values?.map(value => {
-      return {
-        x: new Date(value.date),
-        y: value.amount,
+    const updatedParsedValues = []
+    
+    values?.forEach(value => {
+      if(value.date <= startScenarioDate) {
+        updatedParsedValues.push({
+          x: new Date(value.date),
+          y: value.amount,
+        })
       }
     })
-      
-    updatedParsedValues?.sort(compare)
+
+    updatedParsedValues.sort(compare)
+
+    if(updatedParsedValues.length > 0) {
+      const lastValue = updatedParsedValues[updatedParsedValues.length - 1]
+      setStartAmount(parseInt(lastValue.y))
+      setStartDate(lastValue.x)
+    }
+
     setParsedValues(updatedParsedValues)
-  }, [values])
+  }, [values, startScenarioDate])
+
+
   
+  const targets = useTargets().values
+  const [parsedTargets, setParsedTargets] = useState([])
+
   useEffect(() => {
     const updatedParsedTargets = targets?.map(target => {
       return {
@@ -84,111 +103,57 @@ const ExpenseGraph = () => {
         y: target.amount,
       }
     })
-      
+
     updatedParsedTargets?.sort(compare)
     setParsedTargets(updatedParsedTargets)
   }, [targets])
 
-  useEffect(() => {
-    let ctx = document.getElementById("expenseChart").getContext("2d")
-    if (chartRef.current) {
-      chartRef.current.destroy()
-    }
 
-    chartRef.current = new Chart(ctx, {
-      type: 'line',
-      data: {
-        datasets: [
-          {
-            label: 'Target',
-            data: [],
-            backgroundColor: 'rgba(230, 0, 230, 0.5)',
-            borderColor: 'rgba(230, 0, 230, 1)',
-            borderWidth: 2,
-            pointRadius: 5,
-            fill: false,
-          },
-          {
-            label: 'Value',
-            data: [],
-            backgroundColor: 'rgba(230, 230, 0, 0.5)',
-            borderColor: 'rgba(230, 230, 0, 1)',
-            borderWidth: 2,
-            pointRadius: 5,
-            fill: false,
-          },
-          {
-            label: 'Expense',
-            data: [],
-            backgroundColor: 'rgba(100, 0, 230, 0.5)',
-            borderColor: 'rgba(100, 0, 230, 1)',
-            borderWidth: 2,
-            pointRadius: 0,
-            fill: true,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        scales: {
-          x: {
-            gridLines: {
-              color: 'rgba(0, 0, 0, 0.05)',
-              lineWidth: 1,
-            },
-            type: 'time',
-            time: {
-              unit: 'month',
-              displayFormats: {
-                month: 'MMM YYYY',
-              },
-            },
-          },
-          y:
-          {
-            ticks: {
-              callback: function (value, index, values) {
-                return value + '€'
-              },
-            },
-            gridLines: {
-              color: 'rgba(0, 0, 0, 0.05)',
-              lineWidth: 1,
-            },
-            beginAtZero: true
-          },
-        },
-        hover: {
-          mode: 'x',
-          intersect: false,
-        },
-        interaction: {
-          mode: 'x',
-          intersect: false,
-        },
-        tooltips: {
-          mode: 'x',
-          intersect: false,
-        },
-      },
-    })
-  }, [])
+
 
   useEffect(() => {
-    if(!chartRef.current) return
+    if (!chartRef.current) return
     chartRef.current.data.datasets[0].data = parsedTargets
     chartRef.current.data.datasets[1].data = parsedValues
     chartRef.current.data.datasets[2].data = parsedExpenses
+
     chartRef.current.update()
-  }, [parsedExpenses, parsedTargets, parsedValues])
+  }, [parsedExpenses, parsedTargets, parsedValues, chartRef])
+
+
+  useEffect(() => {
+    if (!chartRef.current) return
+    chartRef.current.data.datasets.splice(3)
+
+    pinnedScenarios.forEach(({ scenario, data }) => {
+      if (scenario.id !== scenarioId) {
+        chartRef.current.data.datasets.push({
+          label: scenario.name,
+          data: data,
+          backgroundColor: 'rgba(230, 0, 230, 0.5)',
+          borderColor: 'rgba(230, 0, 230, 1)',
+          borderWidth: 2,
+          pointRadius: 5,
+          fill: false,
+        })
+      }
+    })
+
+    chartRef.current.update()
+  }, [pinnedScenarios, scenarioId, chartRef])
 
   return (
-    <div>
-      <canvas id="expenseChart" />
-    </div>
+    <>
+      <div>
+        <canvas id="expenseChart" />
+      </div>
+      <Button variant="secondary"
+        onClick={() => {
+          tooglePinnedScenario(scenario, [...parsedValues, ...parsedExpenses])
+        }}>
+        Pin {scenario.name}
+      </Button>
+    </>
   )
 }
 
