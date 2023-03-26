@@ -1,13 +1,20 @@
 
-import { collection, getDocs } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
 import { useUserDoc } from "./UserDocProvider"
 
 class Scenarios {
-    constructor(scenarios, scenariosCollection) {
+    constructor(scenarios, scenariosCollection, currentScenario, setScenarioIndex, addScenario, deleteScenario, updateScenario) {
         this.scenarios = scenarios
         this.scenariosCollection = scenariosCollection
+
+        this.currentScenario = currentScenario
+        this.setScenarioIndex = setScenarioIndex
+
+        this.addScenario = addScenario
+        this.deleteScenario = deleteScenario
+        this.updateScenario = updateScenario
     }
 }
 
@@ -19,10 +26,29 @@ class Scenario {
         this.startAmount = startAmount
         this.name = name
         this.id = id
+
+
+        if (this.startDate === undefined || isNaN(this.startDate)) {
+            this.startDate = new Date()
+        }
+
+        if (this.endDate === undefined || isNaN(this.endDate)) {
+            this.endDate = new Date(this.startDate)
+            this.endDate.setFullYear(this.startDate.getFullYear() + 1)
+        }
+
+        if (this.startAmount === undefined || isNaN(this.startAmount)) {
+            this.startAmount = 0
+        }
+
+        if (this.copyId === undefined) {
+            // TODO check copyId is valid
+            this.copyId = null
+        }
     }
 }
 
-const ScenariosContext = createContext(new Scenarios([]))
+const ScenariosContext = createContext(new Scenarios([], undefined, undefined, () => { }, () => { }, () => { }, () => { }))
 
 const converter = {
     toFirestore(scenario) {
@@ -38,26 +64,11 @@ const converter = {
     fromFirestore(snapshot, options) {
         const scenarioDb = snapshot.data()
         const copyId = scenarioDb.copyId
-        let startDate = new Date(scenarioDb.startDate)
-        let endDate = new Date(scenarioDb.endDate)
-        let startAmount = parseInt(scenarioDb.startAmount)
-        let name = scenarioDb.name
+        const startDate = new Date(scenarioDb.startDate)
+        const endDate = new Date(scenarioDb.endDate)
+        const startAmount = parseInt(scenarioDb.startAmount)
+        const name = scenarioDb.name
         const id = snapshot.id
-
-        if (scenarioDb.startDate === undefined || startDate === "Invalid date") {
-            startDate = new Date()
-        }
-
-        if (scenarioDb.endDate === undefined || endDate === "Invalid date") {
-            endDate = new Date(startDate)
-            endDate.setFullYear(startDate.getFullYear() + 1)
-        }
-
-        if (isNaN(startAmount)) {
-            startAmount = 0
-        }
-
-        // TODO check copyId is valid
 
         return new Scenario({ copyId, startDate, endDate, startAmount, id, name })
     }
@@ -68,6 +79,17 @@ export const ScenariosProvider = (props) => {
 
     const [scenariosCollection, setScenariosCollection] = useState(null)
     const [scenarios, setScenarios] = useState([])
+
+    const [scenarioIndex, setScenarioIndex] = useState(null)
+
+    useEffect(() => {
+        if (scenarios.length === 0) {
+            setScenarioIndex(null)
+
+        } else if (scenarioIndex === null) {
+            setScenarioIndex(0)
+        }
+    }, [scenarios.length, scenarioIndex])
 
     useEffect(() => {
         if (userDoc) {
@@ -98,8 +120,37 @@ export const ScenariosProvider = (props) => {
         }
     }, [scenariosCollection])
 
+    const [newScenario, setNewScenario] = useState(new Scenario({ name: "New Scenario" }))
+
+    const addScenario = () => {
+        console.log("add", newScenario)
+        addDoc(scenariosCollection, newScenario).then(document => {
+            newScenario.id = document.id
+        })
+        setScenarios([newScenario, ...scenarios])
+        setNewScenario(new Scenario({ name: "New Scenario" }))
+    }
+
+    const deleteScenario = (scenario, index) => {
+        console.log("delete", scenario)
+        const updatedScenarios = [...scenarios]
+        updatedScenarios.splice(index, 1)
+        setScenarios(updatedScenarios)
+
+        deleteDoc(doc(scenariosCollection, scenario.id)).then(() => setScenarioIndex(null))
+    }
+
+    const updateScenario = (scenario, index) => {
+        console.log("update", scenario)
+        const updatedScenarios = [...scenarios]
+        updatedScenarios[index] = scenario
+        setScenarios(updatedScenarios)
+
+        setDoc(doc(scenariosCollection, scenario.id), scenario)
+    }
+
     return (
-        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection))}>
+        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarios[scenarioIndex], setScenarioIndex, addScenario, deleteScenario, updateScenario))}>
             {props.children}
         </ScenariosContext.Provider>
     )

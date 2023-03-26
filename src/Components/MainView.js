@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Typography } from '@mui/material'
 import { useAuthentication } from '../Providers/AuthenticationProvider'
 import { useScenarios } from '../Providers/ScenariosProvider'
@@ -8,28 +8,16 @@ import { ScenarioProvider } from '../Providers/ScenarioProvider'
 
 const MainView = () => {
     const { user } = useAuthentication()
-    const { scenarios } = useScenarios()
-
-    const [scenarioIndex, setScenarioIndex] = useState(null)
-
-    useEffect(() => {
-        if (scenarios.length === 0) {
-            setScenarioIndex(null)
-
-        } else if (scenarioIndex === null) {
-            setScenarioIndex(0)
-        }
-    }, [scenarios.length, scenarioIndex])
-
+    const { currentScenario } = useScenarios()
 
     return (
         <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
             <MainHeader />
 
-            {user && scenarioIndex !== null
+            {user && currentScenario
                 ?
-                <ScenarioProvider scenario={scenarios[scenarioIndex]}>
-                    <ScenarioView setScenarioIndex={setScenarioIndex} />
+                <ScenarioProvider scenario={currentScenario}>
+                    <ScenarioView />
                 </ScenarioProvider>
 
                 : <Typography>Create your first scenario to get started</Typography>

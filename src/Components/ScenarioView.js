@@ -2,16 +2,15 @@ import React from 'react'
 import TransactionDashboard from './TransactionDashboard'
 import ExpenseGraph from './ExpenseGraph'
 import { useScenarios } from '../Providers/ScenariosProvider'
-import { Button, Typography } from '@mui/material'
-import { useScenario } from '../Providers/ScenarioProvider'
+import { Button } from '@mui/material'
+import ScenarioHeader from './ScenarioHeader'
 
-const ScenarioView = ({ setScenarioIndex }) => {
-    const { scenarios } = useScenarios()
-    const { scenario } = useScenario()
+const ScenarioView = () => {
+    const { scenarios, setScenarioIndex } = useScenarios()
 
     return (
         <>
-            <Typography variant="h4">Scenario: {scenario.name}</Typography>
+            <ScenarioHeader />
 
             {scenarios.map(({ id, name }, index) => {
                 return (
