@@ -8,12 +8,10 @@ import { TargetsProvider } from "./GraphValuesProvider/TargetsProvider"
 import { ValuesProvider } from "./GraphValuesProvider/ValuesProvider"
 
 class Scenario {
-    constructor(scenarioDoc, scenarioId, scenario, startDate, endDate) {
+    constructor(scenarioDoc, scenarioId, scenario) {
         this.scenarioDoc = scenarioDoc
         this.scenarioId = scenarioId
         this.scenario = scenario
-        this.startDate = startDate
-        this.endDate = endDate
     }
 }
 
@@ -22,9 +20,6 @@ const ScenarioContext = createContext(new Scenario(undefined, undefined, undefin
 export const ScenarioProvider = (props) => {
     const scenario = props.scenario
     const scenarioId = scenario.id
-
-    const startDate = new Date("2022-01-01")
-    const endDate = new Date("2023-01-01")
 
     const { scenariosCollection } = useScenarios()
 
@@ -40,7 +35,7 @@ export const ScenarioProvider = (props) => {
     }, [scenariosCollection, scenarioId])
 
     return (
-        <ScenarioContext.Provider value={(new Scenario(scenarioDoc, scenarioId, scenario, startDate, endDate))}>
+        <ScenarioContext.Provider value={(new Scenario(scenarioDoc, scenarioId, scenario))}>
             <ValuesProvider>
                 <ExpensesProvider>
                     <TargetsProvider>

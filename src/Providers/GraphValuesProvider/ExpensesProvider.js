@@ -45,12 +45,11 @@ const converter = {
 }
 
 export const ExpensesProvider = (props) => {
-    const scenarioProvider = useScenario()
-    const scenarioDoc = scenarioProvider.scenarioDoc
+    const { scenario, scenarioDoc } = useScenario()
 
-    let startDate = scenarioProvider.startDate
-    let endDate = scenarioProvider.endDate
-    let startAmount = 0
+    let startDate = scenario.startDate
+    let endDate = scenario.endDate
+    let startAmount = scenario.startAmount
 
     const { graphValues } = useValues()
     if (graphValues.length > 0) {
@@ -76,10 +75,9 @@ export const ExpensesProvider = (props) => {
 
     useEffect(() => {
         if (expensesCollection) {
-            console.log("full read expenses")
             getDocs(expensesCollection)
                 .then((querySnapshot) => {
-                    console.log("Get", querySnapshot.size)
+                    console.log("ExpensesProvider Full read get", querySnapshot.size)
 
                     const expensesQueried = []
                     querySnapshot.forEach(doc => {
@@ -134,7 +132,12 @@ export const ExpensesProvider = (props) => {
         engine.cleanEntries()
 
         // Add expected expenses
-        engine.addEntry(new OneTime({ date: new Date("2022-01-03"), amount: 15 }))
+        engine.addEntry(new OneTime({ date: new Date(startDate), amount: 15 }))
+        const dMinus1 = new Date(endDate)
+        dMinus1.setMonth(endDate.getMonth() - 1)
+        engine.addEntry(new OneTime({ date: new Date(dMinus1), amount: 15 }))
+        dMinus1.setMonth(endDate.getMonth() - 10)
+        engine.addEntry(new OneTime({ date: new Date(dMinus1), amount: 15 }))
 
         engine.iterate()
         const updatedGraphExpenses = engine.values?.map(expense => {
@@ -146,7 +149,7 @@ export const ExpensesProvider = (props) => {
 
         updatedGraphExpenses?.sort(compareGraphValues)
         setGraphExpenses(updatedGraphExpenses)
-    }, [expenses, engine])
+    }, [expenses, engine, startDate, endDate])
 
 
     return (

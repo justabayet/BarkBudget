@@ -101,16 +101,14 @@ export const ScenariosProvider = (props) => {
 
     useEffect(() => {
         if (scenariosCollection) {
-            console.log("ScenariosProvider: full read")
             getDocs(scenariosCollection)
                 .then((querySnapshot) => {
-                    console.log("ScenariosProvider get:", querySnapshot.size)
+                    console.log("ScenariosProvider Full read get", querySnapshot.size)
 
                     const scenariosQueried = []
                     querySnapshot.forEach(doc => {
                         scenariosQueried.push(doc.data())
                     })
-                    console.log(scenariosQueried)
 
                     setScenarios(scenariosQueried)
                 })

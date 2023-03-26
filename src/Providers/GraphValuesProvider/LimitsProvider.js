@@ -42,7 +42,8 @@ const converter = {
 }
 
 export const LimitsProvider = (props) => {
-    const { scenarioDoc, startDate, endDate } = useScenario()
+    const { scenarioDoc, scenario } = useScenario()
+    const { startDate, endDate } = scenario
 
     const [limits, setLimits] = useState(null)
     const [graphLimits, setGraphLimits] = useState([])
@@ -61,10 +62,9 @@ export const LimitsProvider = (props) => {
 
     useEffect(() => {
         if (limitsCollection) {
-            console.log("full read limits")
             getDocs(limitsCollection)
                 .then((querySnapshot) => {
-                    console.log("Get", querySnapshot.size)
+                    console.log("LimitsProvider Full read get", querySnapshot.size)
 
                     const limitsQueried = []
                     querySnapshot.forEach(doc => {

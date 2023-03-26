@@ -42,7 +42,8 @@ const converter = {
 }
 
 export const ValuesProvider = (props) => {
-    const { scenarioDoc, startDate, endDate } = useScenario()
+    const { scenarioDoc, scenario } = useScenario()
+    const { startDate, endDate } = scenario
 
     const [values, setValues] = useState([])
     const [graphValues, setGraphValues] = useState([])
@@ -61,10 +62,9 @@ export const ValuesProvider = (props) => {
 
     useEffect(() => {
         if (valuesCollection) {
-            console.log("full read values")
             getDocs(valuesCollection)
                 .then((querySnapshot) => {
-                    console.log("Get", querySnapshot.size)
+                    console.log("ValuesProvider Full read get", querySnapshot.size)
 
                     const valuesQueried = []
 

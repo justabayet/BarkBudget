@@ -42,7 +42,8 @@ const converter = {
 }
 
 export const TargetsProvider = (props) => {
-    const { scenarioDoc, startDate, endDate } = useScenario()
+    const { scenarioDoc, scenario } = useScenario()
+    const { startDate, endDate } = scenario
 
     const [targets, setTargets] = useState([])
     const [graphTargets, setGraphTargets] = useState([])
@@ -61,10 +62,9 @@ export const TargetsProvider = (props) => {
 
     useEffect(() => {
         if (targetsCollection) {
-            console.log("full read targets")
             getDocs(targetsCollection)
                 .then((querySnapshot) => {
-                    console.log("Get", querySnapshot.size)
+                    console.log("TargetsProvider Full read get", querySnapshot.size)
 
                     const targetsQueried = []
                     querySnapshot.forEach(doc => {

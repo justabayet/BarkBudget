@@ -38,11 +38,12 @@ export const GraphProvider = (props) => {
     const [pinnedScenarios, setPinnedScenarios] = useState([])
 
     const tooglePinnedScenario = (scenario, data) => {
-        console.log("GraphProvider tooglePinnedScenario")
         const index = pinnedScenarios.findIndex((pinnedScenario) => pinnedScenario.scenario.id === scenario.id)
         if (index === -1) {
+            console.log("GraphProvider tooglePinnedScenario", true)
             pinnedScenarios.push({ scenario, data })
         } else {
+            console.log("GraphProvider tooglePinnedScenario", false)
             pinnedScenarios.splice(index, 1)
         }
         setPinnedScenarios([...pinnedScenarios])
