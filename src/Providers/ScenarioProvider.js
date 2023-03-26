@@ -1,11 +1,11 @@
 
 import { doc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
-import { ExpensesProvider } from "./ExpensesProvider"
-import { LimitsProvider } from "./LimitsProvider"
+import { ExpensesProvider } from "./GraphValuesProvider/ExpensesProvider"
+import { LimitsProvider } from "./GraphValuesProvider/LimitsProvider"
 import { useScenarios } from "./ScenariosProvider"
-import { TargetsProvider } from "./TargetsProvider"
-import { ValuesProvider } from "./ValuesProvider"
+import { TargetsProvider } from "./GraphValuesProvider/TargetsProvider"
+import { ValuesProvider } from "./GraphValuesProvider/ValuesProvider"
 
 class Scenario {
     constructor(scenarioDoc, scenarioId, scenario, startDate, endDate) {

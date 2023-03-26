@@ -1,9 +1,10 @@
 import React, { useEffect } from "react"
 import { Chart, registerables } from "chart.js"
 import 'chartjs-adapter-moment'
-import { useExpenses } from '../Providers/ExpensesProvider'
-import { useTargets } from '../Providers/TargetsProvider'
-import { useValues } from '../Providers/ValuesProvider'
+import { useExpenses } from '../Providers/GraphValuesProvider/ExpensesProvider'
+import { useTargets } from '../Providers/GraphValuesProvider/TargetsProvider'
+import { useValues } from '../Providers/GraphValuesProvider/ValuesProvider'
+import { useLimits } from '../Providers/GraphValuesProvider/LimitsProvider'
 import { useGraph } from "../Providers/GraphProvider"
 import { useScenario } from "../Providers/ScenarioProvider"
 import { Button } from "@mui/material"

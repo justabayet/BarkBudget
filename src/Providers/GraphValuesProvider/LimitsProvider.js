@@ -1,8 +1,8 @@
 
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
-import { getFormattedDate } from "../helpers"
-import { useScenario } from "./ScenarioProvider"
+import { getFormattedDate, compareGraphValues } from "../../helpers"
+import { useScenario } from "../ScenarioProvider"
 
 const currentDate = new Date()
 
