@@ -77,7 +77,7 @@ const Transaction = ({ value, handleDelete, handleSave }) => {
                 onChange={(event) => {
                     const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/;
                     if (event.target.value === "" || regex.test(event.target.value)) {
-                        setAmount(event.target.value)
+                        setAmount(parseInt(event.target.value))
                     }
                 }}
                 onBlur={save}
