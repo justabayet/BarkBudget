@@ -1,17 +1,19 @@
 
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
-import { getFormattedDate, compareGraphValues } from "../../helpers"
+import { getFormattedDate } from "../../helpers"
+import { compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 
 const currentDate = new Date()
 
 class Limits {
-    constructor(limits, addLimit, deleteLimit, updateLimit) {
+    constructor(limits, graphLimits, addLimit, deleteLimit, updateLimit) {
         this.values = limits
         this.addValue = addLimit
         this.deleteValue = deleteLimit
         this.updateValue = updateLimit
+        this.graphValues = graphLimits
     }
 }
 
@@ -23,7 +25,7 @@ class Limit {
     }
 }
 
-const LimitsContext = createContext(new Limits([], () => { }, () => { }, () => { }))
+const LimitsContext = createContext(new Limits([], [], () => { }, () => { }, () => { }))
 
 const converter = {
     toFirestore(limit) {
@@ -40,9 +42,10 @@ const converter = {
 }
 
 export const LimitsProvider = (props) => {
-    const { scenarioDoc } = useScenario()
+    const { scenarioDoc, startDate, endDate } = useScenario()
 
     const [limits, setLimits] = useState(null)
+    const [graphLimits, setGraphLimits] = useState([])
     const [limitsCollection, setLimitsCollection] = useState(null)
 
     const [newLimit, setNewLimit] = useState(new Limit({ date: currentDate, amount: 0 }))
@@ -104,9 +107,26 @@ export const LimitsProvider = (props) => {
         setDoc(doc(limitsCollection, limit.id), limit)
     }
 
+
+    useEffect(() => {
+        const updatedGraphLimits = []
+
+        limits?.forEach(limit => {
+            if (limit.date >= startDate && limit.date <= endDate) {
+                updatedGraphLimits.push({
+                    x: new Date(limit.date),
+                    y: limit.amount,
+                })
+            }
+        })
+
+        updatedGraphLimits.sort(compareGraphValues)
+        setGraphLimits(updatedGraphLimits)
+    }, [limits, startDate, endDate])
+
     return (
         <LimitsContext.Provider
-            value={(new Limits(limits, addLimit, deleteLimit, updateLimit))}
+            value={(new Limits(limits, graphLimits, addLimit, deleteLimit, updateLimit))}
         >
             {props.children}
         </LimitsContext.Provider>
