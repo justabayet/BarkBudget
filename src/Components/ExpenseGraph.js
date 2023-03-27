@@ -33,13 +33,14 @@ const ExpenseGraph = () => {
     chartRef.current.data.datasets[2].data = graphExpenses
 
     chartRef.current.update()
-  }, [graphExpenses, graphTargets, graphValues, chartRef])
+  }, [graphExpenses, graphTargets, chartRef])
 
 
   useEffect(() => {
     if (!chartRef.current) return
     chartRef.current.data.datasets.splice(3)
 
+    // TODO update only data of the dataset, not the entire dataset to have better animation
     pinnedScenarios.forEach(({ scenario, data }) => {
       if (scenario.id !== scenarioId) {
         chartRef.current.data.datasets.push({
@@ -63,7 +64,7 @@ const ExpenseGraph = () => {
       pinScenario(scenario, [...graphValues, ...graphExpenses])
     }
 
-  }, [scenario, graphExpenses, graphValues])
+  }, [scenario, graphExpenses])
 
   return (
     <>

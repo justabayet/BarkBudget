@@ -120,16 +120,8 @@ export const ExpensesProvider = (props) => {
         setDoc(doc(expensesCollection, expense.id), expense)
     }
 
-
-    const [engine, setEngine] = useState(new ForecastEngine(startDate, endDate, startAmount))
-
-    useEffect(() => {
-        setEngine(new ForecastEngine(startDate, endDate, startAmount))
-    }, [startAmount, startDate, endDate])
-
-
-    useEffect(() => {
-        engine.cleanEntries()
+    const getEngine = (startDate, endDate, startAmount) => {
+        const engine = new ForecastEngine(startDate, endDate, startAmount)
 
         // Add expected expenses
         engine.addEntry(new OneTime({ date: new Date(startDate), amount: 15 }))
@@ -138,6 +130,12 @@ export const ExpensesProvider = (props) => {
         engine.addEntry(new OneTime({ date: new Date(dMinus1), amount: 15 }))
         dMinus1.setMonth(endDate.getMonth() - 10)
         engine.addEntry(new OneTime({ date: new Date(dMinus1), amount: 15 }))
+
+        return engine
+    }
+
+    useEffect(() => {
+        const engine = getEngine(startDate, endDate, startAmount)
 
         engine.iterate()
         const updatedGraphExpenses = engine.values?.map(expense => {
@@ -149,7 +147,7 @@ export const ExpensesProvider = (props) => {
 
         updatedGraphExpenses?.sort(compareGraphValues)
         setGraphExpenses(updatedGraphExpenses)
-    }, [expenses, engine, startDate, endDate])
+    }, [expenses, startDate, endDate, startAmount])
 
 
     return (
