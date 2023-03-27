@@ -52,7 +52,6 @@ export const GraphProvider = (props) => {
 
     const pinScenario = (scenario, data) => {
         const index = pinnedScenarios.findIndex((pinnedScenario) => pinnedScenario.scenario.id === scenario.id)
-        console.log(JSON.stringify(data))
         if (index === -1) {
             console.log("GraphProvider pinScenario", true)
             pinnedScenarios.push({ scenario, data })
