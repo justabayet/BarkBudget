@@ -12,15 +12,15 @@ function App() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <AuthenticationProvider>
-        <UserDocProvider>
-          <ScenariosProvider>
-            <GraphProvider>
+      <GraphProvider>
+        <AuthenticationProvider>
+          <UserDocProvider>
+            <ScenariosProvider>
               <MainView />
-            </GraphProvider>
-          </ScenariosProvider>
-        </UserDocProvider>
-      </AuthenticationProvider>
+            </ScenariosProvider>
+          </UserDocProvider>
+        </AuthenticationProvider>
+      </GraphProvider>
     </LocalizationProvider>
   )
 }

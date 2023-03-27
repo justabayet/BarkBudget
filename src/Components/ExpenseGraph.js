@@ -14,7 +14,7 @@ Chart.register(...registerables)
 const ExpenseGraph = () => {
   const { scenarioId, scenario } = useScenario()
 
-  const { chartRef, setCanvas, pinnedScenarios, tooglePinnedScenario } = useGraph()
+  const { chartRef, setCanvas, pinnedScenarios, tooglePinnedScenario, pinScenario } = useGraph()
 
   useEffect(() => {
     setCanvas(document.getElementById("expenseChart"))
@@ -56,6 +56,14 @@ const ExpenseGraph = () => {
 
     chartRef.current.update()
   }, [pinnedScenarios, scenarioId, chartRef])
+
+
+  useEffect(() => {
+    if (scenario.isPinned) {
+      pinScenario(scenario, [...graphValues, ...graphExpenses])
+    }
+
+  }, [scenario, graphExpenses, graphValues])
 
   return (
     <>

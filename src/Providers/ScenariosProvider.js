@@ -1,7 +1,9 @@
 
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
 import { createContext, useContext, useEffect, useState } from "react"
+import InitPinnedScenario from "../Components/InitPinnedScenario"
 import { getFormattedDate } from "../helpers"
+import { ScenarioProvider } from "./ScenarioProvider"
 import { useUserDoc } from "./UserDocProvider"
 
 class Scenarios {
@@ -19,13 +21,14 @@ class Scenarios {
 }
 
 class Scenario {
-    constructor({ copyId, startDate, endDate, startAmount = 0, id, name }) {
+    constructor({ copyId, startDate, endDate, startAmount = 0, id, name, isPinned = false }) {
         this.copyId = copyId
         this.startDate = startDate
         this.endDate = endDate
         this.startAmount = startAmount
         this.name = name
         this.id = id
+        this.isPinned = isPinned
 
 
         if (this.startDate === undefined || isNaN(this.startDate)) {
@@ -37,7 +40,7 @@ class Scenario {
             this.endDate.setFullYear(this.startDate.getFullYear() + 1)
         }
 
-        if (this.startAmount === undefined || isNaN(this.startAmount)) {
+        if (isNaN(this.startAmount)) {
             this.startAmount = 0
         }
 
@@ -58,7 +61,8 @@ const converter = {
             endDate: getFormattedDate(scenario.endDate),
             startAmount: scenario.startAmount,
             copyId: scenario.copyId,
-            name: scenario.name
+            name: scenario.name,
+            isPinned: scenario.isPinned
         };
     },
     fromFirestore(snapshot, options) {
@@ -69,8 +73,9 @@ const converter = {
         const startAmount = parseInt(scenarioDb.startAmount)
         const name = scenarioDb.name
         const id = snapshot.id
+        const isPinned = scenarioDb.isPinned
 
-        return new Scenario({ copyId, startDate, endDate, startAmount, id, name })
+        return new Scenario({ copyId, startDate, endDate, startAmount, id, name, isPinned })
     }
 }
 
@@ -150,6 +155,13 @@ export const ScenariosProvider = (props) => {
     return (
         <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarios[scenarioIndex], setScenarioIndex, addScenario, deleteScenario, updateScenario))}>
             {props.children}
+            {scenarios.filter(scenario => scenario.isPinned).map(scenario => {
+                return (
+                    <ScenarioProvider scenario={scenario}>
+                        <InitPinnedScenario />
+                    </ScenarioProvider>
+                )
+            })}
         </ScenariosContext.Provider>
     )
 }

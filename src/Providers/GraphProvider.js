@@ -13,15 +13,16 @@ export function compareGraphValues(a, b) {
 }
 
 class Graph {
-    constructor(chartRef, setCanvas, tooglePinnedScenario, pinnedScenarios) {
+    constructor(chartRef, setCanvas, tooglePinnedScenario, pinScenario, pinnedScenarios) {
         this.chartRef = chartRef
         this.setCanvas = setCanvas
         this.tooglePinnedScenario = tooglePinnedScenario
+        this.pinScenario = pinScenario
         this.pinnedScenarios = pinnedScenarios
     }
 }
 
-const GraphContext = createContext(new Graph(undefined, () => { }, () => { }, undefined))
+const GraphContext = createContext(new Graph(undefined, () => { }, () => { }, () => { }, undefined))
 
 export const GraphProvider = (props) => {
     const chartRef = useRef(null)
@@ -45,6 +46,20 @@ export const GraphProvider = (props) => {
         } else {
             console.log("GraphProvider tooglePinnedScenario", false)
             pinnedScenarios.splice(index, 1)
+        }
+        setPinnedScenarios([...pinnedScenarios])
+    }
+
+    const pinScenario = (scenario, data) => {
+        const index = pinnedScenarios.findIndex((pinnedScenario) => pinnedScenario.scenario.id === scenario.id)
+        console.log(JSON.stringify(data))
+        if (index === -1) {
+            console.log("GraphProvider pinScenario", true)
+            pinnedScenarios.push({ scenario, data })
+        } else {
+            console.log("GraphProvider pinScenario", false)
+            pinnedScenarios.splice(index, 1)
+            pinnedScenarios.push({ scenario, data })
         }
         setPinnedScenarios([...pinnedScenarios])
     }
@@ -141,7 +156,7 @@ export const GraphProvider = (props) => {
 
     return (
         <GraphContext.Provider
-            value={(new Graph(chartRef, setCanvas, tooglePinnedScenario, pinnedScenarios))}
+            value={(new Graph(chartRef, setCanvas, tooglePinnedScenario, pinScenario, pinnedScenarios))}
         >
             {props.children}
         </GraphContext.Provider>
