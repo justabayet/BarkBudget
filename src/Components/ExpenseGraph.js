@@ -46,11 +46,11 @@ const ExpenseGraph = () => {
         chartRef.current.data.datasets.push({
           label: scenario.name,
           data: data,
-          backgroundColor: 'rgba(100, 100, 100, 0.5)',
-          borderColor: 'rgba(100, 100, 100, 0.7)',
-          borderWidth: 1,
+          backgroundColor: 'rgba(230, 230, 230, 0.3)',
+          borderColor: 'rgba(100, 100, 100, 0.5)',
+          borderWidth: 1.5,
           pointRadius: 0,
-          fill: true,
+          fill: false,
         })
       }
     })
