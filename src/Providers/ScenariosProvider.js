@@ -7,11 +7,12 @@ import { ScenarioProvider } from "./ScenarioProvider"
 import { useUserDoc } from "./UserDocProvider"
 
 class Scenarios {
-    constructor(scenarios, scenariosCollection, currentScenario, setScenarioIndex, addScenario, deleteScenario, updateScenario) {
+    constructor(scenarios, scenariosCollection, currentScenario, scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario) {
         this.scenarios = scenarios
         this.scenariosCollection = scenariosCollection
 
         this.currentScenario = currentScenario
+        this.scenarioIndex = scenarioIndex
         this.setScenarioIndex = setScenarioIndex
 
         this.addScenario = addScenario
@@ -51,7 +52,7 @@ class Scenario {
     }
 }
 
-const ScenariosContext = createContext(new Scenarios([], undefined, undefined, () => { }, () => { }, () => { }, () => { }))
+const ScenariosContext = createContext(new Scenarios([], undefined, undefined, undefined, () => { }, () => { }, () => { }, () => { }))
 
 const converter = {
     toFirestore(scenario) {
@@ -153,7 +154,7 @@ export const ScenariosProvider = (props) => {
     }
 
     return (
-        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarios[scenarioIndex], setScenarioIndex, addScenario, deleteScenario, updateScenario))}>
+        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarios[scenarioIndex], scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario))}>
             {props.children}
             {scenarios.filter(scenario => scenario.isPinned).map(scenario => {
                 return (
