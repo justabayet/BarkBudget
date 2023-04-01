@@ -66,17 +66,23 @@ const ExpenseGraph = () => {
 
   }, [scenario, graphExpenses])
 
+  chartRef.current.options.scales.y.suggestedMax = () => {
+    console.log("new")
+  }
+  console.log(chartRef.current)
+
+
   return (
     <>
       <div>
         <canvas id="expenseChart" />
       </div>
-      <Button variant="secondary"
+      {/* <Button variant="secondary"
         onClick={() => {
           tooglePinnedScenario(scenario, [...graphValues, ...graphExpenses])
         }}>
         Pin {scenario.name}
-      </Button>
+      </Button> */}
     </>
   )
 }
