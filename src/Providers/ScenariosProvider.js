@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import InitPinnedScenario from "../Components/InitPinnedScenario"
 import { getFormattedDate } from "../helpers"
 import { ScenarioProvider } from "./ScenarioProvider"
-import { useUserDoc } from "./UserDocProvider"
+import { useAuthentication } from "./AuthenticationProvider"
 
 class Scenarios {
     constructor(scenarios, scenariosCollection, currentScenario, scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario) {
@@ -81,7 +81,7 @@ const converter = {
 }
 
 export const ScenariosProvider = (props) => {
-    const { userDoc } = useUserDoc(null)
+    const { userDoc } = useAuthentication()
 
     const [scenariosCollection, setScenariosCollection] = useState(null)
     const [scenarios, setScenarios] = useState([])

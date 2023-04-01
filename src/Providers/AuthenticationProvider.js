@@ -1,20 +1,23 @@
 
 import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
 import { createContext, useContext, useEffect, useState } from "react"
-import { auth } from '../firebase'
+import { auth, db } from '../firebase'
+import { doc } from "firebase/firestore"
 
 class Authentication {
-  constructor(user, handleSignIn, handleSignOut) {
+  constructor(user, handleSignIn, handleSignOut, userDoc) {
     this.user = user
     this.handleSignIn = handleSignIn
     this.handleSignOut = handleSignOut
+    this.userDoc = userDoc
   }
 }
 
-const AuthenticationContext = createContext(new Authentication(undefined, () => { }, () => { }))
+const AuthenticationContext = createContext(new Authentication(undefined, () => { }, () => { }, undefined))
 
 export const AuthenticationProvider = (props) => {
   const [user, setUser] = useState(null)
+  const [userDoc, setUserDoc] = useState(null)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -30,7 +33,14 @@ export const AuthenticationProvider = (props) => {
     return unsubscribe
   }, [])
 
-
+  useEffect(() => {
+    if (user) {
+      const userDoc = doc(db, 'users', user.uid)
+      setUserDoc(userDoc)
+    } else {
+      setUserDoc(null)
+    }
+  }, [user])
 
   const handleSignIn = () => {
     const provider = new GoogleAuthProvider()
@@ -44,7 +54,7 @@ export const AuthenticationProvider = (props) => {
 
   return (
     <AuthenticationContext.Provider
-      value={(new Authentication(user, handleSignIn, handleSignOut))}
+      value={(new Authentication(user, handleSignIn, handleSignOut, userDoc))}
     >
       {props.children}
     </AuthenticationContext.Provider>
