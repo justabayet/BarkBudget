@@ -3,7 +3,7 @@ import { useScenarios } from '../Providers/ScenariosProvider'
 import { Autocomplete, TextField } from '@mui/material'
 
 const PinnedScenariosSelector = () => {
-    const { scenarios } = useScenarios()
+    const { scenarios, updateScenario } = useScenarios()
     const pinnedScenarios = []
 
     scenarios?.forEach(scenario => {
@@ -25,24 +25,39 @@ const PinnedScenariosSelector = () => {
                     label="Pinned Scenarios"
                 />
             )}
+            renderOption={(props, option) => {
+                return (
+                    <li {...props} key={option.id}>
+                        {option.name} {option.id}
+                    </li>
+                )
+            }}
             isOptionEqualToValue={(option, value) => {
                 return option.id === value.id
             }}
-            onChange={(event, value, reason) => {
-                console.log(event, value, reason)
-                switch (reason) {
-                    case 'removeOption':
-                        console.log("removeOption")
-                        break;
+            onChange={(event, value, reason, details) => {
 
-                    case 'clear':
-                        console.log("clear")
-                        break
+                if (["selectOption", "removeOption"].includes(reason)) {
+                    const scenario = details.option
+                    const index = scenarios.find(refScenario => refScenario.id === scenario.id)
 
-                    default:
-                        break
+                    if (reason === "selectOption") {
+                        scenario.isPinned = true
+
+                    } else if (reason === "removeOption") {
+                        scenario.isPinned = false
+                    }
+
+                    updateScenario(scenario, index)
+
+                } else if (reason === "clear") {
+
+                    pinnedScenarios.forEach(pinnedScenario => {
+                        const index = scenarios.find(refScenario => refScenario.id === pinnedScenario.id)
+                        pinnedScenario.isPinned = false
+                        updateScenario(pinnedScenario, index)
+                    })
                 }
-                // setScenarioIndex(value.index)
             }}
         />
     )
