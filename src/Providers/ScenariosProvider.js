@@ -5,16 +5,16 @@ import { getFormattedDate } from "../helpers"
 import { useAuthentication } from "./AuthenticationProvider"
 
 class Scenarios {
-    constructor(scenarios, scenariosCollection, scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario) {
+    constructor(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario) {
         this.scenarios = scenarios
         this.scenariosCollection = scenariosCollection
 
-        this.scenarioIndex = scenarioIndex
+        this.scenarioId = scenarioId
         this.currentScenario = null
         if (scenarios) {
-            this.currentScenario = scenarios[this.scenarioIndex]
+            this.currentScenario = scenarios.find(scenario => this.scenarioId === scenario.id)
         }
-        this.setScenarioIndex = setScenarioIndex
+        this.setScenarioId = setScenarioId
 
         this.addScenario = addScenario
         this.deleteScenario = deleteScenario
@@ -88,16 +88,17 @@ export const ScenariosProvider = (props) => {
     const [scenariosCollection, setScenariosCollection] = useState(null)
     const [scenarios, setScenarios] = useState(null)
 
-    const [scenarioIndex, setScenarioIndex] = useState(null)
+    const [scenarioId, setScenarioId] = useState(null)
 
     useEffect(() => {
+        // TODO might loop indefinitily if scenarios is undefined
         if (!scenarios || scenarios.length === 0) {
-            setScenarioIndex(null)
+            setScenarioId(null)
 
-        } else if (scenarioIndex === null) {
-            setScenarioIndex(0)
+        } else if (scenarioId === null) {
+            setScenarioId(scenarios[0].id)
         }
-    }, [scenarios, scenarioIndex])
+    }, [scenarios, scenarioId])
 
     useEffect(() => {
         if (userDoc) {
@@ -143,7 +144,7 @@ export const ScenariosProvider = (props) => {
         updatedScenarios.splice(index, 1)
         setScenarios(updatedScenarios)
 
-        deleteDoc(doc(scenariosCollection, scenario.id)).then(() => setScenarioIndex(null))
+        deleteDoc(doc(scenariosCollection, scenario.id)).then(() => setScenarioId(null))
     }
 
     const updateScenario = (scenario, index) => {
@@ -156,7 +157,7 @@ export const ScenariosProvider = (props) => {
     }
 
     return (
-        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario))}>
+        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario))}>
             {props.children}
         </ScenariosContext.Provider>
     )

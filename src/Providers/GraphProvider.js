@@ -12,7 +12,7 @@ export function compareGraphValues(a, b) {
 }
 
 class Graph {
-    constructor(mainExpenses, setMainExpenses, mainValues, setMainValues, mainTargets, setMainTargets, pinnedScenarios, pinScenario, flushPinned) {
+    constructor(mainExpenses, setMainExpenses, mainValues, setMainValues, mainTargets, setMainTargets, pinnedScenarios, pinScenario, unpinScenario) {
         this.mainExpenses = mainExpenses
         this.setMainExpenses = setMainExpenses
 
@@ -24,11 +24,11 @@ class Graph {
 
         this.pinnedScenarios = pinnedScenarios
         this.pinScenario = pinScenario
-        this.flushPinned = flushPinned
+        this.unpinScenario = unpinScenario
     }
 }
 
-const GraphContext = createContext(new Graph(undefined, () => { }, undefined, () => { }, undefined, () => { }, undefined, () => { }))
+const GraphContext = createContext(new Graph(undefined, () => { }, undefined, () => { }, undefined, () => { }, undefined, () => { }, () => { }))
 
 export const GraphProvider = (props) => {
     const [pinnedScenarios, setPinnedScenarios] = useState([])
@@ -37,20 +37,13 @@ export const GraphProvider = (props) => {
     const [mainValues, setMainValues] = useState([])
     const [mainTargets, setMainTargets] = useState([])
 
-    const flushPinned = () => {
-        console.log("flush pinned")
-        setPinnedScenarios([])
-    }
-
     const pinScenario = useRef(undefined)
     pinScenario.current = (scenario, data) => {
         setPinnedScenarios(pinnedScenarios => {
             const index = pinnedScenarios.findIndex((pinnedScenario) => pinnedScenario.scenario.id === scenario.id)
             if (index === -1) {
-                console.log("GraphProvider tooglePinnedScenario", true)
                 pinnedScenarios.push({ scenario, data })
             } else {
-                console.log("GraphProvider tooglePinnedScenario", false)
                 pinnedScenarios[index] = { scenario, data }
             }
 
@@ -58,9 +51,20 @@ export const GraphProvider = (props) => {
         })
     }
 
+    const unpinScenario = useRef(undefined)
+    unpinScenario.current = (scenario) => {
+        setPinnedScenarios(pinnedScenarios => {
+            const index = pinnedScenarios.findIndex((pinnedScenario) => pinnedScenario.scenario.id === scenario.id)
+            if (index !== -1) {
+                pinnedScenarios.splice(index, 1)
+            }
+            return [...pinnedScenarios]
+        })
+    }
+
     return (
         <GraphContext.Provider
-            value={(new Graph(mainExpenses, setMainExpenses, mainValues, setMainValues, mainTargets, setMainTargets, pinnedScenarios, pinScenario, flushPinned))}
+            value={(new Graph(mainExpenses, setMainExpenses, mainValues, setMainValues, mainTargets, setMainTargets, pinnedScenarios, pinScenario, unpinScenario))}
         >
             {props.children}
         </GraphContext.Provider>
