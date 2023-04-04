@@ -1,7 +1,6 @@
 import React from 'react'
 import { useScenarios } from '../Providers/ScenariosProvider'
 import { Autocomplete, TextField } from '@mui/material'
-import { useGraph } from '../Providers/GraphProvider'
 
 
 const scenarioPickerStyle = {
@@ -19,9 +18,7 @@ const scenarioPickerStyle = {
 }
 
 const ScenarioSelector = () => {
-    const { scenarios, setScenarioIndex, currentScenario, scenarioIndex } = useScenarios()
-
-    const { flushPinned } = useGraph()
+    const { scenarios, setScenarioId, currentScenario } = useScenarios()
 
     return (
         <Autocomplete
@@ -34,15 +31,14 @@ const ScenarioSelector = () => {
             renderOption={(props, option) => {
                 return (
                     <li {...props} key={option.id}>
-                        {option.name}
+                        {option.name} {option.id}
                     </li>
                 )
             }}
             renderInput={(params) => <TextField {...params} sx={scenarioPickerStyle} />}
             onChange={(event, value) => {
-                if (scenarioIndex !== value.index) {
-                    flushPinned()
-                    setScenarioIndex(value.index)
+                if (!currentScenario || currentScenario.id !== value.id) {
+                    setScenarioId(value.id)
                 }
             }}
             isOptionEqualToValue={(option, value) => {

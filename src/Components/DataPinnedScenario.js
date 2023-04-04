@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 
 const DataPinnedScenario = () => {
     const { scenario } = useScenario()
-    const { pinScenario } = useGraph()
+    const { pinScenario, unpinScenario } = useGraph()
 
     const graphExpenses = useExpenses().graphValues
     const graphValues = useValues().graphValues
@@ -17,7 +17,12 @@ const DataPinnedScenario = () => {
         if (!graphExpenses || !graphExpenses) return
         pinScenario.current(scenario, [...graphValues, ...graphExpenses])
 
-    }, [scenario, graphExpenses, graphValues, pinScenario])
+        const unpin = unpinScenario.current
+        return () => {
+            unpin(scenario)
+        }
+
+    }, [scenario, graphExpenses, graphValues, pinScenario, unpinScenario])
 }
 
 export default DataPinnedScenario
