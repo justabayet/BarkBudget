@@ -6,14 +6,12 @@ import { getFormattedDate } from "../helpers"
 import dayjs from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers"
 import { textFieldStyle } from "./Transaction"
-import { useScenario } from "../Providers/ScenarioProvider"
 import { useScenarios } from "../Providers/ScenariosProvider"
 
 const ScenarioHeader = () => {
+    const { scenarios, addScenario, deleteScenario, updateScenario, currentScenario } = useScenarios()
 
-    const { scenario } = useScenario()
-
-    const { scenarios, addScenario, deleteScenario, updateScenario } = useScenarios()
+    const scenario = currentScenario
 
     const [startDate, setStartDate] = useState(getFormattedDate(scenario.startDate))
     const [endDate, setEndDate] = useState(getFormattedDate(scenario.endDate))

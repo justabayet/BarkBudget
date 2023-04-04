@@ -45,7 +45,7 @@ export const ValuesProvider = (props) => {
     const { scenarioDoc, scenario } = useScenario()
     const { startDate, endDate } = scenario
 
-    const [values, setValues] = useState([])
+    const [values, setValues] = useState(null)
     const [graphValues, setGraphValues] = useState([])
     const [valuesCollection, setValuesCollection] = useState(null)
 
@@ -110,6 +110,9 @@ export const ValuesProvider = (props) => {
 
 
     useEffect(() => {
+        if (values === null) return
+
+        console.log("ValuesProvider compute graph values:", startDate.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), values?.length)
         const updatedGraphValues = []
 
         values?.forEach(value => {

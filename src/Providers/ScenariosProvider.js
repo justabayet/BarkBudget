@@ -1,18 +1,19 @@
 
 import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
-import { createContext, useContext, useEffect, useState } from "react"
-import InitPinnedScenario from "../Components/InitPinnedScenario"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
-import { ScenarioProvider } from "./ScenarioProvider"
 import { useAuthentication } from "./AuthenticationProvider"
 
 class Scenarios {
-    constructor(scenarios, scenariosCollection, currentScenario, scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario) {
+    constructor(scenarios, scenariosCollection, scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario) {
         this.scenarios = scenarios
         this.scenariosCollection = scenariosCollection
 
-        this.currentScenario = currentScenario
         this.scenarioIndex = scenarioIndex
+        this.currentScenario = null
+        if (scenarios) {
+            this.currentScenario = scenarios[this.scenarioIndex]
+        }
         this.setScenarioIndex = setScenarioIndex
 
         this.addScenario = addScenario
@@ -80,22 +81,23 @@ const converter = {
     }
 }
 
+
 export const ScenariosProvider = (props) => {
     const { userDoc } = useAuthentication()
 
     const [scenariosCollection, setScenariosCollection] = useState(null)
-    const [scenarios, setScenarios] = useState([])
+    const [scenarios, setScenarios] = useState(null)
 
     const [scenarioIndex, setScenarioIndex] = useState(null)
 
     useEffect(() => {
-        if (scenarios.length === 0) {
+        if (!scenarios || scenarios.length === 0) {
             setScenarioIndex(null)
 
         } else if (scenarioIndex === null) {
             setScenarioIndex(0)
         }
-    }, [scenarios.length, scenarioIndex])
+    }, [scenarios, scenarioIndex])
 
     useEffect(() => {
         if (userDoc) {
@@ -120,7 +122,7 @@ export const ScenariosProvider = (props) => {
                 })
                 .catch(reason => console.log(reason))
         } else {
-            setScenarios([])
+            setScenarios(null)
         }
     }, [scenariosCollection])
 
@@ -154,15 +156,8 @@ export const ScenariosProvider = (props) => {
     }
 
     return (
-        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarios[scenarioIndex], scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario))}>
+        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarioIndex, setScenarioIndex, addScenario, deleteScenario, updateScenario))}>
             {props.children}
-            {scenarios.filter(scenario => scenario.isPinned).map(scenario => {
-                return (
-                    <ScenarioProvider scenario={scenario}>
-                        <InitPinnedScenario />
-                    </ScenarioProvider>
-                )
-            })}
         </ScenariosContext.Provider>
     )
 }

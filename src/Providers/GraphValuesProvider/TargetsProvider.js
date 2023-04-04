@@ -45,8 +45,8 @@ export const TargetsProvider = (props) => {
     const { scenarioDoc, scenario } = useScenario()
     const { startDate, endDate } = scenario
 
-    const [targets, setTargets] = useState([])
-    const [graphTargets, setGraphTargets] = useState([])
+    const [targets, setTargets] = useState(null)
+    const [graphTargets, setGraphTargets] = useState(null)
     const [targetsCollection, setTargetsCollection] = useState(null)
 
     const [newTarget, setNewTarget] = useState(new Target({ date: currentDate, amount: 0 }))
@@ -108,6 +108,9 @@ export const TargetsProvider = (props) => {
 
 
     useEffect(() => {
+        if (targets === null) return
+
+        console.log("TargetsProvider compute graph targets:", startDate.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), targets?.length)
         const updatedGraphTargets = []
 
         targets?.forEach(target => {
