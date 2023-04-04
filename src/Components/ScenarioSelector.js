@@ -31,6 +31,13 @@ const ScenarioSelector = () => {
             })}
             value={currentScenario}
             getOptionLabel={option => option.name}
+            renderOption={(props, option) => {
+                return (
+                    <li {...props} key={option.id}>
+                        {option.name}
+                    </li>
+                )
+            }}
             renderInput={(params) => <TextField {...params} sx={scenarioPickerStyle} />}
             onChange={(event, value) => {
                 if (scenarioIndex !== value.index) {
