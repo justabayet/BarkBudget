@@ -23,8 +23,7 @@ const Body = () => {
         <Stack spacing={3}>
 
             {currentScenario && <ScenarioHeader />}
-
-            <ScenarioSelector />
+            {currentScenario && <ScenarioSelector />}
 
             <Graph />
 
