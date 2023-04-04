@@ -1,6 +1,6 @@
 
 import { doc } from "firebase/firestore"
-import { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import { ExpensesProvider } from "./GraphValuesProvider/ExpensesProvider"
 import { LimitsProvider } from "./GraphValuesProvider/LimitsProvider"
 import { useScenarios } from "./ScenariosProvider"
@@ -8,16 +8,15 @@ import { TargetsProvider } from "./GraphValuesProvider/TargetsProvider"
 import { ValuesProvider } from "./GraphValuesProvider/ValuesProvider"
 
 class Scenario {
-    constructor(scenarioDoc, scenarioId, scenario) {
+    constructor(scenarioDoc, scenario) {
         this.scenarioDoc = scenarioDoc
-        this.scenarioId = scenarioId
         this.scenario = scenario
     }
 }
 
 const ScenarioContext = createContext(new Scenario(undefined, undefined, undefined))
 
-export const ScenarioProvider = (props) => {
+export const ScenarioProvider = React.memo((props) => {
     const scenario = props.scenario
     const scenarioId = scenario.id
 
@@ -35,7 +34,7 @@ export const ScenarioProvider = (props) => {
     }, [scenariosCollection, scenarioId])
 
     return (
-        <ScenarioContext.Provider value={(new Scenario(scenarioDoc, scenarioId, scenario))}>
+        <ScenarioContext.Provider value={(new Scenario(scenarioDoc, scenario))}>
             <ValuesProvider>
                 <ExpensesProvider>
                     <TargetsProvider>
@@ -47,7 +46,7 @@ export const ScenarioProvider = (props) => {
             </ValuesProvider>
         </ScenarioContext.Provider>
     )
-}
+})
 
 export const useScenario = () => {
     return useContext(ScenarioContext)

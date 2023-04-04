@@ -58,8 +58,8 @@ export const ExpensesProvider = (props) => {
         startAmount = lastValue.y
     }
 
-    const [expenses, setExpenses] = useState([])
-    const [graphExpenses, setGraphExpenses] = useState([])
+    const [expenses, setExpenses] = useState(null)
+    const [graphExpenses, setGraphExpenses] = useState(null)
     const [expensesCollection, setExpensesCollection] = useState(null)
 
     const [newExpense, setNewExpense] = useState(new Expense({ date: currentDate, amount: 0 }))
@@ -135,6 +135,8 @@ export const ExpensesProvider = (props) => {
     }
 
     useEffect(() => {
+        if (expenses === null) return
+        console.log("ExpensesProvider compute graph expenses:", startDate.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), startAmount, expenses?.length)
         const engine = getEngine(startDate, endDate, startAmount)
 
         engine.iterate()

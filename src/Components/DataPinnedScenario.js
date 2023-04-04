@@ -5,7 +5,7 @@ import { useScenario } from "../Providers/ScenarioProvider"
 import { useEffect } from 'react'
 
 
-const InitPinnedScenario = () => {
+const DataPinnedScenario = () => {
     const { scenario } = useScenario()
     const { pinScenario } = useGraph()
 
@@ -14,11 +14,12 @@ const InitPinnedScenario = () => {
 
 
     useEffect(() => {
-        pinScenario(scenario, [...graphValues, ...graphExpenses])
+        if (!graphExpenses || !graphExpenses) return
+        pinScenario.current(scenario, [...graphValues, ...graphExpenses])
 
-    }, [scenario, graphExpenses, graphValues])
-
-    return undefined
+    }, [scenario, graphExpenses, graphValues, pinScenario])
 }
 
-export default InitPinnedScenario
+export default DataPinnedScenario
+
+
