@@ -1,9 +1,8 @@
 import { Box, Typography, Collapse, IconButton, List } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add'
-import Transaction from "./Transaction"
 import { TransitionGroup } from "react-transition-group"
 
-function TransactionList({ useValues }) {
+function TransactionList({ useValues, ChildComponent }) {
     const { values, addValue, deleteValue, updateValue } = useValues()
 
     return (
@@ -19,11 +18,10 @@ function TransactionList({ useValues }) {
             <TransitionGroup>
                 {values?.map((value, index) => (
                     <Collapse key={index}>
-                        <Transaction
+                        <ChildComponent
                             value={value}
                             handleDelete={() => { deleteValue(value, index) }}
-                            handleSave={(updatedValue) => { updateValue(updatedValue, index) }}
-                        ></Transaction>
+                            handleSave={(updatedValue) => { updateValue(updatedValue, index) }} />
                     </Collapse>
                 ))}
             </TransitionGroup>

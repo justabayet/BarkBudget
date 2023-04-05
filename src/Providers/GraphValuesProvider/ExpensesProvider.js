@@ -7,6 +7,7 @@ import { OneTime } from "../../Modes/OneTime"
 import { compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { useValues } from "./ValuesProvider"
+import { modeNames } from "../../Modes/const"
 
 const currentDate = new Date()
 
@@ -21,10 +22,28 @@ class Expenses {
 }
 
 class Expense {
-    constructor({ date, amount, id }) {
-        this.date = date
+    constructor({ startDate, endDate, amount, id, mode }) {
+        this.startDate = startDate
+        this.endDate = endDate
         this.amount = amount
+        this.mode = mode
         this.id = id
+
+        if (this.startDate === undefined || isNaN(this.startDate)) {
+            this.startDate = new Date()
+        }
+
+        if (this.endDate === undefined || isNaN(this.endDate)) {
+            this.endDate = new Date()
+        }
+
+        if (isNaN(this.amount)) {
+            this.amount = 0
+        }
+
+        if (!Object.keys(modeNames).includes(this.mode)) {
+            this.mode = modeNames.ONE_TIME
+        }
     }
 }
 
@@ -32,29 +51,35 @@ const ExpensesContext = createContext(new Expenses([], () => { }, () => { }, () 
 
 const converter = {
     toFirestore(expense) {
-        console.log(expense)
-        return { date: getFormattedDate(expense.date), amount: expense.amount };
+        return {
+            startDate: getFormattedDate(expense.startDate),
+            endDate: getFormattedDate(expense.endDate),
+            amount: expense.amount,
+            mode: expense.mode
+        };
     },
     fromFirestore(snapshot, options) {
         const expenseDb = snapshot.data()
-        const date = new Date(expenseDb.date)
+        const startDate = new Date(expenseDb.startDate)
+        const endDate = new Date(expenseDb.endDate)
         const amount = parseInt(expenseDb.amount)
+        const mode = expenseDb.mode
         const id = snapshot.id
-        return new Expense({ date, amount, id })
+        return new Expense({ startDate, endDate, amount, id, mode })
     }
 }
 
 export const ExpensesProvider = (props) => {
     const { scenario, scenarioDoc } = useScenario()
 
-    let startDate = scenario.startDate
+    let startDateScenario = scenario.startDate
     let endDate = scenario.endDate
     let startAmount = scenario.startAmount
 
     const { graphValues } = useValues()
     if (graphValues.length > 0) {
         const lastValue = graphValues[graphValues.length - 1]
-        startDate = lastValue.x
+        startDateScenario = lastValue.x
         startAmount = lastValue.y
     }
 
@@ -62,7 +87,7 @@ export const ExpensesProvider = (props) => {
     const [graphExpenses, setGraphExpenses] = useState(null)
     const [expensesCollection, setExpensesCollection] = useState(null)
 
-    const [newExpense, setNewExpense] = useState(new Expense({ date: currentDate, amount: 0 }))
+    const [newExpense, setNewExpense] = useState(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME }))
 
     useEffect(() => {
         if (scenarioDoc) {
@@ -85,6 +110,7 @@ export const ExpensesProvider = (props) => {
                     })
 
                     setExpenses(expensesQueried)
+
                 })
                 .catch(reason => console.log(reason))
         } else {
@@ -99,7 +125,7 @@ export const ExpensesProvider = (props) => {
             newExpense.id = document.id
         })
         setExpenses([newExpense, ...expenses])
-        setNewExpense(new Expense({ date: currentDate, amount: 0 }))
+        setNewExpense(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME }))
     }
 
     const deleteExpense = (expense, index) => {
@@ -120,36 +146,39 @@ export const ExpensesProvider = (props) => {
         setDoc(doc(expensesCollection, expense.id), expense)
     }
 
-    const getEngine = (startDate, endDate, startAmount) => {
-        const engine = new ForecastEngine(startDate, endDate, startAmount)
-
-        // Add expected expenses
-        engine.addEntry(new OneTime({ date: new Date(startDate), amount: 15 }))
-        const dMinus1 = new Date(endDate)
-        dMinus1.setMonth(endDate.getMonth() - 1)
-        engine.addEntry(new OneTime({ date: new Date(dMinus1), amount: 15 }))
-        dMinus1.setMonth(endDate.getMonth() - 10)
-        engine.addEntry(new OneTime({ date: new Date(dMinus1), amount: 15 }))
-
-        return engine
-    }
-
     useEffect(() => {
+        const getEngine = (startDateScenario, endDate, startAmount) => {
+            const engine = new ForecastEngine(startDateScenario, endDate, startAmount)
+
+            expenses.forEach(expense => {
+                switch (expense.mode) {
+                    case modeNames.ONE_TIME:
+                        engine.addEntry(new OneTime({ date: new Date(expense.startDate), amount: expense.amount }))
+                        break;
+
+                    default:
+                        break;
+                }
+            })
+
+            return engine
+        }
+
         if (expenses === null) return
-        console.log("ExpensesProvider compute graph expenses:", startDate.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), startAmount, expenses?.length)
-        const engine = getEngine(startDate, endDate, startAmount)
+        console.log("ExpensesProvider compute graph expenses:", startDateScenario.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), startAmount, expenses?.length)
+        const engine = getEngine(startDateScenario, endDate, startAmount)
 
         engine.iterate()
-        const updatedGraphExpenses = engine.values?.map(expense => {
+        const updatedGraphExpenses = engine.values?.map(computedValue => {
             return {
-                x: new Date(expense.date),
-                y: expense.value,
+                x: new Date(computedValue.date),
+                y: computedValue.value,
             }
         })
 
         updatedGraphExpenses?.sort(compareGraphValues)
         setGraphExpenses(updatedGraphExpenses)
-    }, [expenses, startDate, endDate, startAmount])
+    }, [expenses, startDateScenario, endDate, startAmount])
 
 
     return (
