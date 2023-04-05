@@ -17,16 +17,26 @@ export const textFieldStyle = {
     },
 }
 
-const TransactionDatePickker = ({ date, setDate }) => {
-    const [internalData, setInternalDate] = useState(date)
+const TransactionDatePickker = ({ initialDate, saveDate }) => {
+    const [internalData, setInternalDate] = useState(initialDate)
+
+    const save = (newValue) => {
+        const newDate = new Date(newValue)
+        if (isNaN(newDate)) {
+            console.log("Invalid startDate", newValue)
+            return
+        }
+        saveDate(newDate)
+    }
 
     return (
         <DatePicker
             sx={textFieldStyle}
             onAccept={(newValue) => {
                 const formattedDate = newValue.format('YYYY-MM-DD')
-                setDate(formattedDate)
                 setInternalDate(formattedDate)
+
+                save(formattedDate)
             }}
             value={dayjs(internalData)}
             slotProps={{
@@ -36,7 +46,7 @@ const TransactionDatePickker = ({ date, setDate }) => {
                         setInternalDate(newValue.format('YYYY-MM-DD'))
                     },
                     onBlur: () => {
-                        setDate(internalData)
+                        save(internalData)
                     }
                 }
             }}
