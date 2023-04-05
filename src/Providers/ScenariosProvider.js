@@ -23,8 +23,7 @@ class Scenarios {
 }
 
 class Scenario {
-    constructor({ copyId, startDate, endDate, startAmount = 0, id, name, isPinned = false }) {
-        this.copyId = copyId
+    constructor({ startDate, endDate, startAmount = 0, id, name, isPinned = false }) {
         this.startDate = startDate
         this.endDate = endDate
         this.startAmount = startAmount
@@ -45,11 +44,6 @@ class Scenario {
         if (isNaN(this.startAmount)) {
             this.startAmount = 0
         }
-
-        if (this.copyId === undefined) {
-            // TODO check copyId is valid
-            this.copyId = null
-        }
     }
 }
 
@@ -62,14 +56,12 @@ const converter = {
             startDate: getFormattedDate(scenario.startDate),
             endDate: getFormattedDate(scenario.endDate),
             startAmount: scenario.startAmount,
-            copyId: scenario.copyId,
             name: scenario.name,
             isPinned: scenario.isPinned
         };
     },
     fromFirestore(snapshot, options) {
         const scenarioDb = snapshot.data()
-        const copyId = scenarioDb.copyId
         const startDate = new Date(scenarioDb.startDate)
         const endDate = new Date(scenarioDb.endDate)
         const startAmount = parseInt(scenarioDb.startAmount)
@@ -77,7 +69,7 @@ const converter = {
         const id = snapshot.id
         const isPinned = scenarioDb.isPinned
 
-        return new Scenario({ copyId, startDate, endDate, startAmount, id, name, isPinned })
+        return new Scenario({ startDate, endDate, startAmount, id, name, isPinned })
     }
 }
 
