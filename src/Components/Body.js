@@ -20,7 +20,7 @@ const Body = () => {
     }
 
     return (
-        <Stack spacing={3}>
+        <Stack spacing={2}>
 
             {currentScenario && <ScenarioHeader />}
             {currentScenario && <ScenarioSelector />}

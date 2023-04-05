@@ -6,13 +6,14 @@ import { Autocomplete, TextField } from '@mui/material'
 const scenarioPickerStyle = {
     "& .MuiOutlinedInput-root": {
         "& > fieldset": {
-            borderColor: 'rgba(0, 0, 0, 0)',
+            borderColor: 'rgba(0, 0, 0, 0.3)',
         },
         '&:hover fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0)',
+            borderColor: 'rgba(0, 0, 0, 0.3)',
         },
         '&.Mui-focused fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0)',
+            borderColor: 'rgba(0, 0, 0, 0.3)',
+            borderWidth: 1
         },
     },
 }
