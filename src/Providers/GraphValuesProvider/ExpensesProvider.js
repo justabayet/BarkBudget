@@ -152,7 +152,6 @@ export const ExpensesProvider = (props) => {
             const engine = new ForecastEngine(startDateScenario, endDate, startAmount)
 
             expenses.forEach(expense => {
-                console.log(expense.mode)
                 switch (expense.mode) {
                     case modeNames.ONE_TIME:
                         engine.addEntry(new OneTime({ date: new Date(expense.startDate), amount: expense.amount }))
