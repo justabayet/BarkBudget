@@ -1,9 +1,12 @@
 import React from "react"
-import { Box, IconButton } from "@mui/material"
+import { Box, FormControl, IconButton, MenuItem, Select } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
 import CustomDatePickker from "./CustomDatePickker"
 import AmountField from "./AmountField"
 import { compareDate } from "../helpers"
+import { modeNames } from "../Modes/const"
+import { textFieldStyle } from "../style"
+import ModeSelector from "./ModeSelector"
 
 const Expense = ({ value, handleDelete, handleSave }) => {
 
@@ -17,13 +20,15 @@ const Expense = ({ value, handleDelete, handleSave }) => {
                     }
                 }} />
 
-            <CustomDatePickker
-                date={value.endDate}
-                setDate={(newDate) => {
-                    if (!compareDate(newDate, value.endDate)) {
-                        handleSave({ ...value, endDate: newDate })
-                    }
-                }} />
+            {[modeNames.DAILY].includes(value.mode) &&
+                <CustomDatePickker
+                    date={value.endDate}
+                    setDate={(newDate) => {
+                        if (!compareDate(newDate, value.endDate)) {
+                            handleSave({ ...value, endDate: newDate })
+                        }
+                    }} />
+            }
 
 
             <AmountField
@@ -31,6 +36,14 @@ const Expense = ({ value, handleDelete, handleSave }) => {
                 setAmount={(newAmount) => {
                     if (newAmount !== value.amount) {
                         handleSave({ ...value, amount: newAmount })
+                    }
+                }} />
+
+            <ModeSelector
+                mode={value.mode}
+                setMode={(newMode) => {
+                    if (newMode !== value.mode) {
+                        handleSave({ ...value, mode: newMode })
                     }
                 }} />
 

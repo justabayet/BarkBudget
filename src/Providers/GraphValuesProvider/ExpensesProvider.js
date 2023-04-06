@@ -8,6 +8,7 @@ import { compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { useValues } from "./ValuesProvider"
 import { modeNames } from "../../Modes/const"
+import { Daily } from "../../Modes/Daily"
 
 const currentDate = new Date()
 
@@ -41,7 +42,7 @@ class Expense {
             this.amount = 0
         }
 
-        if (!Object.keys(modeNames).includes(this.mode)) {
+        if (!Object.values(modeNames).includes(this.mode)) {
             this.mode = modeNames.ONE_TIME
         }
     }
@@ -151,9 +152,14 @@ export const ExpensesProvider = (props) => {
             const engine = new ForecastEngine(startDateScenario, endDate, startAmount)
 
             expenses.forEach(expense => {
+                console.log(expense.mode)
                 switch (expense.mode) {
                     case modeNames.ONE_TIME:
                         engine.addEntry(new OneTime({ date: new Date(expense.startDate), amount: expense.amount }))
+                        break;
+
+                    case modeNames.DAILY:
+                        engine.addEntry(new Daily({ start: new Date(expense.startDate), end: new Date(expense.endDate), amount: expense.amount }))
                         break;
 
                     default:

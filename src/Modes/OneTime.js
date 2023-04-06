@@ -1,3 +1,4 @@
+import { compareDate } from "../helpers"
 import { Mode } from "./Mode"
 
 export class OneTime extends Mode {
@@ -12,6 +13,6 @@ export class OneTime extends Mode {
     }
 
     isValid(date) {
-        return Mode.compareDate(date, this.date)
+        return compareDate(date, this.date)
     }
 }
