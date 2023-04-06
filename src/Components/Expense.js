@@ -1,11 +1,10 @@
 import React from "react"
-import { Box, FormControl, IconButton, MenuItem, Select } from "@mui/material"
+import { Box, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
 import CustomDatePickker from "./CustomDatePickker"
 import AmountField from "./AmountField"
 import { compareDate } from "../helpers"
 import { modeNames } from "../Modes/const"
-import { textFieldStyle } from "../style"
 import ModeSelector from "./ModeSelector"
 
 const Expense = ({ value, handleDelete, handleSave }) => {
