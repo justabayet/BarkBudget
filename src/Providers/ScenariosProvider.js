@@ -51,7 +51,6 @@ const ScenariosContext = createContext(new Scenarios([], undefined, undefined, u
 
 const converter = {
     toFirestore(scenario) {
-        console.log(scenario)
         return {
             startDate: getFormattedDate(scenario.startDate),
             endDate: getFormattedDate(scenario.endDate),

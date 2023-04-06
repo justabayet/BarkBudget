@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Box, IconButton, Stack, TextField, Typography } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
-import { getFormattedDate } from "../helpers"
-import dayjs from 'dayjs';
-import { DatePicker } from "@mui/x-date-pickers"
-import { textFieldStyle } from "./Transaction"
 import { useScenarios } from "../Providers/ScenariosProvider"
+import CustomDatePickker from "./CustomDatePickker"
+import AmountField from "./AmountField"
+import { compareDate } from "../helpers"
+import { textFieldStyle } from "../style"
 
 const ScenarioHeader = () => {
     const { scenarios, addScenario, deleteScenario, updateScenario, currentScenario } = useScenarios()
 
     const scenario = currentScenario
-
-    const [startDate, setStartDate] = useState(getFormattedDate(scenario.startDate))
-    const [endDate, setEndDate] = useState(getFormattedDate(scenario.endDate))
-    const [startAmount, setStartAmount] = useState(scenario.startAmount)
-    const [name, setName] = useState(scenario.name)
 
     const index = scenarios.findIndex(scenarioObj => scenarioObj.id === scenario.id)
 
@@ -24,33 +19,7 @@ const ScenarioHeader = () => {
         console.log("Current scenario not found in scenarios")
     }
 
-    useEffect(() => {
-        setStartDate(getFormattedDate(scenario.startDate))
-        setEndDate(getFormattedDate(scenario.endDate))
-        setStartAmount(scenario.startAmount)
-        setName(scenario.name)
-    }, [scenario])
-
-    const save = () => {
-        const newStartDate = new Date(startDate)
-        if (isNaN(newStartDate)) {
-            console.log("Invalid date", startDate)
-            return
-        }
-
-        const newEndDate = new Date(endDate)
-        if (isNaN(newEndDate)) {
-            console.log("Invalid date", endDate)
-            return
-        }
-
-        const { ...updatedValue } = scenario
-        updatedValue.startDate = newStartDate
-        updatedValue.endDate = newEndDate
-        updatedValue.startAmount = startAmount
-        updatedValue.name = name
-        updateScenario(updatedValue, index)
-    }
+    const [internalName, setInternalName] = useState(scenario.name)
 
     return (
         <>
@@ -66,63 +35,23 @@ const ScenarioHeader = () => {
                 <Stack spacing={2}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
 
-                        <DatePicker
-                            sx={textFieldStyle}
+                        <CustomDatePickker
                             label="Starting Date"
-                            onAccept={(newStartDateValue) => {
-                                setStartDate(newStartDateValue.format('YYYY-MM-DD'))
-
-                                const newStartDate = new Date(newStartDateValue)
-                                if (isNaN(newStartDate)) {
-                                    console.log("Invalid date", newStartDateValue)
-                                    return
+                            date={scenario.startDate}
+                            setDate={(newDate) => {
+                                if (!compareDate(newDate, scenario.startDate)) {
+                                    updateScenario({ ...scenario, startDate: newDate }, index)
                                 }
-                                const { ...updatedValue } = scenario
-                                updatedValue.startDate = newStartDate
-                                updatedValue.endDate = new Date(endDate)
-                                updatedValue.startAmount = startAmount
-                                updateScenario(updatedValue, index)
-                            }}
-                            value={dayjs(startDate)}
-                            slotProps={{
-                                textField: {
-                                    size: "small",
-                                    onChange: (newStartDateValue) => {
-                                        setStartDate(newStartDateValue.format('YYYY-MM-DD'))
-                                    },
-                                    onBlur: save
-                                }
-                            }}
-                            format="DD-MM-YYYY" />
+                            }} />
 
-                        <DatePicker
-                            sx={textFieldStyle}
+                        <CustomDatePickker
                             label="Ending Date"
-                            onAccept={(newEndDateValue) => {
-                                setEndDate(newEndDateValue.format('YYYY-MM-DD'))
-
-                                const newEndDate = new Date(newEndDateValue)
-                                if (isNaN(newEndDate)) {
-                                    console.log("Invalid date", newEndDateValue)
-                                    return
+                            date={scenario.endDate}
+                            setDate={(newDate) => {
+                                if (!compareDate(newDate, scenario.endDate)) {
+                                    updateScenario({ ...scenario, endDate: newDate }, index)
                                 }
-                                const { ...updatedValue } = scenario
-                                updatedValue.startDate = new Date(startDate)
-                                updatedValue.endDate = newEndDate
-                                updatedValue.startAmount = startAmount
-                                updateScenario(updatedValue, index)
-                            }}
-                            value={dayjs(endDate)}
-                            slotProps={{
-                                textField: {
-                                    size: "small",
-                                    onChange: (newEndDateValue) => {
-                                        setEndDate(newEndDateValue.format('YYYY-MM-DD'))
-                                    },
-                                    onBlur: save
-                                }
-                            }}
-                            format="DD-MM-YYYY" />
+                            }} />
 
                         <IconButton onClick={() => deleteScenario(scenario, index)} style={{ "marginLeft": "auto" }}>
                             <DeleteIcon />
@@ -130,31 +59,30 @@ const ScenarioHeader = () => {
                     </Box>
 
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <TextField
-                            variant="outlined"
-                            sx={textFieldStyle}
-                            label="Starting Amount"
-                            size="small"
-                            value={startAmount}
-                            onChange={(event) => {
-                                const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/;
-                                if (event.target.value === "" || regex.test(event.target.value)) {
-                                    setStartAmount(event.target.value)
+
+
+                        <AmountField
+                            amount={scenario.startAmount}
+                            setAmount={(newAmount) => {
+                                if (newAmount !== scenario.startAmount) {
+                                    updateScenario({ ...scenario, startAmount: newAmount }, index)
                                 }
-                            }}
-                            onBlur={save}
-                        />
+                            }} />
 
                         <TextField
                             variant="outlined"
                             sx={textFieldStyle}
                             label="Name"
                             size="small"
-                            value={name}
+                            value={internalName}
                             onChange={(event) => {
-                                setName(event.target.value)
+                                setInternalName(event.target.value)
                             }}
-                            onBlur={save}
+                            onBlur={() => {
+                                if (internalName !== scenario.name) {
+                                    updateScenario({ ...scenario, name: internalName }, index)
+                                }
+                            }}
                         />
                     </Box>
                 </Stack >

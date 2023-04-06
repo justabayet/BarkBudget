@@ -1,24 +1,11 @@
 import React, { useState } from "react"
 import dayjs from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers"
+import { textFieldStyle } from "../style";
+import { getFormattedDate } from "../helpers";
 
-export const textFieldStyle = {
-    "& .MuiOutlinedInput-root": {
-        "& > fieldset": {
-            borderColor: 'rgba(0, 0, 0, 0)',
-        },
-        '&:hover fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0.30)',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0.67)',
-            borderWidth: 1
-        },
-    },
-}
-
-const TransactionDatePickker = ({ initialDate, saveDate }) => {
-    const [internalData, setInternalDate] = useState(initialDate)
+const CustomDatePickker = ({ date, setDate, label }) => {
+    const [internalData, setInternalDate] = useState(getFormattedDate(date))
 
     const save = (newValue) => {
         const newDate = new Date(newValue)
@@ -26,12 +13,13 @@ const TransactionDatePickker = ({ initialDate, saveDate }) => {
             console.log("Invalid startDate", newValue)
             return
         }
-        saveDate(newDate)
+        setDate(newDate)
     }
 
     return (
         <DatePicker
             sx={textFieldStyle}
+            label={label}
             onAccept={(newValue) => {
                 const formattedDate = newValue.format('YYYY-MM-DD')
                 setInternalDate(formattedDate)
@@ -54,5 +42,5 @@ const TransactionDatePickker = ({ initialDate, saveDate }) => {
     )
 }
 
-export default TransactionDatePickker
+export default CustomDatePickker
 

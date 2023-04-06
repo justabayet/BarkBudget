@@ -1,87 +1,34 @@
-import React, { useEffect, useState } from "react"
-import { Box, IconButton, TextField } from "@mui/material"
+import React from "react"
+import { Box, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
-import { getFormattedDate } from "../helpers"
-import dayjs from 'dayjs';
-import { DatePicker } from "@mui/x-date-pickers"
+import AmountField from "./AmountField";
+import CustomDatePickker from "./CustomDatePickker";
+import { compareDate } from "../helpers";
 
-export const textFieldStyle = {
-    "& .MuiOutlinedInput-root": {
-        "& > fieldset": {
-            borderColor: 'rgba(0, 0, 0, 0)',
-        },
-        '&:hover fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0.30)',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0.67)',
-            borderWidth: 1
-        },
-    },
-}
+
 
 const Transaction = ({ value, handleDelete, handleSave }) => {
-    const [date, setDate] = useState(getFormattedDate(value.date))
-    const [amount, setAmount] = useState(value.amount)
-
-    useEffect(() => {
-        setDate(getFormattedDate(value.date))
-        setAmount(value.amount)
-    }, [value])
-
-    const save = () => {
-        const newDate = new Date(date)
-        if (isNaN(newDate)) {
-            console.log("Invalid date", date)
-            return
-        }
-        const { ...updatedValue } = value
-        updatedValue.date = newDate
-        updatedValue.amount = amount
-        handleSave(updatedValue)
-    }
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-            <DatePicker
-                sx={textFieldStyle}
-                onAccept={(newValue) => {
-                    setDate(newValue.format('YYYY-MM-DD'))
 
-                    const newDate = new Date(newValue)
-                    if (isNaN(newDate)) {
-                        console.log("Invalid date", newValue)
-                        return
+            <CustomDatePickker
+                date={value.date}
+                setDate={(newDate) => {
+                    if (!compareDate(newDate, value.date)) {
+                        handleSave({ ...value, date: newDate })
                     }
-                    const { ...updatedValue } = value
-                    updatedValue.date = newDate
-                    updatedValue.amount = amount
-                    handleSave(updatedValue)
-                }}
-                value={dayjs(date)}
-                slotProps={{
-                    textField: {
-                        size: "small",
-                        onChange: (newValue) => {
-                            setDate(newValue.format('YYYY-MM-DD'))
-                        },
-                        onBlur: save
+                }} />
+
+
+            <AmountField
+                amount={value.amount}
+                setAmount={(newAmount) => {
+                    if (newAmount !== value.amount) {
+                        handleSave({ ...value, amount: newAmount })
                     }
-                }}
-                format="DD-MM-YYYY" />
-            <TextField
-                variant="outlined"
-                sx={textFieldStyle}
-                size="small"
-                value={amount}
-                onChange={(event) => {
-                    const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/;
-                    if (event.target.value === "" || regex.test(event.target.value)) {
-                        setAmount(parseInt(event.target.value))
-                    }
-                }}
-                onBlur={save}
-            />
+                }} />
+
             <IconButton onClick={handleDelete} style={{ "marginLeft": "auto" }}>
                 <DeleteIcon />
             </IconButton>
