@@ -1,51 +1,38 @@
 import React from 'react'
 import { useScenarios } from '../Providers/ScenariosProvider'
-import { Autocomplete, TextField } from '@mui/material'
-
-
-const scenarioPickerStyle = {
-    "& .MuiOutlinedInput-root": {
-        "& > fieldset": {
-            borderColor: 'rgba(0, 0, 0, 0.3)',
-        },
-        '&:hover fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0.3)',
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: 'rgba(0, 0, 0, 0.3)',
-            borderWidth: 1
-        },
-    },
-}
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { textFieldStyle } from '../style'
 
 const ScenarioSelector = () => {
     const { scenarios, setScenarioId, currentScenario } = useScenarios()
 
     return (
-        <Autocomplete
-            disableClearable
-            options={scenarios.map((scenario, index) => {
-                return { index, ...scenario }
-            })}
-            value={currentScenario}
-            getOptionLabel={option => option.name}
-            renderOption={(props, option) => {
-                return (
-                    <li {...props} key={option.id}>
-                        {option.name} {option.id}
-                    </li>
-                )
-            }}
-            renderInput={(params) => <TextField {...params} sx={scenarioPickerStyle} />}
-            onChange={(event, value) => {
-                if (!currentScenario || currentScenario.id !== value.id) {
-                    setScenarioId(value.id)
-                }
-            }}
-            isOptionEqualToValue={(option, value) => {
-                return option.id === value.id
-            }}
-        />
+        <FormControl sx={{ m: 1, minWidth: 120, ...textFieldStyle }} size="small">
+            <InputLabel>Selected Scenario</InputLabel>
+            <Select
+                value={currentScenario.id}
+                label={"Selected Scenario"}
+                onChange={(event, child) => {
+                    const scenarioId = child.props.value
+                    if (!currentScenario || currentScenario.id !== scenarioId) {
+                        setScenarioId(scenarioId)
+                    }
+                }}
+            >
+                {Object.values(scenarios).map(scenario => {
+                    const isSelected = scenario.id === currentScenario.id
+                    return (
+                        <MenuItem
+                            value={scenario.id}
+                            key={scenario.id}
+                            sx={isSelected ? { display: 'none' } : {}}
+                        >
+                            {scenario.name} {scenario.id}
+                        </MenuItem>
+                    )
+                })}
+            </Select>
+        </FormControl>
     )
 }
 

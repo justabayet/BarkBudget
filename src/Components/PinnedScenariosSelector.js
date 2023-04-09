@@ -23,6 +23,7 @@ const PinnedScenariosSelector = () => {
                 <TextField
                     {...params}
                     label="Pinned Scenarios"
+                    disabled
                 />
             )}
             renderOption={(props, option) => {
@@ -39,7 +40,7 @@ const PinnedScenariosSelector = () => {
 
                 if (["selectOption", "removeOption"].includes(reason)) {
                     const scenario = details.option
-                    const index = scenarios.find(refScenario => refScenario.id === scenario.id)
+                    const index = scenarios.findIndex(refScenario => refScenario.id === scenario.id)
 
                     if (reason === "selectOption") {
                         scenario.isPinned = true
@@ -53,7 +54,7 @@ const PinnedScenariosSelector = () => {
                 } else if (reason === "clear") {
 
                     pinnedScenarios.forEach(pinnedScenario => {
-                        const index = scenarios.find(refScenario => refScenario.id === pinnedScenario.id)
+                        const index = scenarios.findIndex(refScenario => refScenario.id === pinnedScenario.id)
                         pinnedScenario.isPinned = false
                         updateScenario(pinnedScenario, index)
                     })
