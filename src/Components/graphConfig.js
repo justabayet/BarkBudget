@@ -16,7 +16,7 @@ const config = {
     data: {
         datasets: [
             {
-                label: 'Target',
+                label: 'Value',
                 data: [],
                 backgroundColor: `rgba(${colorTarget}, 0.2)`,
                 borderColor: `rgba(${colorTarget}, 1)`,
@@ -25,7 +25,7 @@ const config = {
                 fill: false,
             },
             {
-                label: 'Value',
+                label: 'Target',
                 data: [],
                 backgroundColor: `rgba(${colorValue}, 0.2)`,
                 borderColor: `rgba(${colorValue}, 1)`,
