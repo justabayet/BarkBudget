@@ -1,6 +1,8 @@
 import React from 'react'
-import { Typography, Button } from '@mui/material'
+import { Typography, IconButton } from '@mui/material'
 import { useAuthentication } from '../Providers/AuthenticationProvider'
+import LoginIcon from '@mui/icons-material/Login'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 const Authentication = () => {
     const { user, handleSignIn, handleSignOut } = useAuthentication()
@@ -8,18 +10,18 @@ const Authentication = () => {
     return (
         <>
             {user ? (
-                <div>
-                    <Typography variant="subtitle1" style={{ marginRight: 20 }}>
-                        Signed in as {user.displayName}
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                    <Typography variant="subtitle1" style={{ marginRight: 5 }}>
+                        {user.displayName}
                     </Typography>
-                    <Button variant="contained" color="secondary" onClick={handleSignOut}>
-                        Sign Out
-                    </Button>
+                    <IconButton color="error" onClick={handleSignOut}>
+                        <LogoutIcon />
+                    </IconButton>
                 </div>
             ) : (
-                <Button variant="contained" color="primary" onClick={handleSignIn}>
-                    Sign In with Google
-                </Button>
+                <IconButton color="primary" onClick={handleSignIn}>
+                    <LoginIcon />
+                </IconButton>
             )}
         </>
     )
