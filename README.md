@@ -1,10 +1,10 @@
-# INAB (I Need A Budget)
+# BarkBudget
 
-INAB is a budgeting app built using React.js that allows users to track their expenses, set financial targets, and monitor their financial status. The app features a responsive design, intuitive user interface, and a secure login system for user privacy. 
+BarkBudget is a budgeting app built using React.js that allows users to track their expenses, set financial targets, and monitor their financial status. The app features a responsive design, intuitive user interface, and a secure login system for user privacy. 
 
 ## Features
 
-INAB offers several features that help users manage their finances more effectively:
+BarkBudget offers several features that help users manage their finances more effectively:
 
 - **Expense Tracking and Forecasting**: Users can enter their expenses and the app will display a summary of their spending habits. The app also provides forecasting tools that help users plan for future expenses.
 
@@ -14,11 +14,11 @@ INAB offers several features that help users manage their finances more effectiv
 
 - **Graphical Representation of Financial Status**: The app provides graphs and charts that display a user's financial status in a clear and concise manner.
 
-- **Secure Login System for User Privacy**: INAB uses a secure login system to protect users' sensitive financial information.
+- **Secure Login System for User Privacy**: BarkBudget uses a secure login system to protect users' sensitive financial information.
 
 ## Technology Stack
 
-INAB is built using the following technologies:
+BarkBudget is built using the following technologies:
 
 - **React.js**: A popular JavaScript library for building user interfaces.
 
@@ -32,7 +32,7 @@ INAB is built using the following technologies:
 
 ## Future Enhancements
 
-INAB has the potential for further enhancements, such as:
+BarkBudget has the potential for further enhancements, such as:
 
 - **Reminders and Notifications**: The ability for the app to send reminders and notifications to users about upcoming bills or payments.
 
@@ -54,7 +54,7 @@ INAB has the potential for further enhancements, such as:
 
 To run the app locally, you'll need to have Node.js and npm installed on your computer. 
 
-1. Clone the repository using `git clone https://github.com/justabayet/INAB.git`
+1. Clone the repository using `git clone https://github.com/justabayet/BarkBudget.git`
 2. Install the dependencies using `npm install`
 3. Start the app using `npm start`
 
@@ -62,7 +62,7 @@ The app will run on `http://localhost:3000/`.
 
 ## Deployment
 
-INAB is hosted on Github Pages, a free hosting service provided by Github. The app is automatically deployed to Github Pages whenever changes are pushed to the `main` branch of the Github repository.
+BarkBudget is hosted on Github Pages, a free hosting service provided by Github. The app is automatically deployed to Github Pages whenever changes are pushed to the `main` branch of the Github repository.
 
 The deployment process is handled by a Github Actions workflow that uses the `peaceiris/actions-gh-pages` action to build and deploy the app to Github Pages. The workflow is triggered whenever changes are pushed to the `main` branch of the repository.
 
@@ -70,7 +70,7 @@ To deploy the app to Github Pages:
 
 1. Ensure that your changes are committed and pushed to the `main` branch of the repository.
 2. Wait for the Github Actions workflow to complete. You can check the status of the workflow on the `Actions` tab of the Github repository.
-3. Once the workflow has completed successfully, the app will be deployed to the Github Pages URL, which is `https://justabayet.github.io/INAB/`.
+3. Once the workflow has completed successfully, the app will be deployed to the Github Pages URL, which is `https://justabayet.github.io/BarkBudget/`.
 
 Note that the deployment process requires a `BUILDER_TOKEN` secret, which is used for authentication. This token is stored securely in the Github repository settings and is not visible to anyone except the repository owner.
 
