@@ -124,9 +124,9 @@ export const ScenariosProvider = (props) => {
         console.log("add", newScenario)
         addDoc(scenariosCollection, newScenario).then(document => {
             newScenario.id = document.id
+            setScenarios([newScenario, ...scenarios])
+            setNewScenario(new Scenario({ name: "New Scenario" }))
         })
-        setScenarios([newScenario, ...scenarios])
-        setNewScenario(new Scenario({ name: "New Scenario" }))
     }
 
     const deleteScenario = (scenario, index) => {

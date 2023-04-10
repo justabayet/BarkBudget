@@ -124,9 +124,9 @@ export const ExpensesProvider = (props) => {
         console.log("add", newExpense)
         addDoc(expensesCollection, newExpense).then(document => {
             newExpense.id = document.id
+            setExpenses([newExpense, ...expenses])
+            setNewExpense(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME }))
         })
-        setExpenses([newExpense, ...expenses])
-        setNewExpense(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME }))
     }
 
     const deleteExpense = (expense, index) => {

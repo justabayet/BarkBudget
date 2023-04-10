@@ -83,9 +83,9 @@ export const TargetsProvider = (props) => {
         console.log("add", newTarget)
         addDoc(targetsCollection, newTarget).then(document => {
             newTarget.id = document.id
+            setTargets([newTarget, ...targets])
+            setNewTarget(new Target({ date: currentDate, amount: 0 }))
         })
-        setTargets([newTarget, ...targets])
-        setNewTarget(new Target({ date: currentDate, amount: 0 }))
     }
 
     const deleteTarget = (target, index) => {

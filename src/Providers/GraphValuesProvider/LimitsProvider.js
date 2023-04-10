@@ -84,9 +84,9 @@ export const LimitsProvider = (props) => {
         console.log("add", newLimit)
         addDoc(limitsCollection, newLimit).then(document => {
             newLimit.id = document.id
+            setLimits([newLimit, ...limits])
+            setNewLimit(new Limit({ date: currentDate, amount: 0 }))
         })
-        setLimits([newLimit, ...limits])
-        setNewLimit(new Limit({ date: currentDate, amount: 0 }))
     }
 
     const deleteLimit = (limit, index) => {

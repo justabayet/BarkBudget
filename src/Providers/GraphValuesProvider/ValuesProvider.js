@@ -85,9 +85,9 @@ export const ValuesProvider = (props) => {
         console.log("add", newValue)
         addDoc(valuesCollection, newValue).then(document => {
             newValue.id = document.id
+            setValues([newValue, ...values])
+            setNewValue(new Value({ date: currentDate, amount: 0 }))
         })
-        setValues([newValue, ...values])
-        setNewValue(new Value({ date: currentDate, amount: 0 }))
     }
 
     const deleteValue = (value, index) => {

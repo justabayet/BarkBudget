@@ -16,14 +16,16 @@ function TransactionList({ useValues, ChildComponent }) {
             </Box>
 
             <TransitionGroup>
-                {values?.map((value, index) => (
-                    <Collapse key={index}>
-                        <ChildComponent
-                            value={value}
-                            handleDelete={() => { deleteValue(value, index) }}
-                            handleSave={(updatedValue) => { updateValue(updatedValue, index) }} />
-                    </Collapse>
-                ))}
+                {values?.map((value, index) => {
+                    return (
+                        <Collapse key={value.id}>
+                            <ChildComponent
+                                value={value}
+                                handleDelete={() => { deleteValue(value, index) }}
+                                handleSave={(updatedValue) => { updateValue(updatedValue, index) }} />
+                        </Collapse>
+                    )
+                })}
             </TransitionGroup>
         </List>
     )

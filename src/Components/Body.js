@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stack, Typography } from '@mui/material'
+import { Button, Stack, Typography } from '@mui/material'
 import { useScenarios } from '../Providers/ScenariosProvider'
 import { ScenarioProvider } from '../Providers/ScenarioProvider'
 import DataPinnedScenario from './DataPinnedScenario'
@@ -9,9 +9,10 @@ import ScenarioSelector from './ScenarioSelector'
 import ScenarioHeader from './ScenarioHeader'
 import DataScenario from './DataScenario'
 import TransactionDashboard from './TransactionDashboard'
+import AddIcon from '@mui/icons-material/Add'
 
 const Body = () => {
-    const { currentScenario, scenarios } = useScenarios()
+    const { currentScenario, scenarios, addScenario } = useScenarios()
 
     if (!scenarios) {
         return (
@@ -19,19 +20,25 @@ const Body = () => {
         )
     }
 
-    return (
-        <Stack spacing={2}>
+    if (scenarios.length === 0) {
+        return (
+            <Button color="primary" onClick={addScenario}>
+                Create your first scenario to get started <AddIcon />
+            </Button>
+        )
+    } else {
+        return (
+            <Stack spacing={2}>
 
-            {currentScenario && <ScenarioHeader />}
-            {currentScenario && <ScenarioSelector />}
+                {currentScenario && <ScenarioHeader />}
+                {currentScenario && <ScenarioSelector />}
 
-            <Graph />
+                <Graph />
 
-            <PinnedScenariosSelector />
+                <PinnedScenariosSelector />
 
 
-            {scenarios.length > 0 ? (
-                scenarios.map(scenario => {
+                {scenarios.map(scenario => {
                     let body = null
                     if (currentScenario && scenario.id === currentScenario.id) {
                         body = (
@@ -48,12 +55,12 @@ const Body = () => {
                             {body}
                         </ScenarioProvider>
                     )
-                })
-            ) : (
-                <Typography>Create your first scenario to get started</Typography>
-            )}
-        </Stack>
-    )
+                })}
+            </Stack>
+        )
+    }
+
+
 }
 
 export default Body
