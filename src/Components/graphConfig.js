@@ -25,7 +25,7 @@ const config = {
                 fill: false,
             },
             {
-                label: 'Target',
+                label: 'Limit',
                 data: [],
                 backgroundColor: `rgba(${colorValue}, 0.2)`,
                 borderColor: `rgba(${colorValue}, 1)`,

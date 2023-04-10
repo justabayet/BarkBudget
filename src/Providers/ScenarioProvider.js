@@ -4,7 +4,6 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import { ExpensesProvider } from "./GraphValuesProvider/ExpensesProvider"
 import { LimitsProvider } from "./GraphValuesProvider/LimitsProvider"
 import { useScenarios } from "./ScenariosProvider"
-import { TargetsProvider } from "./GraphValuesProvider/TargetsProvider"
 import { ValuesProvider } from "./GraphValuesProvider/ValuesProvider"
 
 class Scenario {
@@ -37,11 +36,9 @@ export const ScenarioProvider = React.memo((props) => {
         <ScenarioContext.Provider value={(new Scenario(scenarioDoc, scenario))}>
             <ValuesProvider>
                 <ExpensesProvider>
-                    <TargetsProvider>
-                        <LimitsProvider>
-                            {props.children}
-                        </LimitsProvider>
-                    </TargetsProvider>
+                    <LimitsProvider>
+                        {props.children}
+                    </LimitsProvider>
                 </ExpensesProvider>
             </ValuesProvider>
         </ScenarioContext.Provider>

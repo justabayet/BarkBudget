@@ -12,15 +12,15 @@ export function compareGraphValues(a, b) {
 }
 
 class Graph {
-    constructor(mainExpenses, setMainExpenses, mainValues, setMainValues, mainTargets, setMainTargets, pinnedScenarios, pinScenario, unpinScenario) {
+    constructor(mainExpenses, setMainExpenses, mainValues, setMainValues, mainLimits, setMainLimits, pinnedScenarios, pinScenario, unpinScenario) {
         this.mainExpenses = mainExpenses
         this.setMainExpenses = setMainExpenses
 
         this.mainValues = mainValues
         this.setMainValues = setMainValues
 
-        this.mainTargets = mainTargets
-        this.setMainTargets = setMainTargets
+        this.mainLimits = mainLimits
+        this.setMainLimits = setMainLimits
 
         this.pinnedScenarios = pinnedScenarios
         this.pinScenario = pinScenario
@@ -35,7 +35,7 @@ export const GraphProvider = (props) => {
 
     const [mainExpenses, setMainExpenses] = useState([])
     const [mainValues, setMainValues] = useState([])
-    const [mainTargets, setMainTargets] = useState([])
+    const [mainLimits, setMainLimits] = useState([])
 
     const pinScenario = useRef(undefined)
     pinScenario.current = (scenario, data) => {
@@ -64,7 +64,7 @@ export const GraphProvider = (props) => {
 
     return (
         <GraphContext.Provider
-            value={(new Graph(mainExpenses, setMainExpenses, mainValues, setMainValues, mainTargets, setMainTargets, pinnedScenarios, pinScenario, unpinScenario))}
+            value={(new Graph(mainExpenses, setMainExpenses, mainValues, setMainValues, mainLimits, setMainLimits, pinnedScenarios, pinScenario, unpinScenario))}
         >
             {props.children}
         </GraphContext.Provider>

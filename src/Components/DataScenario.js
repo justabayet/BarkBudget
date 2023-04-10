@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 import { useExpenses } from '../Providers/GraphValuesProvider/ExpensesProvider'
-import { useTargets } from '../Providers/GraphValuesProvider/TargetsProvider'
 import { useValues } from '../Providers/GraphValuesProvider/ValuesProvider'
 import { useGraph } from "../Providers/GraphProvider"
+import { useLimits } from "../Providers/GraphValuesProvider/LimitsProvider"
 
 const DataScenario = () => {
-  const { setMainExpenses, setMainTargets, setMainValues } = useGraph()
+  const { setMainExpenses, setMainLimits, setMainValues } = useGraph()
 
   const graphExpenses = useExpenses().graphValues
   useEffect(() => {
@@ -19,11 +19,11 @@ const DataScenario = () => {
     setMainValues(graphValues)
   }, [graphValues, setMainValues])
 
-  const graphTargets = useTargets().graphValues
+  const graphLimits = useLimits().graphValues
   useEffect(() => {
-    console.log("DataScenario set graphTargets")
-    setMainTargets(graphTargets)
-  }, [graphTargets, setMainTargets])
+    console.log("DataScenario set graphLimits")
+    setMainLimits(graphLimits)
+  }, [graphLimits, setMainLimits])
 }
 
 export default DataScenario

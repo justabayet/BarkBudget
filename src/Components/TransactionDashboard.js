@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Tabs, Tab, Box, Typography } from '@mui/material'
 import TransactionList from './TransactionList'
 import { useExpenses } from '../Providers/GraphValuesProvider/ExpensesProvider'
-import { useTargets } from '../Providers/GraphValuesProvider/TargetsProvider'
 import { useValues } from '../Providers/GraphValuesProvider/ValuesProvider'
 import { useLimits } from '../Providers/GraphValuesProvider/LimitsProvider'
 import Transaction from './Transaction'
@@ -20,15 +19,13 @@ const TransactionDashboard = () => {
             <Typography variant="h4">Data</Typography>
             <Tabs value={tabIndex} onChange={handleTabChange} aria-label="tabs" variant='fullWidth'>
                 <Tab label="Expenses" />
-                <Tab label="Targets" />
                 <Tab label="Values" />
                 <Tab label="Limits" />
             </Tabs>
             <Box sx={{ p: 1, width: '100%' }}>
                 {tabIndex === 0 && <TransactionList useValues={useExpenses} ChildComponent={Expense} />}
-                {tabIndex === 1 && <TransactionList useValues={useTargets} ChildComponent={Transaction} />}
-                {tabIndex === 2 && <TransactionList useValues={useValues} ChildComponent={Transaction} />}
-                {tabIndex === 3 && <TransactionList useValues={useLimits} ChildComponent={Transaction} />}
+                {tabIndex === 1 && <TransactionList useValues={useValues} ChildComponent={Transaction} />}
+                {tabIndex === 2 && <TransactionList useValues={useLimits} ChildComponent={Transaction} />}
             </Box>
         </Box>
     )

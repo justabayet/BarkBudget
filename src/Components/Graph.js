@@ -21,17 +21,17 @@ const Graph = () => {
     }, [canvasRef, chartRef])
 
 
-    const { mainExpenses, mainTargets, mainValues, pinnedScenarios } = useGraph()
+    const { mainExpenses, mainLimits, mainValues, pinnedScenarios } = useGraph()
 
     useEffect(() => {
         console.log("Graph main data")
         if (!chartRef.current) return
         chartRef.current.data.datasets[0].data = mainValues
-        chartRef.current.data.datasets[1].data = mainTargets
+        chartRef.current.data.datasets[1].data = mainLimits
         chartRef.current.data.datasets[2].data = mainExpenses
         console.log(chartRef.current?.data)
         chartRef.current.update()
-    }, [mainExpenses, mainTargets, mainValues, chartRef])
+    }, [mainExpenses, mainLimits, mainValues, chartRef])
 
 
     useEffect(() => {
