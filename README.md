@@ -1,5 +1,7 @@
 # BarkBudget
 
+Unleash Your Financial Potential.
+
 BarkBudget is a budgeting app built using React.js that allows users to track their expenses, set financial targets, and monitor their financial status. The app features a responsive design, intuitive user interface, and a secure login system for user privacy. 
 
 ## Features
