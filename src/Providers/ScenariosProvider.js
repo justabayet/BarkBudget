@@ -118,6 +118,7 @@ export const ScenariosProvider = (props) => {
         addDoc(scenariosCollection, newScenario).then(document => {
             newScenario.id = document.id
             setScenarios([newScenario, ...scenarios])
+            setScenarioId(newScenario.id)
             setNewScenario(new Scenario({ name: "New Scenario" }))
         })
     }
@@ -127,8 +128,13 @@ export const ScenariosProvider = (props) => {
         const updatedScenarios = [...scenarios]
         updatedScenarios.splice(index, 1)
         setScenarios(updatedScenarios)
+        if (updatedScenarios.length > 0) {
+            setScenarioId(updatedScenarios[0].id)
+        } else {
+            setScenarioId(null)
+        }
 
-        deleteDoc(doc(scenariosCollection, scenario.id)).then(() => setScenarioId(null))
+        deleteDoc(doc(scenariosCollection, scenario.id))
     }
 
     const updateScenario = (scenario, index) => {
