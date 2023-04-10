@@ -23,10 +23,9 @@ class Scenarios {
 }
 
 class Scenario {
-    constructor({ startDate, endDate, startAmount = 0, id, name, isPinned = false }) {
+    constructor({ startDate, endDate, id, name, isPinned = false }) {
         this.startDate = startDate
         this.endDate = endDate
-        this.startAmount = startAmount
         this.name = name
         this.id = id
         this.isPinned = isPinned
@@ -40,10 +39,6 @@ class Scenario {
             this.endDate = new Date(this.startDate)
             this.endDate.setFullYear(this.startDate.getFullYear() + 1)
         }
-
-        if (isNaN(this.startAmount)) {
-            this.startAmount = 0
-        }
     }
 }
 
@@ -54,7 +49,6 @@ const converter = {
         return {
             startDate: getFormattedDate(scenario.startDate),
             endDate: getFormattedDate(scenario.endDate),
-            startAmount: scenario.startAmount,
             name: scenario.name,
             isPinned: scenario.isPinned
         };
@@ -63,12 +57,11 @@ const converter = {
         const scenarioDb = snapshot.data()
         const startDate = new Date(scenarioDb.startDate)
         const endDate = new Date(scenarioDb.endDate)
-        const startAmount = parseInt(scenarioDb.startAmount)
         const name = scenarioDb.name
         const id = snapshot.id
         const isPinned = scenarioDb.isPinned
 
-        return new Scenario({ startDate, endDate, startAmount, id, name, isPinned })
+        return new Scenario({ startDate, endDate, id, name, isPinned })
     }
 }
 

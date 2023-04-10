@@ -60,15 +60,6 @@ const ScenarioHeader = () => {
 
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
 
-
-                        <AmountField
-                            amount={scenario.startAmount}
-                            setAmount={(newAmount) => {
-                                if (newAmount !== scenario.startAmount) {
-                                    updateScenario({ ...scenario, startAmount: newAmount }, index)
-                                }
-                            }} />
-
                         <TextField
                             variant="outlined"
                             sx={textFieldStyle}

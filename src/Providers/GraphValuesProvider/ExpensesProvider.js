@@ -75,7 +75,7 @@ export const ExpensesProvider = (props) => {
 
     let startDateScenario = scenario.startDate
     let endDate = scenario.endDate
-    let startAmount = scenario.startAmount
+    let startAmount = 0
 
     const { graphValues } = useValues()
     if (graphValues.length > 0) {
