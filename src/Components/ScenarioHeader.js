@@ -4,7 +4,6 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import { useScenarios } from "../Providers/ScenariosProvider"
 import CustomDatePickker from "./CustomDatePickker"
-import AmountField from "./AmountField"
 import { compareDate } from "../helpers"
 import { textFieldStyle } from "../style"
 
