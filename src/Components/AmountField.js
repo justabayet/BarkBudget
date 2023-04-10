@@ -5,6 +5,8 @@ import { TextField } from "@mui/material";
 const AmountField = ({ amount, setAmount }) => {
     const [internalAmount, setInternalAmount] = useState(amount)
 
+    const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/
+
     return (
         <TextField
             variant="outlined"
@@ -12,12 +14,13 @@ const AmountField = ({ amount, setAmount }) => {
             size="small"
             value={internalAmount}
             onChange={(event) => {
-                const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/;
-                if (event.target.value === "" || regex.test(event.target.value)) {
-                    setInternalAmount(parseInt(event.target.value))
+                setInternalAmount(event.target.value)
+            }}
+            onBlur={() => {
+                if (regex.test(internalAmount)) {
+                    setAmount(parseInt(internalAmount))
                 }
             }}
-            onBlur={() => { setAmount(internalAmount) }}
         />
     )
 }
