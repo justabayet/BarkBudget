@@ -6,6 +6,7 @@ import { useValues } from '../Providers/GraphValuesProvider/ValuesProvider'
 import { useLimits } from '../Providers/GraphValuesProvider/LimitsProvider'
 import Transaction from './Transaction'
 import Expense from './Expense'
+import Limit from './Limit'
 
 const TransactionDashboard = () => {
     const [tabIndex, setTabIndex] = useState(0)
@@ -25,7 +26,7 @@ const TransactionDashboard = () => {
             <Box sx={{ p: 1, width: '100%' }}>
                 {tabIndex === 0 && <TransactionList useValues={useExpenses} ChildComponent={Expense} />}
                 {tabIndex === 1 && <TransactionList useValues={useValues} ChildComponent={Transaction} />}
-                {tabIndex === 2 && <TransactionList useValues={useLimits} ChildComponent={Transaction} />}
+                {tabIndex === 2 && <TransactionList useValues={useLimits} ChildComponent={Limit} />}
             </Box>
         </Box>
     )

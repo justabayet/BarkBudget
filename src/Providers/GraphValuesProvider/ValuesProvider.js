@@ -22,6 +22,14 @@ class Value {
         this.date = date
         this.amount = amount
         this.id = id
+
+        if (this.date === undefined || isNaN(this.date)) {
+            this.date = new Date()
+        }
+
+        if (isNaN(this.amount)) {
+            this.amount = 0
+        }
     }
 }
 

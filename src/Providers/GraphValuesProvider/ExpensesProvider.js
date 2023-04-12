@@ -48,7 +48,7 @@ class Expense {
     }
 }
 
-const ExpensesContext = createContext(new Expenses([], () => { }, () => { }, () => { }))
+const ExpensesContext = createContext(new Expenses([], [], () => { }, () => { }, () => { }))
 
 const converter = {
     toFirestore(expense) {
@@ -111,7 +111,6 @@ export const ExpensesProvider = (props) => {
                     })
 
                     setExpenses(expensesQueried)
-
                 })
                 .catch(reason => console.log(reason))
         } else {
