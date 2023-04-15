@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, IconButton, Stack, TextField, Typography } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
@@ -19,6 +19,10 @@ const ScenarioHeader = () => {
     }
 
     const [internalName, setInternalName] = useState(scenario.name)
+
+    useEffect(() => {
+        setInternalName(scenario.name)
+    }, [scenario.name])
 
     return (
         <>
