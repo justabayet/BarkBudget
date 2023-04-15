@@ -3,12 +3,10 @@ import { addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/fi
 import { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../../helpers"
 import { ForecastEngine } from "../../Modes/ForecastEngine"
-import { OneTime } from "../../Modes/OneTime"
 import { compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { useValues } from "./ValuesProvider"
-import { modeNames } from "../../Modes/const"
-import { Daily } from "../../Modes/Daily"
+import { modeNames, modes } from "../../Modes/const"
 
 const currentDate = new Date()
 
@@ -150,20 +148,7 @@ export const ExpensesProvider = (props) => {
         const getEngine = (startDateScenario, endDate, startAmount) => {
             const engine = new ForecastEngine(startDateScenario, endDate, startAmount)
 
-            expenses.forEach(expense => {
-                switch (expense.mode) {
-                    case modeNames.ONE_TIME:
-                        engine.addEntry(new OneTime({ date: new Date(expense.startDate), amount: expense.amount }))
-                        break;
-
-                    case modeNames.DAILY:
-                        engine.addEntry(new Daily({ start: new Date(expense.startDate), end: new Date(expense.endDate), amount: expense.amount }))
-                        break;
-
-                    default:
-                        break;
-                }
-            })
+            expenses.forEach(expense => engine.addEntry(new modes[expense.mode](expense)))
 
             return engine
         }

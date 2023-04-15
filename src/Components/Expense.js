@@ -19,7 +19,7 @@ const Expense = ({ value, handleDelete, handleSave }) => {
                     }
                 }} />
 
-            {[modeNames.DAILY].includes(value.mode) &&
+            {[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) &&
                 <CustomDatePickker
                     date={value.endDate}
                     setDate={(newDate) => {

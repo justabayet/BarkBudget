@@ -2,13 +2,13 @@ import { compareDate } from "../helpers"
 import { Mode } from "./Mode"
 
 export class OneTime extends Mode {
-    constructor({ date, amount }) {
+    constructor({ startDate, amount }) {
         super({ amount })
         this.name = "one time"
-        if (date instanceof Date) {
-            this.date = date
+        if (startDate instanceof Date) {
+            this.date = startDate
         } else {
-            this.date = new Date(date)
+            this.date = new Date(startDate)
         }
     }
 
