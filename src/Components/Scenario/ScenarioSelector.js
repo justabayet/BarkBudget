@@ -1,7 +1,7 @@
 import React from 'react'
-import { useScenarios } from '../Providers/ScenariosProvider'
+import { useScenarios } from '../../Providers/ScenariosProvider'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import { textFieldStyle } from '../style'
+import { textFieldStyle } from '../../style'
 
 const ScenarioSelector = () => {
     const { scenarios, setScenarioId, currentScenario } = useScenarios()

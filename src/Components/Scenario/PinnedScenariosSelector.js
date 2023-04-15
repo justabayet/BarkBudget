@@ -1,5 +1,5 @@
 import React from 'react'
-import { useScenarios } from '../Providers/ScenariosProvider'
+import { useScenarios } from '../../Providers/ScenariosProvider'
 import { Autocomplete, TextField } from '@mui/material'
 
 const PinnedScenariosSelector = () => {

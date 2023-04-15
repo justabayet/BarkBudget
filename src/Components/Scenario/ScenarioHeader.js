@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react"
 import { Box, IconButton, Stack, TextField, Typography } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
-import { useScenarios } from "../Providers/ScenariosProvider"
-import CustomDatePickker from "./CustomDatePickker"
-import { compareDate } from "../helpers"
-import { textFieldStyle } from "../style"
+import { useScenarios } from "../../Providers/ScenariosProvider"
+import CustomDatePickker from "../Fields/CustomDatePickker"
+import { compareDate } from "../../helpers"
+import { textFieldStyle } from "../../style"
 
 const ScenarioHeader = () => {
     const { scenarios, addScenario, deleteScenario, updateScenario, currentScenario } = useScenarios()
@@ -43,6 +43,7 @@ const ScenarioHeader = () => {
                             date={scenario.startDate}
                             setDate={(newDate) => {
                                 if (!compareDate(newDate, scenario.startDate)) {
+                                    console.log("## Update Scenario")
                                     updateScenario({ ...scenario, startDate: newDate }, index)
                                 }
                             }} />

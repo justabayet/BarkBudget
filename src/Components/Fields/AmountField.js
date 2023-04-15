@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { textFieldStyle } from "../style";
+import { textFieldStyle } from "../../style";
 import { TextField } from "@mui/material";
 
 const AmountField = ({ amount, setAmount }) => {

@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import dayjs from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers"
-import { textFieldStyle } from "../style";
-import { getFormattedDate } from "../helpers";
+import { textFieldStyle } from "../../style";
+import { getFormattedDate } from "../../helpers";
 
 const CustomDatePickker = ({ date, setDate, label }) => {
     const [internalData, setInternalDate] = useState(getFormattedDate(date))

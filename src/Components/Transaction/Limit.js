@@ -1,13 +1,11 @@
 import React from "react"
 import { Box, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
-import CustomDatePickker from "./CustomDatePickker"
-import AmountField from "./AmountField"
-import { compareDate } from "../helpers"
-import { modeNames } from "../Modes/const"
-import ModeSelector from "./ModeSelector"
+import CustomDatePickker from "../Fields/CustomDatePickker"
+import AmountField from "../Fields/AmountField"
+import { compareDate } from "../../helpers"
 
-const Expense = ({ value, handleDelete, handleSave }) => {
+const Limit = ({ value, handleDelete, handleSave }) => {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
@@ -19,30 +17,19 @@ const Expense = ({ value, handleDelete, handleSave }) => {
                     }
                 }} />
 
-            {[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) &&
-                <CustomDatePickker
-                    date={value.endDate}
-                    setDate={(newDate) => {
-                        if (!compareDate(newDate, value.endDate)) {
-                            handleSave({ ...value, endDate: newDate })
-                        }
-                    }} />
-            }
-
+            <CustomDatePickker
+                date={value.endDate}
+                setDate={(newDate) => {
+                    if (!compareDate(newDate, value.endDate)) {
+                        handleSave({ ...value, endDate: newDate })
+                    }
+                }} />
 
             <AmountField
                 amount={value.amount}
                 setAmount={(newAmount) => {
                     if (newAmount !== value.amount) {
                         handleSave({ ...value, amount: newAmount })
-                    }
-                }} />
-
-            <ModeSelector
-                mode={value.mode}
-                setMode={(newMode) => {
-                    if (newMode !== value.mode) {
-                        handleSave({ ...value, mode: newMode })
                     }
                 }} />
 
@@ -53,5 +40,5 @@ const Expense = ({ value, handleDelete, handleSave }) => {
     )
 }
 
-export default Expense
+export default Limit
 

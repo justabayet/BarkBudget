@@ -1,29 +1,25 @@
 import React from "react"
 import { Box, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
-import CustomDatePickker from "./CustomDatePickker"
-import AmountField from "./AmountField"
-import { compareDate } from "../helpers"
+import AmountField from "../Fields/AmountField";
+import CustomDatePickker from "../Fields/CustomDatePickker";
+import { compareDate } from "../../helpers";
 
-const Limit = ({ value, handleDelete, handleSave }) => {
+
+
+const Transaction = ({ value, handleDelete, handleSave }) => {
 
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+
             <CustomDatePickker
-                date={value.startDate}
+                date={value.date}
                 setDate={(newDate) => {
-                    if (!compareDate(newDate, value.startDate)) {
-                        handleSave({ ...value, startDate: newDate })
+                    if (!compareDate(newDate, value.date)) {
+                        handleSave({ ...value, date: newDate })
                     }
                 }} />
 
-            <CustomDatePickker
-                date={value.endDate}
-                setDate={(newDate) => {
-                    if (!compareDate(newDate, value.endDate)) {
-                        handleSave({ ...value, endDate: newDate })
-                    }
-                }} />
 
             <AmountField
                 amount={value.amount}
@@ -40,5 +36,5 @@ const Limit = ({ value, handleDelete, handleSave }) => {
     )
 }
 
-export default Limit
+export default Transaction
 

@@ -1,7 +1,7 @@
-import { useExpenses } from '../Providers/GraphValuesProvider/ExpensesProvider'
-import { useValues } from '../Providers/GraphValuesProvider/ValuesProvider'
-import { useGraph } from "../Providers/GraphProvider"
-import { useScenario } from "../Providers/ScenarioProvider"
+import { useExpenses } from '../../Providers/GraphValuesProvider/ExpensesProvider'
+import { useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
+import { useGraph } from "../../Providers/GraphProvider"
+import { useScenario } from "../../Providers/ScenarioProvider"
 import { useEffect } from 'react'
 
 

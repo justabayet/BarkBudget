@@ -1,8 +1,8 @@
 import { useEffect } from "react"
-import { useExpenses } from '../Providers/GraphValuesProvider/ExpensesProvider'
-import { useValues } from '../Providers/GraphValuesProvider/ValuesProvider'
-import { useGraph } from "../Providers/GraphProvider"
-import { useLimits } from "../Providers/GraphValuesProvider/LimitsProvider"
+import { useExpenses } from '../../Providers/GraphValuesProvider/ExpensesProvider'
+import { useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
+import { useGraph } from "../../Providers/GraphProvider"
+import { useLimits } from "../../Providers/GraphValuesProvider/LimitsProvider"
 
 const DataScenario = () => {
   const { setMainExpenses, setMainLimits, setMainValues } = useGraph()

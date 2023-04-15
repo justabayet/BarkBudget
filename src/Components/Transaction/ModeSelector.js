@@ -1,6 +1,6 @@
 import React from "react"
-import { textFieldStyle } from "../style";
-import { modeNames } from "../Modes/const";
+import { textFieldStyle } from "../../style";
+import { modeNames } from "../../Modes/const";
 import { MenuItem, Select, FormControl } from "@mui/material";
 
 const ModeSelector = ({ mode, setMode }) => {
