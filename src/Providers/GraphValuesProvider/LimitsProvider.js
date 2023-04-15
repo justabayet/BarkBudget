@@ -88,6 +88,7 @@ export const LimitsProvider = (props) => {
                         limitsQueried.push(converter.fromFirestore(doc))
                     })
 
+                    limitsQueried.sort((limit1, limit2) => limit1.startDate - limit2.startDate)
                     setLimits(limitsQueried)
                 })
                 .catch(reason => console.log(reason))
@@ -101,7 +102,11 @@ export const LimitsProvider = (props) => {
         console.log("add", newLimit)
         addDoc(limitsCollection, newLimit).then(document => {
             newLimit.id = document.id
-            setLimits([newLimit, ...limits])
+
+            const newLimits = [newLimit, ...limits]
+            newLimits.sort((limit1, limit2) => limit1.startDate - limit2.startDate)
+            setLimits(newLimits)
+
             setNewLimit(new Limit({ startDate: currentDate, endDate: currentDate, amount: 0 }))
         })
     }
@@ -117,8 +122,11 @@ export const LimitsProvider = (props) => {
 
     const updateLimit = (limit, index) => {
         console.log("update", limit)
+
         const updatedLimits = [...limits]
         updatedLimits[index] = limit
+
+        updatedLimits.sort((limit1, limit2) => limit1.startDate - limit2.startDate)
         setLimits(updatedLimits)
 
         setDoc(doc(limitsCollection, limit.id), limit)

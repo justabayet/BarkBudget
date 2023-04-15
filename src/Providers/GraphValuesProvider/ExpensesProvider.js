@@ -108,6 +108,7 @@ export const ExpensesProvider = (props) => {
                         expensesQueried.push(converter.fromFirestore(doc))
                     })
 
+                    expensesQueried.sort((exepense1, exepense2) => exepense1.startDate - exepense2.startDate)
                     setExpenses(expensesQueried)
                 })
                 .catch(reason => console.log(reason))
@@ -121,7 +122,11 @@ export const ExpensesProvider = (props) => {
         console.log("add", newExpense)
         addDoc(expensesCollection, newExpense).then(document => {
             newExpense.id = document.id
-            setExpenses([newExpense, ...expenses])
+
+            const newExpenses = [newExpense, ...expenses]
+            newExpenses.sort((exepense1, exepense2) => exepense1.startDate - exepense2.startDate)
+            setExpenses(newExpenses)
+
             setNewExpense(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME }))
         })
     }
@@ -138,7 +143,9 @@ export const ExpensesProvider = (props) => {
     const updateExpense = (expense, index) => {
         console.log("update", expense)
         const updatedExpenses = [...expenses]
+
         updatedExpenses[index] = expense
+        updatedExpenses.sort((exepense1, exepense2) => exepense1.startDate - exepense2.startDate)
         setExpenses(updatedExpenses)
 
         setDoc(doc(expensesCollection, expense.id), expense)

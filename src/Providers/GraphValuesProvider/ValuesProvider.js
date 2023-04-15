@@ -80,6 +80,7 @@ export const ValuesProvider = (props) => {
                         valuesQueried.push(converter.fromFirestore(doc))
                     })
 
+                    valuesQueried.sort((v1, v2) => v1.date - v2.date)
                     setValues(valuesQueried)
                 })
                 .catch(reason => console.log(reason))
@@ -93,7 +94,11 @@ export const ValuesProvider = (props) => {
         console.log("add", newValue)
         addDoc(valuesCollection, newValue).then(document => {
             newValue.id = document.id
-            setValues([newValue, ...values])
+
+            const newValues = [newValue, ...values]
+            newValues.sort((v1, v2) => v1.date - v2.date)
+            setValues(newValues)
+
             setNewValue(new Value({ date: currentDate, amount: 0 }))
         })
     }
@@ -111,6 +116,7 @@ export const ValuesProvider = (props) => {
         console.log("update", value)
         const updatedValues = [...values]
         updatedValues[index] = value
+        updatedValues.sort((v1, v2) => v1.date - v2.date)
         setValues(updatedValues)
 
         setDoc(doc(valuesCollection, value.id), value)
