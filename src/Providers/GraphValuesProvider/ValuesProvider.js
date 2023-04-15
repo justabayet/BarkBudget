@@ -129,6 +129,11 @@ export const ValuesProvider = (props) => {
         console.log("ValuesProvider compute graph values:", startDate.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), values?.length)
         const updatedGraphValues = []
 
+        updatedGraphValues.push({
+            x: new Date(startDate),
+            y: 0
+        })
+
         values?.forEach(value => {
             if (value.date >= startDate && value.date <= endDate) {
                 updatedGraphValues.push({
