@@ -31,6 +31,12 @@ const ScenarioSelector = () => {
                         </MenuItem>
                     )
                 })}
+                {Object.values(scenarios).length === 1 &&
+                    (
+                        <MenuItem disabled>
+                            No other scenario available
+                        </MenuItem>
+                    )}
             </Select>
         </FormControl>
     )
