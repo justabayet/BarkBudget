@@ -9,6 +9,6 @@ export class Daily extends Mode {
     }
 
     isValid(date) {
-        return date > this.startDate && date < this.endDate
+        return date >= this.startDate && date <= this.endDate
     }
 }
