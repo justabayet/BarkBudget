@@ -46,8 +46,11 @@ const config = {
     },
     options: {
         responsive: true,
-        legend: {
-            display: false,
+        plugins: {
+            legend: {
+                display: true,
+            }
+
         },
         scales: {
             x: {
@@ -104,6 +107,7 @@ const config = {
             mode: 'x',
             intersect: false,
         },
+        maintainAspectRatio: false,
     },
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useGraph } from "../Providers/GraphProvider"
 
 import { Chart, registerables } from "chart.js"
@@ -55,9 +55,34 @@ const Graph = () => {
         chartRef.current.update()
     }, [pinnedScenarios, chartRef])
 
+    const [isMobile, setIsMobile] = useState(false)
+
+    //choose the screen size 
+    const handleResize = () => {
+        if (window.innerWidth < 720) {
+            setIsMobile(true)
+        } else {
+            setIsMobile(false)
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    })
+
+    useEffect(() => {
+        if (isMobile) {
+            console.log(chartRef.current.options.scales.x)
+        } else {
+
+        }
+        chartRef.current.update()
+
+    }, [isMobile])
 
     return (
-        <div>
+        <div class="graphBox">
             <canvas ref={canvasRef} id="expenseChart" />
         </div>
     )

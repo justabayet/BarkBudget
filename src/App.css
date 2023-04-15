@@ -32,7 +32,20 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
+  }
+}
+
+.graphBox {
+  height: 300px;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .graphBox {
+    height: 300px;
+    width: 100%;
   }
 }
