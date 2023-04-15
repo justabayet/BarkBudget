@@ -82,7 +82,7 @@ const Graph = () => {
     }, [isMobile])
 
     return (
-        <div class="graphBox">
+        <div className="graphBox">
             <canvas ref={canvasRef} id="expenseChart" />
         </div>
     )
