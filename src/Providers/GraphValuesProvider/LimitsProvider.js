@@ -157,25 +157,37 @@ export const LimitsProvider = (props) => {
             const currentEndLimit = endDateLimits[endDateIndex]
 
             if (currentStartLimit?.startDate <= currentEndLimit?.endDate) {
+                let date = currentStartLimit.startDate
+
+                if (date < startDate) {
+                    date = new Date(startDate)
+                }
+
                 updatedGraphLimits.push({
-                    x: new Date(currentStartLimit.startDate),
+                    x: new Date(date),
                     y: currentAmount,
                 })
                 currentAmount += currentStartLimit.amount
                 updatedGraphLimits.push({
-                    x: new Date(currentStartLimit.startDate),
+                    x: new Date(date),
                     y: currentAmount,
                 })
                 startDateIndex++
 
             } else {
+                let date = currentEndLimit.endDate
+
+                if (date > endDate) {
+                    date = new Date(endDate)
+                }
+
                 updatedGraphLimits.push({
-                    x: new Date(currentEndLimit.endDate),
+                    x: new Date(date),
                     y: currentAmount,
                 })
                 currentAmount -= currentEndLimit.amount
                 updatedGraphLimits.push({
-                    x: new Date(currentEndLimit.endDate),
+                    x: new Date(date),
                     y: currentAmount,
                 })
                 endDateIndex++
