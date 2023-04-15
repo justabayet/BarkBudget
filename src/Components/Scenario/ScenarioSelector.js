@@ -18,6 +18,11 @@ const ScenarioSelector = () => {
                         setScenarioId(scenarioId)
                     }
                 }}
+                onClose={() => {
+                    setTimeout(() => {
+                        document.activeElement.blur()
+                    }, 0)
+                }}
             >
                 {Object.values(scenarios).map(scenario => {
                     const isSelected = scenario.id === currentScenario.id
