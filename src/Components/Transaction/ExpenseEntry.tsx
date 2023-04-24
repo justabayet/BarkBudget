@@ -7,7 +7,7 @@ import { compareDate } from "../../helpers"
 import { modeNames } from "../../Modes/const"
 import ModeSelector from "./ModeSelector"
 import { Expense } from "../../Providers/GraphValuesProvider/ExpensesProvider"
-import { EntryProps, GenericEntry } from "../../Providers/GraphValuesProvider/GenericValues"
+import { GenericEntry } from "../../Providers/GraphValuesProvider/GenericValues"
 
 const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }) => {
     return (

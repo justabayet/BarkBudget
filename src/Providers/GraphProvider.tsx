@@ -1,8 +1,5 @@
 import React from "react"
 import { createContext, useContext, useRef, useState } from "react"
-import { Expense } from "./GraphValuesProvider/ExpensesProvider"
-import { Value } from "./GraphValuesProvider/ValuesProvider"
-import { Limit } from "./GraphValuesProvider/LimitsProvider"
 import { Scenario } from "./ScenariosProvider"
 
 export function compareGraphValues(a: GraphValue, b: GraphValue): number {
