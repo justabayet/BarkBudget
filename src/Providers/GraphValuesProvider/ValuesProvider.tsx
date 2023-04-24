@@ -6,7 +6,7 @@ import { GraphValue, compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { GenericValues, GenericValuesContext } from "./GenericValues"
 
-export type ValuesContext = GenericValuesContext<Value>
+export type ValuesContextType = GenericValuesContext<Value>
 
 const Values = GenericValues<Value>
 
@@ -28,7 +28,7 @@ export class Value {
     }
 }
 
-const ValuesContext = createContext<ValuesContext>(new Values([], [], () => { }, () => { }, () => { }))
+const ValuesContext = createContext<ValuesContextType>(new Values([], [], () => { }, () => { }, () => { }))
 
 interface ValueFirestore {
     date: string,
@@ -175,6 +175,6 @@ export const ValuesProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
 }
 
-export const useValues = (): ValuesContext => {
+export const useValues = (): ValuesContextType => {
     return useContext(ValuesContext)
 }

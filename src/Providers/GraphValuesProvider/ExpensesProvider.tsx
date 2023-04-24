@@ -11,7 +11,7 @@ import { GenericValues, GenericValuesContext } from "./GenericValues"
 
 const currentDate = new Date()
 
-export type ExpensesContext = GenericValuesContext<Expense>
+export type ExpensesContextType = GenericValuesContext<Expense>
 
 const Expenses = GenericValues<Expense>
 
@@ -39,7 +39,7 @@ export class Expense {
     }
 }
 
-const ExpensesContext = createContext<ExpensesContext>(new Expenses([], [], () => { }, () => { }, () => { }))
+const ExpensesContext = createContext<ExpensesContextType>(new Expenses([], [], () => { }, () => { }, () => { }))
 
 interface ExpenseFirestore {
     startDate: string,
@@ -206,6 +206,6 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
 
 }
 
-export const useExpenses = (): ExpensesContext => {
+export const useExpenses = (): ExpensesContextType => {
     return useContext(ExpensesContext)
 }

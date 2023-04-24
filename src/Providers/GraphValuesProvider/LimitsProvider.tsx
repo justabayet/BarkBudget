@@ -8,7 +8,7 @@ import { GenericValues, GenericValuesContext } from "./GenericValues"
 
 const currentDate = new Date()
 
-export type LimitsContext = GenericValuesContext<Limit>
+export type LimitsContextType = GenericValuesContext<Limit>
 
 const Limits = GenericValues<Limit>
 
@@ -33,7 +33,7 @@ export class Limit {
     }
 }
 
-const LimitsContext = createContext<LimitsContext>(new Limits([], [], () => { }, () => { }, () => { }))
+const LimitsContext = createContext<LimitsContextType>(new Limits([], [], () => { }, () => { }, () => { }))
 
 interface LimitFirestore {
     startDate: string,
@@ -227,6 +227,6 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
 }
 
-export const useLimits = (): LimitsContext => {
+export const useLimits = (): LimitsContextType => {
     return useContext(LimitsContext)
 }
