@@ -61,7 +61,6 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
     signOut(auth)
   }
 
-
   return (
     <AuthenticationContext.Provider
       value={(new Authentication(user, handleSignIn, handleSignOut, userDoc))}
@@ -69,7 +68,6 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
       {children}
     </AuthenticationContext.Provider>
   )
-
 }
 
 export const useAuthentication = () => {
