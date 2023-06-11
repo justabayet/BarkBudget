@@ -1,13 +1,12 @@
-import React from "react"
 import { CollectionReference, FirestoreDataConverter, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
-import { createContext, useContext, useEffect, useState } from "react"
-import { getFormattedDate, getValidDate } from "../../helpers"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import { ForecastEngine } from "../../Modes/ForecastEngine"
+import { modeNames, modes } from "../../Modes/const"
+import { getFormattedDate, getValidDate } from "../../helpers"
 import { GraphValue, compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
-import { useValues } from "./ValuesProvider"
-import { modeNames, modes } from "../../Modes/const"
 import { GenericValues, GenericValuesContext } from "./GenericValues"
+import { useValues } from "./ValuesProvider"
 
 const currentDate = new Date()
 

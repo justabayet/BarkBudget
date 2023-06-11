@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { GraphValue } from "../Providers/GraphProvider"
-import { ChartConfiguration, Tick, ChartOptions } from 'chart.js';
+import { ChartConfiguration, ChartOptions, Tick } from 'chart.js';
+import { GraphValue } from "../Providers/GraphProvider";
 
 const colorExpense = '132, 94, 194'
 const colorValue = '214, 93, 177'

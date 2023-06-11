@@ -1,6 +1,6 @@
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import React from 'react'
 import { Scenario } from '../../Providers/ScenariosProvider'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { textFieldStyle } from '../../style'
 
 interface ScenarioSelectorProps {

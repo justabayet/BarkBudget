@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useGraph } from "../../Providers/GraphProvider"
 import { useExpenses } from '../../Providers/GraphValuesProvider/ExpensesProvider'
 import { useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
-import { useGraph } from "../../Providers/GraphProvider"
 import { useScenario } from "../../Providers/ScenarioProvider"
-import { useEffect } from 'react'
 
 
 const DataPinnedScenario = (): JSX.Element => {

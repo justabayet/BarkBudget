@@ -1,12 +1,12 @@
+import { Box, Tab, Tabs, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { Tabs, Tab, Box, Typography } from '@mui/material'
-import TransactionList from './TransactionList'
 import { Expense, useExpenses } from '../../Providers/GraphValuesProvider/ExpensesProvider'
-import { Value, useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
 import { Limit, useLimits } from '../../Providers/GraphValuesProvider/LimitsProvider'
-import ValueEntry from './ValueEntry'
+import { Value, useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
 import ExpenseEntry from './ExpenseEntry'
 import LimitEntry from './LimitEntry'
+import TransactionList from './TransactionList'
+import ValueEntry from './ValueEntry'
 
 const TransactionDashboard = () => {
     const [tabIndex, setTabIndex] = useState(0)

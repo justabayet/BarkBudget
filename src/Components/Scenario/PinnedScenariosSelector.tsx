@@ -1,6 +1,6 @@
+import { Box, Chip, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import React from 'react'
 import { Scenario } from '../../Providers/ScenariosProvider'
-import { MenuItem, FormControl, Chip, Select, InputLabel, Box } from '@mui/material'
 import { textFieldStyle } from '../../style'
 
 interface PinnedScenariosSelectorProps {

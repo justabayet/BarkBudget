@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react"
-import { Box, IconButton, Stack, TextField, Typography } from "@mui/material"
-import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { Box, IconButton, Stack, TextField, Typography } from "@mui/material"
+import React, { useEffect, useState } from "react"
 import { Scenario } from "../../Providers/ScenariosProvider"
-import CustomDatePicker from "../Fields/CustomDatePicker"
 import { compareDate } from "../../helpers"
 import { textFieldStyle } from "../../style"
+import CustomDatePicker from "../Fields/CustomDatePicker"
 
 interface ScenarioHeaderProps {
     scenario: Scenario

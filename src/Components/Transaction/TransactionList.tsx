@@ -1,6 +1,6 @@
-import React from "react"
-import { Box, Typography, Collapse, IconButton, List } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add'
+import { Box, Collapse, IconButton, List, Typography } from "@mui/material"
+import React from "react"
 import { TransitionGroup } from "react-transition-group"
 import { GenericEntry, GenericValuesContext, TransactionType } from "../../Providers/GraphValuesProvider/GenericValues"
 

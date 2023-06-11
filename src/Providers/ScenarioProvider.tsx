@@ -3,8 +3,8 @@ import { DocumentReference, doc } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { ExpensesProvider } from "./GraphValuesProvider/ExpensesProvider"
 import { LimitsProvider } from "./GraphValuesProvider/LimitsProvider"
-import { Scenario, useScenarios } from "./ScenariosProvider"
 import { ValuesProvider } from "./GraphValuesProvider/ValuesProvider"
+import { Scenario, useScenarios } from "./ScenariosProvider"
 
 class ScenarioDocumented {
     scenario: Scenario

@@ -1,7 +1,7 @@
-import React from "react"
-import { textFieldStyle } from "../../style";
+import { FormControl, MenuItem, Select } from "@mui/material";
+import React from "react";
 import { modeNames } from "../../Modes/const";
-import { MenuItem, Select, FormControl } from "@mui/material";
+import { textFieldStyle } from "../../style";
 
 interface ModeSelectorProps {
     mode: string

@@ -1,5 +1,4 @@
-import React from "react"
-import { createContext, useContext, useRef, useState } from "react"
+import React, { createContext, useContext, useRef, useState } from "react"
 import { Scenario } from "./ScenariosProvider"
 
 export function compareGraphValues(a: GraphValue, b: GraphValue): number {

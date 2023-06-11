@@ -1,13 +1,13 @@
-import React from "react"
-import { Box, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete'
-import CustomDatePicker from "../Fields/CustomDatePicker"
-import AmountField from "../Fields/AmountField"
-import { compareDate } from "../../helpers"
+import { Box, IconButton } from "@mui/material"
+import React from "react"
 import { modeNames } from "../../Modes/const"
-import ModeSelector from "./ModeSelector"
 import { Expense } from "../../Providers/GraphValuesProvider/ExpensesProvider"
 import { GenericEntry } from "../../Providers/GraphValuesProvider/GenericValues"
+import { compareDate } from "../../helpers"
+import AmountField from "../Fields/AmountField"
+import CustomDatePicker from "../Fields/CustomDatePicker"
+import ModeSelector from "./ModeSelector"
 
 const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }) => {
     return (

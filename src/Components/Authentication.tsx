@@ -1,8 +1,8 @@
-import React from 'react'
-import { Typography, IconButton } from '@mui/material'
-import { useAuthentication } from '../Providers/AuthenticationProvider'
 import LoginIcon from '@mui/icons-material/Login'
 import LogoutIcon from '@mui/icons-material/Logout'
+import { IconButton, Typography } from '@mui/material'
+import React from 'react'
+import { useAuthentication } from '../Providers/AuthenticationProvider'
 
 const Authentication = (): JSX.Element => {
     const { user, handleSignIn, handleSignOut } = useAuthentication()
