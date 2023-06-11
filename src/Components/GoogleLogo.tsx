@@ -5,7 +5,7 @@ const GoogleIcon = (props: SvgIconProps): JSX.Element => {
     return (
         <SvgIcon {...props}>
             <svg viewBox="9.449 5.51 26 26" xmlns="http://www.w3.org/2000/svg">
-                <g id="Google-Button" stroke="none" stroke-width="0" fill="none" fill-rule="evenodd" transform="matrix(1, 0, 0, 1, -3.313718, -2.379498)">
+                <g id="Google-Button" stroke="none" strokeWidth="0" fill="none" fillRule="evenodd" transform="matrix(1, 0, 0, 1, -3.313718, -2.379498)">
                     <g id="9-PATCH" transform="translate(-608.000000, -160.000000)" />
                     <g id="btn_google_light_normal" transform="matrix(1, 0, 0, 1, 1.755597, -2.938642)">
                         <ellipse style={{ fill: "rgb(255, 255, 255)", stroke: "rgb(0, 0, 0)" }} cx="24.007" cy="23.828" rx="13" ry="13" />
