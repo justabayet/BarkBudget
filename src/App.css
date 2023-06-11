@@ -1,3 +1,11 @@
+:root {
+  --primary: #9a9aff;
+  --filter-primary-logo: invert(62%) sepia(71%) saturate(1658%) hue-rotate(203deg) brightness(101%) contrast(101%);
+  --secondary: #04003d;
+  --filter-secondary-logo: invert(6%) sepia(58%) saturate(5248%) hue-rotate(236deg) brightness(82%) contrast(121%);
+}
+
+
 .App {
   text-align: center;
 }
@@ -47,5 +55,18 @@
   .graphBox {
     height: 300px;
     width: 100%;
+  }
+}
+
+.loginLogo {
+  height: 400px;
+  width: 400px;
+  filter: var(--filter-secondary-logo); /* https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-an-svg-element */
+}
+
+@media only screen and (max-width: 600px) {
+  .loginLogo {
+    height: 256px;
+    width: 256px;
   }
 }
