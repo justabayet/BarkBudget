@@ -17,7 +17,7 @@ const LoggedOutView = (): JSX.Element => {
             flexDirection: 'column',
             flexWrap: 'wrap'
         }}>
-            <img className='loginLogo' src="./logo.svg" alt="BarkBudget logo" color='red' />
+            <img className='loginLogo' src="./images/combination-mark-primary.svg" alt="BarkBudget logo" />
             <IconButton sx={{ margin: 'auto' }} onClick={handleSignIn}>
                 <GoogleIcon sx={{ fontSize: '80px' }} />
             </IconButton>

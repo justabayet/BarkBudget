@@ -31,7 +31,7 @@ const ScenarioHeader = ({ scenario, scenarios, addScenario, deleteScenario, upda
     return (
         <>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-                <Typography variant="h4">Scenario: {scenario.name}</Typography>
+                <Typography variant="h4">{scenario.name}</Typography>
 
                 <IconButton color="primary" onClick={() => { addScenario() }} style={{ "marginLeft": "auto" }}>
                     <AddIcon />

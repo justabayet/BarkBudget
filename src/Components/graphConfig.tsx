@@ -17,7 +17,7 @@ const options: ChartOptions<"line"> = {
     responsive: true,
     plugins: {
         legend: {
-            display: true,
+            display: false,
         }
 
     },
@@ -31,10 +31,11 @@ const options: ChartOptions<"line"> = {
             time: {
                 unit: 'month',
                 displayFormats: {
-                    month: 'MMM YYYY',
+                    month: 'MM',
                 },
             },
             ticks: {
+                display: false,
                 maxTicksLimit: 10 // Set the maximum number of ticks to 10
             }
         },
@@ -42,8 +43,18 @@ const options: ChartOptions<"line"> = {
         {
             ticks: {
                 callback: function (value: string | number, index: number, values: Tick[]) {
-                    return value + '€'
+                    value = parseInt(value)
+
+                    if (value >= 1000000000) {
+                        value = (value / 1000000000).toFixed(0) + 'M';
+                    } else if (value >= 1000000) {
+                        value = (value / 1000000).toFixed(0) + 'm';
+                    } else if (value >= 1000) {
+                        value = (value / 1000).toFixed(0) + 'k';
+                    }
+                    return value
                 },
+                display: false
             },
             gridLines: {
                 color: 'rgba(0, 0, 0, 0.05)',

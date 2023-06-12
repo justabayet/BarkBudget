@@ -1,6 +1,7 @@
 import React from 'react'
 import { ScenariosProvider } from '../Providers/ScenariosProvider'
 import Body from './Body'
+import './LoggedInView.css'
 import MainHeader from './MainHeader'
 
 

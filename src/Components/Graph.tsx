@@ -3,6 +3,7 @@ import { useGraph } from "../Providers/GraphProvider"
 
 import { Chart, registerables } from "chart.js"
 import 'chartjs-adapter-moment'
+import './Graph.css'
 import config from "./graphConfig"
 
 Chart.register(...registerables)

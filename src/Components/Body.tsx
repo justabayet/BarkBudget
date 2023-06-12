@@ -28,12 +28,12 @@ const Body = (): JSX.Element => {
         )
     } else {
         return (
-            <Stack spacing={2}>
+            <Stack spacing={3}>
+                <Graph />
 
                 {currentScenario && <ScenarioHeader scenario={currentScenario} scenarios={scenarios} addScenario={addScenario} deleteScenario={deleteScenario} updateScenario={updateScenario} />}
                 {currentScenario && <ScenarioSelector currentScenario={currentScenario} scenarios={scenarios} setScenarioId={setScenarioId} />}
 
-                <Graph />
 
                 <PinnedScenariosSelector scenarios={scenarios} updateScenario={updateScenario} />
 

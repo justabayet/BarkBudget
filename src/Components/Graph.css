@@ -1,0 +1,18 @@
+.graphBox {
+  height: 300px;
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  .graphBox {
+    height: calc(100vw / 2);
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .graphBox {
+    height: calc(100vw / 2);
+    margin-left: -15px;
+    width: calc(100vw - 10px);
+  }
+}

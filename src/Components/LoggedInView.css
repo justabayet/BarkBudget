@@ -1,0 +1,13 @@
+.loginLogo {
+  height: 400px;
+  width: 400px;
+  filter: var(--filter-secondary-logo); /* https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-an-svg-element */
+}
+
+@media only screen and (max-width: 600px) {
+  .loginLogo {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+  }
+}
