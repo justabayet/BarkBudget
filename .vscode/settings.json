@@ -15,6 +15,9 @@
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "editor.tabSize": 4,
-  "editor.detectIndentation": false
+"editor.detectIndentation": false,
+"[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+}
 
 }
