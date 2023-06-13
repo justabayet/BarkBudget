@@ -1,4 +1,4 @@
-import { Box, Chip, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Box, Chip, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material'
 import React from 'react'
 import { Scenario } from '../../Providers/ScenariosProvider'
 import { textFieldStyle } from '../../style'
@@ -34,11 +34,14 @@ const PinnedScenariosSelector = ({ scenarios, updateScenario }: PinnedScenariosS
 
     return (
         <FormControl sx={{ m: 1, minWidth: 120, ...textFieldStyle }} >
-            <InputLabel>Pinned Scenario</InputLabel>
+            <InputLabel shrink id="scenarios-selector-label">Pinned Scenario</InputLabel>
             <Select
                 multiple
+                displayEmpty
+                notched
                 value={pinnedScenarios}
-                label={"Selected Scenario"}
+                label='Pinned Scenario'
+                labelId='scenarios-selector-label'
                 onClose={() => {
                     setTimeout(() => {
                         if (!document.activeElement) return
@@ -51,23 +54,30 @@ const PinnedScenariosSelector = ({ scenarios, updateScenario }: PinnedScenariosS
                         handleAdd(scenarioId)
                     }
                 }}
-                renderValue={selected => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        {selected.map(scenario => (
-                            <Chip
-                                key={scenario.id}
-                                label={scenario.name}
-                                onMouseDown={(event) => {
-                                    event.stopPropagation()
-                                    event.preventDefault()
-                                }}
-                                onDelete={(event) => {
-                                    handleDelete(scenario)
-                                    event.stopPropagation()
-                                }} />
-                        ))}
-                    </Box>
-                )}
+                renderValue={selected => {
+                    if (selected.length === 0) {
+                        return <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38 }}>No scenario pinned</Typography>
+                    } else {
+                        return (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                {selected.map(scenario => (
+                                    <Chip
+                                        key={scenario.id}
+                                        label={scenario.name}
+                                        onMouseDown={(event) => {
+                                            event.stopPropagation()
+                                            event.preventDefault()
+                                        }}
+                                        onDelete={(event) => {
+                                            handleDelete(scenario)
+                                            event.stopPropagation()
+                                        }} />
+                                ))}
+                            </Box>
+                        )
+                    }
+
+                }}
             >
                 {Object.values(scenarios).map(scenario => {
                     return (

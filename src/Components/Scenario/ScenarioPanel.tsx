@@ -29,9 +29,8 @@ const ScenarioPanel = () => {
             <Stack spacing={3} marginTop={3}>
                 {currentScenario && <ScenarioHeader scenario={currentScenario} scenarios={scenarios} addScenario={addScenario} deleteScenario={deleteScenario} updateScenario={updateScenario} />}
 
-                <PinnedScenariosSelector scenarios={scenarios} updateScenario={updateScenario} />
-
                 {currentScenario && <ScenarioSelector currentScenario={currentScenario} scenarios={scenarios} setScenarioId={setScenarioId} />}
+                <PinnedScenariosSelector scenarios={scenarios} updateScenario={updateScenario} />
             </Stack>
         )
     }
