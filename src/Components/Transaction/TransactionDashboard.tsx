@@ -11,7 +11,7 @@ import TransactionList from './TransactionList'
 import ValueEntry from './ValueEntry'
 
 const TransactionDashboard = () => {
-    const [tabIndex, setTabIndex] = useState(0)
+    const [tabIndex, setTabIndex] = useState(1)
     const { isMobile } = useDeviceDetails()
 
     const handleTabChange = (event: React.SyntheticEvent<Element, Event>, newValue: number) => {
@@ -24,10 +24,10 @@ const TransactionDashboard = () => {
             value={tabIndex}
             onChange={handleTabChange}
         >
-            <BottomNavigationAction label="Scenario" icon={<></>} />
-            <BottomNavigationAction label="Expenses" icon={<></>} />
-            <BottomNavigationAction label="Values" icon={<></>} />
             <BottomNavigationAction label="Limits" icon={<></>} />
+            <BottomNavigationAction label="Scenario" icon={<></>} />
+            <BottomNavigationAction label="Values" icon={<></>} />
+            <BottomNavigationAction label="Expenses" icon={<></>} />
         </BottomNavigation>
     )
 
@@ -40,10 +40,10 @@ const TransactionDashboard = () => {
                 </Paper>}
 
             <Box sx={{ p: 1, width: '100%' }}>
-                {tabIndex === 0 && <ScenarioPanel />}
-                {tabIndex === 1 && <TransactionList<Expense> useValues={useExpenses} ChildComponent={ExpenseEntry} />}
+                {tabIndex === 0 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} />}
+                {tabIndex === 1 && <ScenarioPanel />}
                 {tabIndex === 2 && <TransactionList<Value> useValues={useValues} ChildComponent={ValueEntry} />}
-                {tabIndex === 3 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} />}
+                {tabIndex === 3 && <TransactionList<Expense> useValues={useExpenses} ChildComponent={ExpenseEntry} />}
             </Box>
 
             {isMobile &&
