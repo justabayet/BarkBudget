@@ -11,11 +11,13 @@ class DeviceDetails {
 
 const DeviceDetailsContext = createContext(new DeviceDetails(false))
 
+const testIsMobile = (windowSize: number) => windowSize <= 425
+
 export const DeviceDetailsProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
-    const [isMobile, setIsMobile] = useState(false)
+    const [isMobile, setIsMobile] = useState(testIsMobile(window.innerWidth))
 
     const handleResize = () => {
-        if (window.innerWidth <= 425) {
+        if (testIsMobile(window.innerWidth)) {
             setIsMobile(true)
         } else {
             setIsMobile(false)
