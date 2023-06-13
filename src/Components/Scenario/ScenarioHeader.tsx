@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Box, IconButton, Stack, TextField } from "@mui/material"
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Stack, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { Scenario } from "../../Providers/ScenariosProvider"
 import { compareDate } from "../../helpers"
@@ -17,6 +17,20 @@ interface ScenarioHeaderProps {
 
 const ScenarioHeader = ({ scenario, scenarios, addScenario, deleteScenario, updateScenario }: ScenarioHeaderProps) => {
     const index = scenarios.findIndex(scenarioObj => scenarioObj.id === scenario?.id)
+    const [open, setOpen] = React.useState(false)
+
+    const openDeleteDialog = () => {
+        setOpen(true)
+    }
+
+    const closeDeleteDialog = () => {
+        setOpen(false)
+    }
+
+    const confirmDeleteDialog = () => {
+        closeDeleteDialog()
+        deleteScenario(scenario, index)
+    }
 
     if (index === -1) {
         console.log("Current scenario not found in scenarios")
@@ -52,9 +66,27 @@ const ScenarioHeader = ({ scenario, scenarios, addScenario, deleteScenario, upda
                         <AddIcon />
                     </IconButton>
 
-                    <IconButton onClick={() => deleteScenario(scenario, index)} style={{ "marginLeft": "auto" }}>
+                    <IconButton onClick={openDeleteDialog} style={{ "marginLeft": "auto" }}>
                         <DeleteIcon />
                     </IconButton>
+                    <Dialog
+                        open={open}
+                        onClose={closeDeleteDialog}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="alert-dialog-title">
+                            Delete scenario "{scenario.name}"?
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Deleting a scenario is irreversible
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions sx={{ margin: 1 }}>
+                            <Button onClick={closeDeleteDialog} variant="outlined" autoFocus>Cancel</Button>
+                            <Button onClick={confirmDeleteDialog} variant="contained" color="error">Delete</Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
             </Box>
 
