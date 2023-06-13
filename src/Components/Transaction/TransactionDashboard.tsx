@@ -46,6 +46,8 @@ const TransactionDashboard = () => {
                 {tabIndex === 3 && <TransactionList<Expense> useValues={useExpenses} ChildComponent={ExpenseEntry} />}
             </Box>
 
+            <Box height={"10vh"}></Box>
+
             {isMobile &&
                 <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                     {navigation}
