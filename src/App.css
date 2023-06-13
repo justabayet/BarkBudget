@@ -4,3 +4,7 @@
   --secondary: #04003d;
   --filter-secondary-logo: invert(6%) sepia(58%) saturate(5248%) hue-rotate(236deg) brightness(82%) contrast(121%);
 }
+
+body {
+    width: 100vw;
+}
