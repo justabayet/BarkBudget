@@ -15,7 +15,7 @@ export const DeviceDetailsProvider = ({ children }: React.PropsWithChildren): JS
     const [isMobile, setIsMobile] = useState(false)
 
     const handleResize = () => {
-        if (window.innerWidth < 425) {
+        if (window.innerWidth <= 425) {
             setIsMobile(true)
         } else {
             setIsMobile(false)
