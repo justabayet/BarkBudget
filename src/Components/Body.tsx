@@ -6,13 +6,10 @@ import { useScenarios } from '../Providers/ScenariosProvider'
 import Graph from './Graph'
 import DataPinnedScenario from './Scenario/DataPinnedScenario'
 import DataScenario from './Scenario/DataScenario'
-import PinnedScenariosSelector from './Scenario/PinnedScenariosSelector'
-import ScenarioHeader from './Scenario/ScenarioHeader'
-import ScenarioSelector from './Scenario/ScenarioSelector'
 import TransactionDashboard from './Transaction/TransactionDashboard'
 
 const Body = (): JSX.Element => {
-    const { currentScenario, scenarios, addScenario, deleteScenario, updateScenario, setScenarioId } = useScenarios()
+    const { currentScenario, scenarios, addScenario } = useScenarios()
 
     if (!scenarios) {
         return (
@@ -28,15 +25,8 @@ const Body = (): JSX.Element => {
         )
     } else {
         return (
-            <Stack spacing={3}>
+            <Stack>
                 <Graph />
-
-                {currentScenario && <ScenarioHeader scenario={currentScenario} scenarios={scenarios} addScenario={addScenario} deleteScenario={deleteScenario} updateScenario={updateScenario} />}
-                {currentScenario && <ScenarioSelector currentScenario={currentScenario} scenarios={scenarios} setScenarioId={setScenarioId} />}
-
-
-                <PinnedScenariosSelector scenarios={scenarios} updateScenario={updateScenario} />
-
 
                 {scenarios.map(scenario => {
                     let body = null
