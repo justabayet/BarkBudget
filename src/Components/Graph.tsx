@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import { useGraph } from "../Providers/GraphProvider"
 
 import { Chart, registerables } from "chart.js"
 import 'chartjs-adapter-moment'
+import { useDeviceDetails } from "../Providers/DeviceDetailsProvider"
 import './Graph.css'
 import config from "./graphConfig"
 
@@ -11,6 +12,8 @@ Chart.register(...registerables)
 const Graph = (): JSX.Element => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const chartRef = useRef<Chart | null>(null)
+
+    const { isMobile } = useDeviceDetails()
 
     useEffect(() => {
         console.log("graph reset")
@@ -60,29 +63,23 @@ const Graph = (): JSX.Element => {
         chartRef.current.update()
     }, [pinnedScenarios, chartRef])
 
-    const [isMobile, setIsMobile] = useState(false)
-
-    //choose the screen size 
-    const handleResize = () => {
-        if (window.innerWidth < 720) {
-            setIsMobile(true)
-        } else {
-            setIsMobile(false)
-        }
-    }
-
-    useEffect(() => {
-        window.addEventListener("resize", handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    })
-
     useEffect(() => {
         if (chartRef.current === null) return
 
         if (isMobile) {
-            console.log(chartRef.current.options.scales?.x)
+            if (chartRef.current?.options?.scales?.x?.ticks) {
+                chartRef.current.options.scales.x.ticks.display = false
+            }
+            if (chartRef.current?.options?.scales?.y?.ticks) {
+                chartRef.current.options.scales.y.ticks.display = false
+            }
         } else {
-
+            if (chartRef.current?.options?.scales?.x?.ticks) {
+                chartRef.current.options.scales.x.ticks.display = true
+            }
+            if (chartRef.current?.options?.scales?.y?.ticks) {
+                chartRef.current.options.scales.y.ticks.display = true
+            }
         }
         chartRef.current.update()
 
