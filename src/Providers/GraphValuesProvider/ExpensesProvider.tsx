@@ -19,6 +19,7 @@ interface ExpenseParameter {
     endDate?: Date
     amount?: number
     mode?: string
+    name: string
     id?: string
 }
 
@@ -27,14 +28,16 @@ export class Expense {
     endDate: Date
     amount: number
     mode: string
+    name: string
     id?: string
 
-    constructor({ startDate, endDate, amount, id, mode }: ExpenseParameter) {
+    constructor({ startDate, endDate, amount, id, mode, name }: ExpenseParameter) {
         this.id = id
         this.startDate = getValidDate(startDate)
         this.endDate = getValidDate(endDate)
         this.amount = amount !== undefined && !isNaN(amount) ? amount : 0
         this.mode = mode && Object.values(modeNames).includes(mode) ? mode : modeNames.ONE_TIME
+        this.name = name ? name : "New Expense"
     }
 }
 
@@ -44,7 +47,8 @@ interface ExpenseFirestore {
     startDate: string,
     endDate: string,
     amount: string,
-    mode: string
+    mode: string,
+    name: string
 }
 
 const converter: FirestoreDataConverter<Expense> = {
@@ -53,7 +57,8 @@ const converter: FirestoreDataConverter<Expense> = {
             startDate: getFormattedDate(expense.startDate),
             endDate: getFormattedDate(expense.endDate),
             amount: expense.amount.toString(),
-            mode: expense.mode
+            mode: expense.mode,
+            name: expense.name
         }
     },
     fromFirestore(snapshot: any, options?: any): Expense {
@@ -62,8 +67,9 @@ const converter: FirestoreDataConverter<Expense> = {
         const endDate = new Date(expenseDb.endDate)
         const amount = parseInt(expenseDb.amount)
         const mode = expenseDb.mode
+        const name = expenseDb.name
         const id = snapshot.id
-        return new Expense({ startDate, endDate, amount, id, mode })
+        return new Expense({ startDate, endDate, amount, id, mode, name })
     }
 }
 
@@ -89,7 +95,7 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
     const [graphExpenses, setGraphExpenses] = useState<GraphValue[] | null>(null)
     const [expensesCollection, setExpensesCollection] = useState<CollectionReference | null>(null)
 
-    const [newExpense, setNewExpense] = useState(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME }))
+    const [newExpense, setNewExpense] = useState(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expense" }))
 
     useEffect(() => {
         if (scenarioDoc) {
@@ -135,7 +141,7 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
             newExpenses.sort(sortExpensesFunction)
             setExpenses(newExpenses)
 
-            setNewExpense(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME }))
+            setNewExpense(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expense" }))
         })
     }
 

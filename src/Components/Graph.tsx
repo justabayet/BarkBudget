@@ -85,6 +85,13 @@ const Graph = (): JSX.Element => {
 
     }, [isMobile])
 
+    /**
+     * Way to keep the graph on top of the dialog: 
+        <div className="graphBox" style={{ zIndex: theme.zIndex.modal + 1 }}>
+            <canvas ref={canvasRef} id="expenseChart" />
+        </div>
+     */
+
     return (
         <div className="graphBox">
             <canvas ref={canvasRef} id="expenseChart" />

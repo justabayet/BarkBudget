@@ -17,7 +17,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
     const { isMobile } = useDeviceDetails()
 
     return (
-        <List>
+        <List id="transaction list">
             {isMobile ?
                 <>
                     <Fab sx={{
@@ -29,7 +29,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
                     </Fab>
                     {(!values || values.length === 0) &&
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-around", height: "300px" }}>
-                            <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, fontSize: 26, textAlign: "center" }}>
+                            <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: "center" }}>
                                 Press the + button to add an element
                             </Typography>
                         </Box>}

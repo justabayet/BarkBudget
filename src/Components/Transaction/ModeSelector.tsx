@@ -1,4 +1,4 @@
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import React from "react";
 import { modeNames } from "../../Modes/const";
 import { textFieldStyle } from "../../style";
@@ -6,12 +6,14 @@ import { textFieldStyle } from "../../style";
 interface ModeSelectorProps {
     mode: string
     setMode: (newMode: string) => void
+    label?: string
 }
 
-const ModeSelector = ({ mode, setMode }: ModeSelectorProps): JSX.Element => {
+const ModeSelector = ({ mode, setMode, label }: ModeSelectorProps): JSX.Element => {
 
     return (
-        <FormControl sx={{ m: 1, minWidth: 120, ...textFieldStyle }} size="small">
+        <FormControl sx={{ minWidth: 120, ...textFieldStyle }} size="small">
+            {label && <InputLabel>{label}</InputLabel>}
             <Select
                 value={mode}
                 onChange={(event) => {

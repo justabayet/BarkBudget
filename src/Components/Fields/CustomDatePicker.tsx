@@ -1,6 +1,7 @@
 import { DatePicker } from "@mui/x-date-pickers"
 import dayjs from 'dayjs'
 import React, { useState } from "react"
+import { useDeviceDetails } from "../../Providers/DeviceDetailsProvider"
 import { getFormattedDate } from "../../helpers"
 import { textFieldStyle } from "../../style"
 
@@ -12,6 +13,9 @@ interface CustomDatePickerProps {
 
 const CustomDatePicker = ({ date, setDate, label }: CustomDatePickerProps): JSX.Element => {
     const [internalData, setInternalDate] = useState<string | undefined>(getFormattedDate(date))
+    const { isBodyFullSize } = useDeviceDetails()
+
+    const maxWidth = isBodyFullSize ? 120 : 180
 
     const save = (newValue: string | undefined) => {
         if (newValue === undefined) {
@@ -24,7 +28,7 @@ const CustomDatePicker = ({ date, setDate, label }: CustomDatePickerProps): JSX.
 
     return (
         <DatePicker
-            sx={textFieldStyle}
+            sx={{ ...textFieldStyle, maxWidth }}
             label={label}
             onAccept={(newValue) => {
                 const formattedDate = newValue?.format('YYYY-MM-DD')

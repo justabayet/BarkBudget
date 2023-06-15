@@ -40,14 +40,14 @@ const TransactionDashboard = () => {
                 </Paper>
             }
 
-            <Box sx={{ p: 1, width: '100%' }}>
+            <Box sx={{ width: '100%' }} id="transaction-lists-box">
                 {tabIndex === 0 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} />}
                 {tabIndex === 1 && <ScenarioPanel />}
                 {tabIndex === 2 && <TransactionList<Value> useValues={useValues} ChildComponent={ValueEntry} />}
                 {tabIndex === 3 && <TransactionList<Expense> useValues={useExpenses} ChildComponent={ExpenseEntry} />}
             </Box>
 
-            <Box height={"10vh"}></Box>
+            <Box height={"92px"}></Box>
 
             {isMobile &&
                 <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
