@@ -32,12 +32,13 @@ const TransactionDashboard = () => {
     )
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', mt: 2 }}>
 
             {!isMobile &&
-                <Paper elevation={3} sx={{ mt: 3 }}>
+                <Paper elevation={3} sx={{ mt: 1 }}>
                     {navigation}
-                </Paper>}
+                </Paper>
+            }
 
             <Box sx={{ p: 1, width: '100%' }}>
                 {tabIndex === 0 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} />}
