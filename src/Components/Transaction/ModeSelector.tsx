@@ -16,6 +16,7 @@ const ModeSelector = ({ mode, setMode, label }: ModeSelectorProps): JSX.Element 
             {label && <InputLabel>{label}</InputLabel>}
             <Select
                 value={mode}
+                label={label}
                 onChange={(event) => {
                     setMode(event.target.value)
                 }}

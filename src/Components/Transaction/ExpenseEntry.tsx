@@ -31,7 +31,7 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                 <>
                     <Card elevation={3} sx={{ mt: 3 }}>
                         <CardActionArea onClick={handleClickOpen}>
-                            <CardContent sx={{ p: 1 }}>
+                            <CardContent sx={{ p: 1.5 }}>
                                 <Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
                                         <Typography>

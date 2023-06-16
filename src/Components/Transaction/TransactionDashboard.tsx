@@ -32,7 +32,7 @@ const TransactionDashboard = () => {
     )
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%' }} id="dashboard-body">
 
             {!isMobile &&
                 <Paper elevation={3} sx={{ mt: 2, mb: 2 }}>
@@ -40,7 +40,7 @@ const TransactionDashboard = () => {
                 </Paper>
             }
 
-            <Box sx={{ width: '100%' }} id="transaction-lists-box">
+            <Box sx={{ width: '100%' }} id="dashboard-list">
                 {tabIndex === 0 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} />}
                 {tabIndex === 1 && <ScenarioPanel />}
                 {tabIndex === 2 && <TransactionList<Value> useValues={useValues} ChildComponent={ValueEntry} />}

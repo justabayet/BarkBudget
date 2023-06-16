@@ -49,7 +49,7 @@ const converter: FirestoreDataConverter<Value> = {
 }
 
 const sortValuesFunction = (value1: Value, value2: Value): number => {
-    return value1.date.getTime() - value2.date.getTime()
+    return value2.date.getTime() - value1.date.getTime()
 }
 
 export const ValuesProvider = ({ children }: React.PropsWithChildren): JSX.Element => {

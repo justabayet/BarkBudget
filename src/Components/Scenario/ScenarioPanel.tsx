@@ -26,7 +26,7 @@ const ScenarioPanel = () => {
         )
     } else {
         return (
-            <Stack spacing={3} marginTop={3}>
+            <Stack spacing={3} marginTop={4} id="stack-scenario-panel">
                 {currentScenario && <ScenarioHeader scenario={currentScenario} scenarios={scenarios} addScenario={addScenario} deleteScenario={deleteScenario} updateScenario={updateScenario} />}
 
                 {currentScenario && <ScenarioSelector currentScenario={currentScenario} scenarios={scenarios} setScenarioId={setScenarioId} />}
