@@ -76,15 +76,15 @@ const options: ChartOptions<"line"> = {
         },
     },
     hover: {
-        mode: 'x',
+        mode: 'nearest',
         intersect: false,
     },
     interaction: {
-        mode: "x",
+        mode: 'nearest',
         intersect: false,
     },
     tooltips: {
-        mode: 'x',
+        mode: 'nearest',
         intersect: false,
     },
     maintainAspectRatio: false,
