@@ -16,8 +16,10 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
     const { values, addValue, deleteValue, updateValue } = useValues()
     const { isMobile } = useDeviceDetails()
 
+    const hasValues = values && values.length > 0
+
     return (
-        <List id="transaction list">
+        <>
             {isMobile ?
                 <>
                     <Fab sx={{
@@ -27,7 +29,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
                     }} color="info" aria-label="add" onClick={addValue}>
                         <AddIcon />
                     </Fab>
-                    {(!values || values.length === 0) &&
+                    {!hasValues &&
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-around", height: "300px" }}>
                             <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: "center" }}>
                                 Press the + button to add an element
@@ -36,7 +38,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
                 </>
                 :
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-                    {(!values || values.length === 0) &&
+                    {!hasValues &&
                         <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38 }}>No elements yet</Typography>}
                     <IconButton color="primary" onClick={addValue} style={{ "marginLeft": "auto" }}>
                         <AddIcon />
@@ -44,21 +46,23 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
                 </Box>
             }
 
-            {(values && values.length > 0) &&
-                <TransitionGroup>
-                    {values?.map((value, index) => {
-                        return (
-                            <Collapse key={value.id} sx={{ pb: 3 }}>
-                                <ChildComponent
-                                    value={value}
-                                    handleDelete={() => { deleteValue(value, index) }}
-                                    handleSave={(updatedValue) => { updateValue(updatedValue, index) }} />
-                            </Collapse>
-                        )
-                    })}
-                </TransitionGroup>
+            {hasValues &&
+                <List id="transaction-list">
+                    <TransitionGroup id="transition-group" component={null}>
+                        {values?.map((value, index) => {
+                            return (
+                                <Collapse key={value.id} id={`collapse-${value.id}`}>
+                                    <ChildComponent
+                                        value={value}
+                                        handleDelete={() => { deleteValue(value, index) }}
+                                        handleSave={(updatedValue) => { updateValue(updatedValue, index) }} />
+                                </Collapse>
+                            )
+                        })}
+                    </TransitionGroup>
+                </List>
             }
-        </List>
+        </>
     )
 }
 

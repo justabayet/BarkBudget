@@ -29,17 +29,26 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
         <>
             {isBodyFullSize ?
                 <>
-                    <Card elevation={3}>
+                    <Card elevation={3} sx={{ mt: 3 }}>
                         <CardActionArea onClick={handleClickOpen}>
                             <CardContent sx={{ p: 1 }}>
                                 <Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-                                        <Typography>{value.name}</Typography>
-                                        <Typography>{value.amount}</Typography>
+                                        <Typography>
+                                            {value.name}
+                                        </Typography>
+                                        <Typography>
+                                            {value.amount}
+                                        </Typography>
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-                                        <Typography variant='caption'>{getFormattedDate(value.startDate)} {"-"} {getFormattedDate(value.endDate)}</Typography>
-                                        <Typography variant='caption'>{value.mode}</Typography>
+                                        <Typography variant='caption'>
+                                            {getFormattedDate(value.startDate)}
+                                            {[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) ? ` - ${getFormattedDate(value.endDate)}` : ''}
+                                        </Typography>
+                                        <Typography variant='caption'>
+                                            {value.mode}
+                                        </Typography>
                                     </Box>
                                 </Box>
 
@@ -114,7 +123,7 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                 </>
 
                 :
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", mt: 3 }}>
                     <CustomDatePicker
                         label={[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) ? 'Start Date' : 'Date'}
                         date={value.startDate}

@@ -26,16 +26,16 @@ const TransactionDashboard = () => {
         >
             <BottomNavigationAction label="Limits" icon={<></>} />
             <BottomNavigationAction label="Scenario" icon={<></>} />
-            <BottomNavigationAction label="Values" icon={<></>} />
-            <BottomNavigationAction label="Expenses" icon={<></>} />
+            <BottomNavigationAction label="Records" icon={<></>} />
+            <BottomNavigationAction label="Expectations" icon={<></>} />
         </BottomNavigation>
     )
 
     return (
-        <Box sx={{ width: '100%', mt: 2 }}>
+        <Box sx={{ width: '100%' }}>
 
             {!isMobile &&
-                <Paper elevation={3} sx={{ mt: 1 }}>
+                <Paper elevation={3} sx={{ mt: 2, mb: 2 }}>
                     {navigation}
                 </Paper>
             }
@@ -47,7 +47,7 @@ const TransactionDashboard = () => {
                 {tabIndex === 3 && <TransactionList<Expense> useValues={useExpenses} ChildComponent={ExpenseEntry} />}
             </Box>
 
-            <Box height={"92px"}></Box>
+            <Box height={"124px"}></Box>
 
             {isMobile &&
                 <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
