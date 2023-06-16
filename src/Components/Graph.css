@@ -4,6 +4,17 @@
     z-index: 1;
 }
 
+.graphBox::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: 0px;
+    z-index: -1;
+    background-color: #fff;
+}
+
 @media only screen and (max-width: 600px) {
     .graphBox {
         height: calc(100vw / 2);
