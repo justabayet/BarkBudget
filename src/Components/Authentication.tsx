@@ -1,13 +1,16 @@
 import { Logout } from '@mui/icons-material'
-import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
+import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Switch, Tooltip } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React from 'react'
 import { useAuthentication } from '../Providers/AuthenticationProvider'
+import { useToggleTheme } from '../Providers/ToggleThemeProvider'
 import GoogleIcon from './GoogleLogo'
-
 const Authentication = (): JSX.Element => {
     const { user, handleSignOut, handleSignIn } = useAuthentication()
     const theme = useTheme()
+    const { toggleTheme } = useToggleTheme()
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
@@ -22,7 +25,7 @@ const Authentication = (): JSX.Element => {
     function stringAvatar(name: string) {
         return {
             sx: {
-                bgcolor: theme.palette.secondary.main
+                bgcolor: theme.palette.primary.main
             },
             children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
         }
@@ -61,7 +64,6 @@ const Authentication = (): JSX.Element => {
                 id="account-menu"
                 open={open}
                 onClose={handleClose}
-                onClick={handleClose}
                 PaperProps={{
                     elevation: 0,
                     sx: {
@@ -91,11 +93,17 @@ const Authentication = (): JSX.Element => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleSignOut}>
+                <MenuItem onClick={() => { handleClose(); handleSignOut() }}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>
                     Logout
+                </MenuItem>
+                <MenuItem disableRipple>
+                    <ListItemIcon>
+                        {theme.palette.mode === 'light' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
+                    </ListItemIcon>
+                    <Switch checked={theme.palette.mode === 'dark'} onClick={toggleTheme}></Switch>
                 </MenuItem>
             </Menu>
         </React.Fragment>

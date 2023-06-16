@@ -19,8 +19,8 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
     const hasValues = values && values.length > 0
 
     let fabPlacement = {
-        bottom: 16,
-        right: 72,
+        bottom: 72,
+        right: 16,
     }
     if (isBodyFullSize) {
         fabPlacement.bottom = 32

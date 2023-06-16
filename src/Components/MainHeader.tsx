@@ -10,7 +10,6 @@ const MainHeader = (): JSX.Element => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-
             <Box sx={{
                 display: 'flex',
                 alignContent: 'center',
@@ -20,7 +19,6 @@ const MainHeader = (): JSX.Element => {
                 <img className='logo' src={`./images/logo-${fileSuffix}.svg`} alt="BarkBudget logo" />
                 <img className='wordmark' src={`./images/wordmark-${fileSuffix}.svg`} alt="BarkBudget wordmark" />
             </Box>
-
 
             <Authentication />
         </div>
