@@ -13,7 +13,7 @@ const AmountField = ({ amount, setAmount, label }: AmountFieldProps): JSX.Elemen
     const [internalAmount, setInternalAmount] = useState<string>(amount.toString())
     const { isBodyFullSize } = useDeviceDetails()
 
-    const maxWidth = isBodyFullSize ? 120 : 180
+    const maxWidth = isBodyFullSize ? 180 : 120
 
     const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/
 

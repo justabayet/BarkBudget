@@ -9,6 +9,7 @@ import { compareDate, getFormattedDate } from "../../helpers"
 import AmountField from "../Fields/AmountField"
 import CustomDatePicker from "../Fields/CustomDatePicker"
 import CustomTextField from '../Fields/CustomTextField'
+import './ExpenseEntry.css'
 import ModeSelector from "./ModeSelector"
 
 
@@ -27,7 +28,7 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
 
     return (
         <>
-            {isBodyFullSize ?
+            {!isBodyFullSize ?
                 <>
                     <Card elevation={3} sx={{ mt: 3 }}>
                         <CardActionArea onClick={handleClickOpen}>
@@ -69,6 +70,7 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                                             handleSave({ ...value, name: newName })
                                         }
                                     }} />
+
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap' }} gap={3}>
                                     <CustomDatePicker
                                         label={[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) ? 'Start Date' : 'Date'}
@@ -123,50 +125,67 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                 </>
 
                 :
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", mt: 3 }}>
-                    <CustomDatePicker
-                        label={[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) ? 'Start Date' : 'Date'}
-                        date={value.startDate}
-                        setDate={(newDate) => {
-                            if (!compareDate(newDate, value.startDate)) {
-                                handleSave({ ...value, startDate: newDate })
-                            }
-                        }} />
+                <Card elevation={3} sx={{ mb: 4 }}>
+                    <CardContent className="disablePBLast">
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", pb: 0 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: "center", flexDirection: "column" }}>
+                                <CustomTextField
+                                    text={value.name}
+                                    setText={(newName) => {
+                                        if (newName !== value.name) {
+                                            console.log("new name")
+                                            handleSave({ ...value, name: newName })
+                                        }
+                                    }} />
 
-                    {[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) &&
-                        <CustomDatePicker
-                            label='End Date'
-                            date={value.endDate}
-                            setDate={(newDate) => {
-                                if (!compareDate(newDate, value.endDate)) {
-                                    handleSave({ ...value, endDate: newDate })
-                                }
-                            }} />
-                    }
+                                <Box>
+                                    <CustomDatePicker
+                                        date={value.startDate}
+                                        setDate={(newDate) => {
+                                            if (!compareDate(newDate, value.startDate)) {
+                                                handleSave({ ...value, startDate: newDate })
+                                            }
+                                        }} />
 
+                                    {[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) &&
+                                        <CustomDatePicker
+                                            date={value.endDate}
+                                            setDate={(newDate) => {
+                                                if (!compareDate(newDate, value.endDate)) {
+                                                    handleSave({ ...value, endDate: newDate })
+                                                }
+                                            }} />
+                                    }
+                                </Box>
+                            </Box>
 
-                    <AmountField
-                        label='Amount'
-                        amount={value.amount}
-                        setAmount={(newAmount) => {
-                            if (newAmount !== value.amount) {
-                                handleSave({ ...value, amount: newAmount })
-                            }
-                        }} />
+                            <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: "center", flexDirection: "column", marginLeft: "auto", width: 120 }}>
 
-                    <ModeSelector
-                        label='Mode'
-                        mode={value.mode}
-                        setMode={(newMode) => {
-                            if (newMode !== value.mode) {
-                                handleSave({ ...value, mode: newMode })
-                            }
-                        }} />
+                                <AmountField
+                                    amount={value.amount}
+                                    setAmount={(newAmount) => {
+                                        if (newAmount !== value.amount) {
+                                            handleSave({ ...value, amount: newAmount })
+                                        }
+                                    }} />
 
-                    <IconButton onClick={handleDelete} style={{ "marginLeft": "auto" }}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Box>
+                                <ModeSelector
+                                    mode={value.mode}
+                                    setMode={(newMode) => {
+                                        if (newMode !== value.mode) {
+                                            handleSave({ ...value, mode: newMode })
+                                        }
+                                    }} />
+
+                            </Box>
+
+                            <IconButton onClick={handleDelete}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Box>
+                    </CardContent>
+                </Card>
+
             }
         </>
     )

@@ -15,7 +15,7 @@ const CustomDatePicker = ({ date, setDate, label }: CustomDatePickerProps): JSX.
     const [internalData, setInternalDate] = useState<string | undefined>(getFormattedDate(date))
     const { isBodyFullSize } = useDeviceDetails()
 
-    const maxWidth = isBodyFullSize ? 120 : 180
+    const maxWidth = isBodyFullSize ? 150 : 120
 
     const save = (newValue: string | undefined) => {
         if (newValue === undefined) {

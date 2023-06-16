@@ -1,0 +1,7 @@
+.disablePBLast {
+    padding: 8px;
+}
+
+.disablePBLast:last-child {
+    padding-bottom: 8px;
+}

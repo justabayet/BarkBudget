@@ -17,6 +17,7 @@ const ModeSelector = ({ mode, setMode, label }: ModeSelectorProps): JSX.Element 
             <Select
                 value={mode}
                 label={label}
+                inputProps={{ MenuProps: { disableScrollLock: true } }}
                 onChange={(event) => {
                     setMode(event.target.value)
                 }}

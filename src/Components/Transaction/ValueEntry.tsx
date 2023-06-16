@@ -25,7 +25,7 @@ const ValueEntry: GenericEntry<Value> = ({ value, handleDelete, handleSave }) =>
 
     return (
         <>
-            {isBodyFullSize ?
+            {!isBodyFullSize ?
                 <>
                     <Card elevation={3} sx={{ mt: 3 }}>
                         <CardActionArea onClick={handleClickOpen}>
@@ -79,7 +79,7 @@ const ValueEntry: GenericEntry<Value> = ({ value, handleDelete, handleSave }) =>
                     </Dialog>
                 </>
                 :
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", mb: 3 }}>
                     <CustomDatePicker
                         date={value.date}
                         setDate={(newDate) => {

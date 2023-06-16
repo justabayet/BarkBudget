@@ -2,7 +2,8 @@
     height: 300px;
     width: 100%;
     z-index: 1;
-    position: relative;
+    position: sticky;
+    top: 5px;
 }
 
 .graphBox::before {
@@ -24,11 +25,8 @@
 
 @media only screen and (max-width: 425px) {
     .graphBox {
-        height: calc(100vw / 2);
         margin-left: -15px;
         width: calc(100vw - 10px);
-        position: sticky;
-        top: 5px;
         background-color: white;
         -webkit-box-shadow: 0px 5px 23px -7px rgba(0, 0, 0, 0.22);
         -moz-box-shadow: 0px 5px 23px -7px rgba(0, 0, 0, 0.22);

@@ -42,6 +42,7 @@ const PinnedScenariosSelector = ({ scenarios, updateScenario }: PinnedScenariosS
                 value={pinnedScenarios}
                 label='Pinned Scenario'
                 labelId='scenarios-selector-label'
+                inputProps={{ MenuProps: { disableScrollLock: true } }}
                 onClose={() => {
                     setTimeout(() => {
                         if (!document.activeElement) return

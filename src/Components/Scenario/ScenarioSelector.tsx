@@ -16,6 +16,7 @@ const ScenarioSelector = ({ scenarios, setScenarioId, currentScenario }: Scenari
             <Select
                 value={currentScenario.id}
                 label={"Selected Scenario"}
+                inputProps={{ MenuProps: { disableScrollLock: true } }}
                 onChange={(event, child) => {
                     if (React.isValidElement(child)) {
                         const scenarioId = child.props.value
