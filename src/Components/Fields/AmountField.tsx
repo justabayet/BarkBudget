@@ -24,6 +24,9 @@ const AmountField = ({ amount, setAmount, label }: AmountFieldProps): JSX.Elemen
             size="small"
             value={internalAmount}
             label={label}
+            onFocus={event => {
+                event.target.select();
+            }}
             onChange={(event) => {
                 setInternalAmount(event.target.value)
             }}
