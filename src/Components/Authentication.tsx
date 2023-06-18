@@ -1,12 +1,17 @@
 import { Logout } from '@mui/icons-material'
+import CloseIcon from '@mui/icons-material/Close'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import LightModeIcon from '@mui/icons-material/LightMode'
-import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Switch, Tooltip } from '@mui/material'
+import ReportProblemIcon from '@mui/icons-material/ReportProblem'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { Avatar, Box, Button, ButtonBase, Collapse, Dialog, DialogContent, DialogTitle, Divider, IconButton, ListItemIcon, Menu, MenuItem, Stack, Switch, Tooltip, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React from 'react'
 import { useAuthentication } from '../Providers/AuthenticationProvider'
 import { useToggleTheme } from '../Providers/ToggleThemeProvider'
 import GoogleIcon from './GoogleLogo'
+
 const Authentication = (): JSX.Element => {
     const { user, handleSignOut, handleSignIn } = useAuthentication()
     const theme = useTheme()
@@ -22,6 +27,16 @@ const Authentication = (): JSX.Element => {
         setAnchorEl(null)
     }
 
+    const [openDialog, setOpenDialog] = React.useState(false)
+
+    const handleOpenDialog = () => {
+        setOpenDialog(true)
+    }
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false)
+    }
+
     function stringAvatar(name: string) {
         return {
             sx: {
@@ -30,6 +45,8 @@ const Authentication = (): JSX.Element => {
             children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
         }
     }
+
+    const [expanded, setExpanded] = React.useState(false)
 
     return (
         <React.Fragment>
@@ -93,19 +110,70 @@ const Authentication = (): JSX.Element => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={() => { handleClose(); handleSignOut() }}>
-                    <ListItemIcon>
-                        <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Logout
-                </MenuItem>
                 <MenuItem disableRipple>
                     <ListItemIcon>
                         {theme.palette.mode === 'light' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
                     </ListItemIcon>
                     <Switch checked={theme.palette.mode === 'dark'} onClick={toggleTheme}></Switch>
                 </MenuItem>
+
+                <Divider />
+
+                <MenuItem onClick={handleOpenDialog}>
+                    <ListItemIcon>
+                        <SettingsIcon fontSize="small" />
+                    </ListItemIcon>
+                    Settings
+                </MenuItem>
+
+                <MenuItem onClick={() => { handleClose(); handleSignOut() }}>
+                    <ListItemIcon>
+                        <Logout fontSize="small" />
+                    </ListItemIcon>
+                    Logout
+                </MenuItem>
             </Menu>
+            <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="xs" fullWidth>
+                <DialogTitle id="settings-dialog">
+                    <Box display="flex" alignItems="center">
+                        <Typography variant='h5'>Account Settings</Typography>
+
+                        <IconButton onClick={handleCloseDialog} sx={{ ml: 'auto' }}>
+                            <CloseIcon />
+                        </IconButton>
+                    </Box>
+                </DialogTitle>
+                <DialogContent>
+                    <Stack spacing={3}>
+                        <Stack>
+                            <Typography>Google account in-use</Typography>
+                            <Typography variant='caption'> {user?.email}</Typography>
+                        </Stack>
+
+                        <Stack>
+                            <ButtonBase sx={{ justifyContent: 'flex-start' }} onClick={() => { setExpanded(expanded => !expanded) }}>
+                                <Typography >Danger zone</Typography>
+                                <ExpandMoreIcon sx={{ transform: !expanded ? 'rotate(0deg)' : 'rotate(180deg)', ml: 1 }} />
+                            </ButtonBase>
+
+                            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                <Stack sx={{ mt: 2 }} spacing={1}>
+                                    <Box style={{
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    }}>
+                                        <ReportProblemIcon fontSize='small' sx={{ mt: -1, mr: 1 }} />
+                                        <Typography variant='caption'> Actions are permanent in this zone</Typography>
+                                    </Box>
+
+                                    <Button color='error' variant='contained' size='small' sx={{ width: 'fit-content' }}>Delete account</Button>
+                                </Stack>
+                            </Collapse>
+                        </Stack>
+
+                    </Stack>
+                </DialogContent>
+            </Dialog>
         </React.Fragment>
     )
 }
