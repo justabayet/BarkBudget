@@ -153,12 +153,22 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
         })
     }
 
-    const deleteExpense = (expense: Expense, index: number): void => {
+    const getIndex = (id: string | undefined): number => {
+        const index = expenses?.findIndex((expense) => {
+            return expense.id === id
+        })
+
+        return index ? index : 0
+    }
+
+    const deleteExpense = (expense: Expense): void => {
         console.log("delete", expense)
 
         if (expensesCollection === null || expenses === null) {
             return
         }
+
+        const index: number = getIndex(expense.id)
 
         const updatedExpenses = [...expenses]
         updatedExpenses.splice(index, 1)
@@ -167,12 +177,14 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
         deleteDoc(doc(expensesCollection, expense.id))
     }
 
-    const updateExpense = (expense: Expense, index: number): void => {
+    const updateExpense = (expense: Expense): void => {
         console.log("update", expense)
 
         if (expensesCollection === null || expenses === null) {
             return
         }
+
+        const index: number = getIndex(expense.id)
 
         const updatedExpenses = [...expenses]
 

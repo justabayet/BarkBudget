@@ -121,12 +121,22 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         })
     }
 
-    const deleteLimit = (limit: Limit, index: number): void => {
+    const getIndex = (id: string | undefined): number => {
+        const index = limits?.findIndex((limit) => {
+            return limit.id === id
+        })
+
+        return index ? index : 0
+    }
+
+    const deleteLimit = (limit: Limit): void => {
         console.log("delete", limit)
 
         if (limitsCollection === null || limits === null) {
             return
         }
+
+        const index: number = getIndex(limit.id)
 
         const updatedLimits = [...limits]
         updatedLimits.splice(index, 1)
@@ -135,12 +145,14 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         deleteDoc(doc(limitsCollection, limit.id))
     }
 
-    const updateLimit = (limit: Limit, index: number): void => {
+    const updateLimit = (limit: Limit): void => {
         console.log("update", limit)
 
         if (limitsCollection === null || limits === null) {
             return
         }
+
+        const index: number = getIndex(limit.id)
 
         const updatedLimits = [...limits]
         updatedLimits[index] = limit

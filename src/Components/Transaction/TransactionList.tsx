@@ -29,12 +29,10 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
 
     return (
         <>
-            <Fab sx={{
-                position: 'fixed',
-                ...fabPlacement
-            }} color='info' aria-label='add' onClick={addValue}>
+            <Fab sx={{ position: 'fixed', ...fabPlacement }} color='info' aria-label='add' onClick={addValue}>
                 <AddIcon />
             </Fab>
+
             {!hasValues &&
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', height: '300px' }}>
                     <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: 'center' }}>

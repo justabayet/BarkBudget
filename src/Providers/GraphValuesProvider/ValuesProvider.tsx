@@ -111,12 +111,22 @@ export const ValuesProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         })
     }
 
-    const deleteValue = (value: Value, index: number): void => {
+    const getIndex = (id: string | undefined): number => {
+        const index = values?.findIndex((value) => {
+            return value.id === id
+        })
+
+        return index ? index : 0
+    }
+
+    const deleteValue = (value: Value): void => {
         console.log("delete", value)
 
         if (valuesCollection === null || values === null) {
             return
         }
+
+        const index: number = getIndex(value.id)
 
         console.log("delete", value)
         const updatedValues = [...values]
@@ -126,12 +136,14 @@ export const ValuesProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         deleteDoc(doc(valuesCollection, value.id))
     }
 
-    const updateValue = (value: Value, index: number): void => {
+    const updateValue = (value: Value): void => {
         console.log("update", value)
 
         if (valuesCollection === null || values === null) {
             return
         }
+
+        const index: number = getIndex(value.id)
 
         const updatedValues = [...values]
         updatedValues[index] = value
