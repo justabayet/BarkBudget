@@ -10,7 +10,6 @@ import AmountField from "../Fields/AmountField"
 import CustomDatePicker from "../Fields/CustomDatePicker"
 import CustomTextField from '../Fields/CustomTextField'
 import DeleteButton from './DeleteButton'
-import './ExpenseEntry.css'
 import ModeSelector from "./ModeSelector"
 
 
@@ -121,8 +120,8 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
 
                 :
                 <Card elevation={3} sx={{ mb: 4 }}>
-                    <CardContent className="disablePBLast">
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", pb: 0 }}>
+                    <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
                             <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: "center", flexDirection: "column" }}>
                                 <CustomTextField
                                     text={value.name}
@@ -171,7 +170,6 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                                             handleSave({ ...value, mode: newMode })
                                         }
                                     }} />
-
                             </Box>
 
                             <IconButton onClick={handleDelete} sx={{ ml: 2 }}>
@@ -180,7 +178,6 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                         </Box>
                     </CardContent>
                 </Card>
-
             }
         </>
     )
