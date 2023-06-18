@@ -12,7 +12,7 @@ import ValueEntry from './ValueEntry'
 
 const TransactionDashboard = () => {
     const [tabIndex, setTabIndex] = useState(1)
-    const { isMobile } = useDeviceDetails()
+    const { isMobile, isBodyFullSize } = useDeviceDetails()
 
     const handleTabChange = (event: React.SyntheticEvent<Element, Event>, newValue: number) => {
         setTabIndex(newValue)
@@ -35,7 +35,7 @@ const TransactionDashboard = () => {
         <Box sx={{ width: '100%' }} id="dashboard-body">
 
             {!isMobile &&
-                <Paper elevation={3} sx={{ position: 'sticky', top: 321, mt: 2, zIndex: 10 }}>
+                <Paper elevation={3} sx={{ position: 'sticky', top: `calc(${isBodyFullSize ? "300px" : "(100vw / 2)"} + 21px)`, mt: 2, zIndex: 10 }}>
                     {navigation}
                 </Paper>
             }
