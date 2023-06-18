@@ -13,8 +13,8 @@ const DeleteButton = ({ action, sx }: DeleteButtonProps): JSX.Element => {
             onClick={action}
             sx={{ borderRadius: '50%', p: 1.5, minWidth: 0, ...sx }}
             variant='outlined'
-            color='error'
-            startIcon={<DeleteIcon />}>
+            color='error'>
+            <DeleteIcon />
         </Button>
     )
 }

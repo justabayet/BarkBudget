@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
-import { Button, Stack, Typography } from '@mui/material'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import React from 'react'
 import { ScenarioProvider } from '../Providers/ScenarioProvider'
 import { useScenarios } from '../Providers/ScenariosProvider'
@@ -19,9 +19,19 @@ const Body = (): JSX.Element => {
 
     if (scenarios.length === 0) {
         return (
-            <Button color="primary" onClick={addScenario}>
-                Create your first scenario to get started <AddIcon />
-            </Button>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 10 }} gap={2}>
+                <Button color="primary" onClick={addScenario}>
+                    Create your first scenario to get started
+                </Button>
+
+                <Button
+                    onClick={addScenario}
+                    sx={{ borderRadius: '50%', p: 1.5, minWidth: 0, width: 'fit-content' }}
+                    variant='outlined'
+                    color='success'>
+                    <AddIcon />
+                </Button >
+            </Box>
         )
     } else {
         return (
