@@ -21,7 +21,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
     return (
         <>
             {isBodyFullSize ?
-                <Box sx={{ position: 'sticky', top: 391.05, left: '100%', width: 0, height: 0 }}>
+                <Box sx={{ position: 'sticky', top: 377, left: '100%', width: 0, height: 0 }}>
                     <Fab sx={{ ml: '16px', mt: '-82px' }} color='info' aria-label='add' onClick={addValue}>
                         <AddIcon />
                     </Fab>

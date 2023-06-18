@@ -35,7 +35,7 @@ const TransactionDashboard = () => {
         <Box sx={{ width: '100%' }} id="dashboard-body">
 
             {!isMobile &&
-                <Paper elevation={3} sx={{ mt: 2 }}>
+                <Paper elevation={3} sx={{ position: 'sticky', top: 321, mt: 2, zIndex: 10 }}>
                     {navigation}
                 </Paper>
             }
