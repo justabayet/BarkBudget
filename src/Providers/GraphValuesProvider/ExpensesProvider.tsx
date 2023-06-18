@@ -74,7 +74,15 @@ const converter: FirestoreDataConverter<Expense> = {
 }
 
 const sortExpensesFunction = (expense1: Expense, expense2: Expense): number => {
-    return expense1.startDate.getTime() - expense2.startDate.getTime()
+    const getTime = (expense: Expense): number => {
+        if ([modeNames.DAILY, modeNames.MONTHLY].includes(expense.mode)) {
+            return expense.endDate.getTime()
+        } else {
+            return expense.startDate.getTime()
+        }
+    }
+
+    return getTime(expense1) - getTime(expense2)
 }
 
 export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
@@ -200,10 +208,17 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
         setGraphExpenses(updatedGraphExpenses)
     }, [expenses, startDateScenario, endDate, startAmount])
 
+    const dummy = new Expense({ startDate: startDateScenario, endDate: startDateScenario, amount: startAmount, id: "dummy", name: "dummy" })
+
+    let expensesWithDummy: Expense[] = [dummy]
+
+    if (expenses) {
+        expensesWithDummy = expensesWithDummy.concat(expenses).sort(sortExpensesFunction)
+    }
 
     return (
         <ExpensesContext.Provider
-            value={(new Expenses(expenses, graphExpenses, addExpense, deleteExpense, updateExpense))}
+            value={(new Expenses(expensesWithDummy, graphExpenses, addExpense, deleteExpense, updateExpense))}
         >
             {children}
         </ExpensesContext.Provider>

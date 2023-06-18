@@ -1,5 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@mui/material"
+import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, Divider, IconButton, Typography } from "@mui/material"
 import React from "react"
 import { modeNames } from "../../Modes/const"
 import { useDeviceDetails } from "../../Providers/DeviceDetailsProvider"
@@ -24,6 +24,10 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
 
     const handleClose = () => {
         setOpen(false)
+    }
+
+    if (value.id === "dummy") {
+        return <Divider sx={{ mt: 1.5, mb: -1.5 }}><Typography variant='caption'>Last Recorded Date</Typography></Divider>
     }
 
     return (
@@ -119,7 +123,7 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                 </>
 
                 :
-                <Card elevation={3} sx={{ mb: 4 }}>
+                <Card elevation={3} sx={{ mt: 3 }}>
                     <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
                             <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: "center", flexDirection: "column" }}>
