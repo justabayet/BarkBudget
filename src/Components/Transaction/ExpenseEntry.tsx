@@ -1,5 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material"
+import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@mui/material"
 import React from "react"
 import { modeNames } from "../../Modes/const"
 import { useDeviceDetails } from "../../Providers/DeviceDetailsProvider"
@@ -9,6 +9,7 @@ import { compareDate, getFormattedDate } from "../../helpers"
 import AmountField from "../Fields/AmountField"
 import CustomDatePicker from "../Fields/CustomDatePicker"
 import CustomTextField from '../Fields/CustomTextField'
+import DeleteButton from './DeleteButton'
 import './ExpenseEntry.css'
 import ModeSelector from "./ModeSelector"
 
@@ -52,15 +53,13 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                                         </Typography>
                                     </Box>
                                 </Box>
-
                             </CardContent>
                         </CardActionArea>
                     </Card>
 
                     <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-                        <DialogTitle>Edit</DialogTitle>
                         <DialogContent>
-                            <Box sx={{ pt: 1, flexWrap: 'nowrap', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} gap={3}>
+                            <Box sx={{ pt: 3, flexWrap: 'nowrap', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} gap={3}>
                                 <CustomTextField
                                     label={'Name'}
                                     text={value.name}
@@ -110,14 +109,10 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
                                             }
                                         }} />
                                 </Box>
-
-                                <Button sx={{ mt: 3 }} variant='outlined' color='error' startIcon={<DeleteIcon />} onClick={() => {
-                                    handleClose()
-                                    handleDelete()
-                                }}>Delete</Button>
                             </Box>
                         </DialogContent>
                         <DialogActions>
+                            <DeleteButton sx={{ m: 1, mr: 'auto' }} action={() => { handleClose(); handleDelete() }} />
                             <Button onClick={handleClose} variant="outlined" autoFocus>Cancel</Button>
                             <Button onClick={handleClose} variant="contained" color="primary">Confirm</Button>
                         </DialogActions>
@@ -179,7 +174,7 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
 
                             </Box>
 
-                            <IconButton onClick={handleDelete}>
+                            <IconButton onClick={handleDelete} sx={{ ml: 2 }}>
                                 <DeleteIcon />
                             </IconButton>
                         </Box>

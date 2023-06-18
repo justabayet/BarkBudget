@@ -1,5 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material"
+import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@mui/material"
 import React from "react"
 import { useDeviceDetails } from '../../Providers/DeviceDetailsProvider'
 import { GenericEntry } from "../../Providers/GraphValuesProvider/GenericValues"
@@ -7,6 +7,7 @@ import { Limit } from "../../Providers/GraphValuesProvider/LimitsProvider"
 import { compareDate, getFormattedDate } from "../../helpers"
 import AmountField from "../Fields/AmountField"
 import CustomDatePicker from "../Fields/CustomDatePicker"
+import DeleteButton from './DeleteButton'
 
 const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) => {
     const { isBodyFullSize } = useDeviceDetails()
@@ -44,9 +45,8 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
                     </Card>
 
                     <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-                        <DialogTitle>Edit</DialogTitle>
                         <DialogContent>
-                            <Box sx={{ pt: 1, flexWrap: 'nowrap', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} gap={3}>
+                            <Box sx={{ pt: 3, flexWrap: 'nowrap', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} gap={3}>
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap' }} gap={3}>
                                     <CustomDatePicker
                                         label={'Start Date'}
@@ -75,14 +75,10 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
                                             handleSave({ ...value, amount: newAmount })
                                         }
                                     }} />
-
-                                <Button sx={{ mt: 3 }} variant='outlined' color='error' startIcon={<DeleteIcon />} onClick={() => {
-                                    handleClose()
-                                    handleDelete()
-                                }}>Delete</Button>
                             </Box>
                         </DialogContent>
                         <DialogActions>
+                            <DeleteButton sx={{ m: 1, mr: 'auto' }} action={() => { handleClose(); handleDelete() }} />
                             <Button onClick={handleClose} variant="outlined" autoFocus>Cancel</Button>
                             <Button onClick={handleClose} variant="contained" color="primary">Confirm</Button>
                         </DialogActions>

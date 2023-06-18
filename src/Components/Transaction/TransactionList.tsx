@@ -14,7 +14,7 @@ type TransactionListType = <Transaction extends TransactionType>({ useValues, Ch
 
 const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => {
     const { values, addValue, deleteValue, updateValue } = useValues()
-    const { isBodyFullSize } = useDeviceDetails()
+    const { isMobile } = useDeviceDetails()
 
     const hasValues = values && values.length > 0
 
@@ -22,7 +22,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
         bottom: 72,
         right: 16,
     }
-    if (isBodyFullSize) {
+    if (!isMobile) {
         fabPlacement.bottom = 32
         fabPlacement.right = 32
     }
