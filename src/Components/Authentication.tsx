@@ -13,7 +13,7 @@ import { useToggleTheme } from '../Providers/ToggleThemeProvider'
 import GoogleIcon from './GoogleLogo'
 
 const Authentication = (): JSX.Element => {
-    const { user, handleSignOut, handleSignIn } = useAuthentication()
+    const { user, handleSignOut, handleSignIn, deleteAccount } = useAuthentication()
     const theme = useTheme()
     const { toggleTheme } = useToggleTheme()
 
@@ -166,7 +166,8 @@ const Authentication = (): JSX.Element => {
                                         <Typography variant='caption'> Actions are permanent in this zone</Typography>
                                     </Box>
 
-                                    <Button color='error' variant='contained' size='small' sx={{ width: 'fit-content' }}>Delete account</Button>
+                                    <Button color='error' variant='contained' size='small' sx={{ width: 'fit-content' }}
+                                        onClick={deleteAccount}>Delete account</Button>
                                 </Stack>
                             </Collapse>
                         </Stack>
