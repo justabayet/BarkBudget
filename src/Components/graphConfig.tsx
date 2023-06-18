@@ -18,6 +18,19 @@ const options: ChartOptions<"line"> = {
     plugins: {
         legend: {
             display: false,
+        },
+        tooltip: {
+
+            callbacks: {
+                title: function (tooltipItems, data) {
+                    const date = new Date(tooltipItems[0].raw.x)
+
+                    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+                    const title = date.toLocaleDateString('en-US', options);
+
+                    return title
+                },
+            }
         }
 
     },
@@ -95,7 +108,7 @@ const config: ChartConfiguration<"line"> = {
     data: {
         datasets: [
             {
-                label: 'Value',
+                label: 'Record',
                 data: [],
                 backgroundColor: `rgba(${colorTarget}, 0.2)`,
                 borderColor: `rgba(${colorTarget}, 1)`,
@@ -113,7 +126,7 @@ const config: ChartConfiguration<"line"> = {
                 fill: true,
             },
             {
-                label: 'Expense',
+                label: 'Expected',
                 data: [],
                 backgroundColor: `rgba(${colorExpense}, 0.2)`,
                 borderColor: `rgba(${colorExpense}, 1)`,
