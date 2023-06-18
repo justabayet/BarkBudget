@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import React from 'react'
@@ -10,6 +11,12 @@ import { ToggleThemeProvider } from './Providers/ToggleThemeProvider'
 
 
 function App(): JSX.Element {
+    try {
+        if (screen.width <= 425) screen.orientation.lock('portrait')
+    } catch (error) {
+        console.log("screen.orientation.lock('portrait'): Can't be called on this device")
+    }
+
     return (
         <ToggleThemeProvider>
             <DeviceDetailsProvider>
