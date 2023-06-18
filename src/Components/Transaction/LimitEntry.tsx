@@ -86,7 +86,7 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
                 </>
 
                 :
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", mb: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", mt: 3 }}>
                     <CustomDatePicker
                         date={value.startDate}
                         setDate={(newDate) => {

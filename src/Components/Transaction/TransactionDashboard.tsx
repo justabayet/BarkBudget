@@ -24,10 +24,10 @@ const TransactionDashboard = () => {
             value={tabIndex}
             onChange={handleTabChange}
         >
-            <BottomNavigationAction label="Limits" icon={<></>} />
-            <BottomNavigationAction label="Scenario" icon={<></>} />
-            <BottomNavigationAction label="Records" icon={<></>} />
-            <BottomNavigationAction label="Expectations" icon={<></>} />
+            <BottomNavigationAction label="" icon={<>Limits</>} />
+            <BottomNavigationAction label="" icon={<>Scenario</>} />
+            <BottomNavigationAction label="" icon={<>Records</>} />
+            <BottomNavigationAction label="" icon={<>Expectations</>} />
         </BottomNavigation>
     )
 
@@ -35,7 +35,7 @@ const TransactionDashboard = () => {
         <Box sx={{ width: '100%' }} id="dashboard-body">
 
             {!isMobile &&
-                <Paper elevation={3} sx={{ mt: 2, mb: 2 }}>
+                <Paper elevation={3} sx={{ mt: 2 }}>
                     {navigation}
                 </Paper>
             }

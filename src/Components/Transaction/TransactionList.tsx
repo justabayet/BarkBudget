@@ -1,9 +1,9 @@
 import AddIcon from '@mui/icons-material/Add'
-import { Box, Collapse, Fab, List, Typography } from "@mui/material"
-import React from "react"
-import { TransitionGroup } from "react-transition-group"
+import { Box, Collapse, Fab, List, Typography } from '@mui/material'
+import React from 'react'
+import { TransitionGroup } from 'react-transition-group'
 import { useDeviceDetails } from '../../Providers/DeviceDetailsProvider'
-import { GenericEntry, GenericValuesContext, TransactionType } from "../../Providers/GraphValuesProvider/GenericValues"
+import { GenericEntry, GenericValuesContext, TransactionType } from '../../Providers/GraphValuesProvider/GenericValues'
 
 interface TransactionListProps<Transaction extends TransactionType> {
     useValues: (() => GenericValuesContext<Transaction>)
@@ -32,19 +32,19 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
             <Fab sx={{
                 position: 'fixed',
                 ...fabPlacement
-            }} color="info" aria-label="add" onClick={addValue}>
+            }} color='info' aria-label='add' onClick={addValue}>
                 <AddIcon />
             </Fab>
             {!hasValues &&
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-around", height: "300px" }}>
-                    <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: "center" }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', height: '300px' }}>
+                    <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: 'center' }}>
                         Press the + button to add an element
                     </Typography>
                 </Box>}
 
             {hasValues &&
-                <List id="transaction-list">
-                    <TransitionGroup id="transition-group" component={null}>
+                <List id='transaction-list'>
+                    <TransitionGroup id='transition-group' component={null}>
                         {values?.map((value, index) => {
                             return (
                                 <Collapse key={value.id} id={`collapse-${value.id}`}>

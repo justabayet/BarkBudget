@@ -75,7 +75,7 @@ const ValueEntry: GenericEntry<Value> = ({ value, handleDelete, handleSave }) =>
                     </Dialog>
                 </>
                 :
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", mb: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", mt: 3 }}>
                     <CustomDatePicker
                         date={value.date}
                         setDate={(newDate) => {
