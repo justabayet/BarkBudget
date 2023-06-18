@@ -14,24 +14,23 @@ type TransactionListType = <Transaction extends TransactionType>({ useValues, Ch
 
 const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => {
     const { values, addValue, deleteValue, updateValue } = useValues()
-    const { isMobile } = useDeviceDetails()
+    const { isMobile, isBodyFullSize } = useDeviceDetails()
 
     const hasValues = values && values.length > 0
 
-    let fabPlacement = {
-        bottom: 72,
-        right: 16,
-    }
-    if (!isMobile) {
-        fabPlacement.bottom = 32
-        fabPlacement.right = 32
-    }
-
     return (
         <>
-            <Fab sx={{ position: 'fixed', ...fabPlacement }} color='info' aria-label='add' onClick={addValue}>
-                <AddIcon />
-            </Fab>
+            {isBodyFullSize ?
+                <Box sx={{ position: 'sticky', top: 391.05, left: '100%', width: 0, height: 0 }}>
+                    <Fab sx={{ ml: '16px', mt: '-82px' }} color='info' aria-label='add' onClick={addValue}>
+                        <AddIcon />
+                    </Fab>
+                </Box>
+                :
+                <Fab sx={{ position: 'fixed', bottom: isMobile ? 72 : 32, right: isMobile ? 16 : 32 }} color='info' aria-label='add' onClick={addValue}>
+                    <AddIcon />
+                </Fab>
+            }
 
             {!hasValues &&
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', height: '300px' }}>
