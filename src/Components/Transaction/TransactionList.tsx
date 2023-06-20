@@ -34,7 +34,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
 
             {!hasValues &&
                 <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: 'center', mt: '150px' }}>
-                    Press the + button to add an element
+                    Press <Fab size='small' color='info' disabled><AddIcon /></Fab> to start adding elements
                 </Typography>}
 
             {hasValues &&
