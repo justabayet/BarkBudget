@@ -17,6 +17,7 @@ interface LimitParameter {
     endDate?: Date
     amount?: number
     id?: string
+    new?: boolean
 }
 
 export class Limit {
@@ -24,6 +25,7 @@ export class Limit {
     endDate: Date
     amount: number
     id?: string
+    new?: boolean
 
     constructor({ startDate, endDate, amount, id }: LimitParameter) {
         this.id = id
@@ -114,6 +116,9 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
         addDoc(limitsCollection, newLimit).then(document => {
             newLimit.id = document.id
+            newLimit.new = true
+
+            limits.forEach(limit => limit.new = false)
 
             const newLimits = [newLimit, ...limits]
             newLimits.sort(sortLimitsFunction)

@@ -17,7 +17,7 @@ import ModeSelector from "./ModeSelector"
 const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }) => {
     const { isBodyFullSize } = useDeviceDetails()
 
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = React.useState(!!value.new)
 
     const handleClickOpen = () => {
         setOpen(true)

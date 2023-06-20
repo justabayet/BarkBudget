@@ -14,12 +14,14 @@ interface ValueParameter {
     date?: Date
     amount?: number
     id?: string
+    new?: boolean
 }
 
 export class Value {
     date: Date
     amount: number
     id?: string
+    new?: boolean
 
     constructor({ date, amount, id }: ValueParameter) {
         this.date = getValidDate(date)
@@ -104,6 +106,9 @@ export const ValuesProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
         addDoc(valuesCollection, newValue).then(document => {
             newValue.id = document.id
+            newValue.new = true
+
+            values.forEach(value => value.new = false)
 
             const newValues = [newValue, ...values]
             newValues.sort(sortValuesFunction)

@@ -20,6 +20,7 @@ interface ExpenseParameter {
     mode?: string
     name: string
     id?: string
+    new?: boolean
 }
 
 export class Expense {
@@ -29,6 +30,7 @@ export class Expense {
     mode: string
     name: string
     id?: string
+    new?: boolean
 
     constructor({ startDate, endDate, amount, id, mode, name }: ExpenseParameter) {
         this.id = id
@@ -144,6 +146,9 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
 
         addDoc(expensesCollection, newExpense).then(fbDocument => {
             newExpense.id = fbDocument.id
+            newExpense.new = true
+
+            expenses.forEach(expense => expense.new = false)
 
             const newExpenses = [newExpense, ...expenses]
             newExpenses.sort(sortExpensesFunction)
