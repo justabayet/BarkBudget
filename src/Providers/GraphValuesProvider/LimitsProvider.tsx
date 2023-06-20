@@ -230,9 +230,21 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         setGraphLimits(updatedGraphLimits)
     }, [limits, startDate, endDate])
 
+    const dummyStartScenario = new Limit({ startDate: scenario.startDate, endDate: scenario.startDate, id: "startScenario" })
+    const dummyEndScenario = new Limit({ startDate: scenario.endDate, endDate: scenario.endDate, id: "endScenario" })
+
+    let limitsWithDummy: Limit[] = []
+
+    if (limits && limits.length > 0) {
+        if (limits.find((limit) => sortLimitsFunction(limit, dummyStartScenario) < 0)) limitsWithDummy.push(dummyStartScenario)
+        if (limits.find((limit) => sortLimitsFunction(limit, dummyEndScenario) > 0)) limitsWithDummy.push(dummyEndScenario)
+
+        limitsWithDummy = limitsWithDummy.concat(limits).sort(sortLimitsFunction)
+    }
+
     return (
         <LimitsContext.Provider
-            value={(new Limits(limits, graphLimits, addLimit, deleteLimit, updateLimit))}
+            value={(new Limits(limitsWithDummy, graphLimits, addLimit, deleteLimit, updateLimit))}
         >
             {children}
         </LimitsContext.Provider>

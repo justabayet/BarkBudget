@@ -8,6 +8,7 @@ import { compareDate, getFormattedDate } from "../../helpers"
 import AmountField from "../Fields/AmountField"
 import CustomDatePicker from "../Fields/CustomDatePicker"
 import DeleteButton from "./DeleteButton"
+import DummyEntry from "./DummyEntry"
 
 
 const ValueEntry: GenericEntry<Value> = ({ value, handleDelete, handleSave }) => {
@@ -23,6 +24,9 @@ const ValueEntry: GenericEntry<Value> = ({ value, handleDelete, handleSave }) =>
     const handleClose = () => {
         setOpen(false)
     }
+
+    const dummy = DummyEntry({ id: value.id })
+    if (dummy) return dummy
 
     return (
         <>

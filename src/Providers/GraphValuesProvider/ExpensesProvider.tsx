@@ -90,14 +90,14 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
     const { scenario, scenarioDoc } = useScenario()
     const { addDoc, deleteDoc, setDoc } = useFirebaseRepository()
 
-    let startDateScenario = scenario.startDate
+    let startDateRecords = scenario.startDate
     let endDate = scenario.endDate
     let startAmount = 0
 
     const { graphValues } = useValues()
     if (graphValues !== null && graphValues.length > 0) {
         const lastValue = graphValues[graphValues.length - 1]
-        startDateScenario = lastValue.x
+        startDateRecords = lastValue.x
         startAmount = lastValue.y
     }
 
@@ -198,8 +198,8 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
     }
 
     useEffect(() => {
-        const getEngine = (startDateScenario: Date, endDate: Date, startAmount: number) => {
-            const engine = new ForecastEngine(startDateScenario, endDate, startAmount)
+        const getEngine = (startDateRecords: Date, endDate: Date, startAmount: number) => {
+            const engine = new ForecastEngine(startDateRecords, endDate, startAmount)
 
             expenses?.forEach(expense => engine.addEntry(new modes[expense.mode](expense)))
 
@@ -207,8 +207,8 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
         }
 
         if (expenses === null) return
-        console.log("ExpensesProvider compute graph expenses:", startDateScenario.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), startAmount, expenses?.length)
-        const engine = getEngine(startDateScenario, endDate, startAmount)
+        console.log("ExpensesProvider compute graph expenses:", startDateRecords.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), startAmount, expenses?.length)
+        const engine = getEngine(startDateRecords, endDate, startAmount)
 
         engine.iterate()
         const updatedGraphExpenses = engine.values?.map((computedValue): GraphValue => {
@@ -220,13 +220,19 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
 
         updatedGraphExpenses?.sort(compareGraphValues)
         setGraphExpenses(updatedGraphExpenses)
-    }, [expenses, startDateScenario, endDate, startAmount])
+    }, [expenses, startDateRecords, endDate, startAmount])
 
-    const dummy = new Expense({ startDate: startDateScenario, endDate: startDateScenario, amount: startAmount, id: "dummy", name: "dummy" })
+    const dummyStartRecords = new Expense({ startDate: startDateRecords, endDate: startDateRecords, amount: startAmount, id: "startRecords", name: "startRecords" })
+    const dummyStartScenario = new Expense({ startDate: scenario.startDate, endDate: scenario.startDate, amount: startAmount, id: "startScenario", name: "startScenario" })
+    const dummyEndScenario = new Expense({ startDate: scenario.endDate, endDate: scenario.endDate, amount: startAmount, id: "endScenario", name: "endScenario", mode: modeNames.MONTHLY })
 
-    let expensesWithDummy: Expense[] = [dummy]
+    let expensesWithDummy: Expense[] = []
 
-    if (expenses) {
+    if (expenses && expenses.length > 0) {
+        if (startDateRecords > scenario.startDate && expenses.find((expense) => sortExpensesFunction(expense, dummyStartScenario) > 0 && sortExpensesFunction(expense, dummyStartRecords) < 0)) expensesWithDummy.push(dummyStartRecords)
+        if (expenses.find((expense) => sortExpensesFunction(expense, dummyStartScenario) < 0)) expensesWithDummy.push(dummyStartScenario)
+        if (expenses.find((expense) => sortExpensesFunction(expense, dummyEndScenario) > 0)) expensesWithDummy.push(dummyEndScenario)
+
         expensesWithDummy = expensesWithDummy.concat(expenses).sort(sortExpensesFunction)
     }
 

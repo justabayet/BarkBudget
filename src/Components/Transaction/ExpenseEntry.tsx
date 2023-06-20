@@ -1,5 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, Divider, IconButton, Typography } from "@mui/material"
+import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@mui/material"
 import React from "react"
 import { modeNames } from "../../Modes/const"
 import { useDeviceDetails } from "../../Providers/DeviceDetailsProvider"
@@ -10,6 +10,7 @@ import AmountField from "../Fields/AmountField"
 import CustomDatePicker from "../Fields/CustomDatePicker"
 import CustomTextField from '../Fields/CustomTextField'
 import DeleteButton from './DeleteButton'
+import DummyEntry from './DummyEntry'
 import ModeSelector from "./ModeSelector"
 
 
@@ -26,9 +27,8 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
         setOpen(false)
     }
 
-    if (value.id === "dummy") {
-        return <Divider sx={{ mt: 1.5, mb: -1.5 }}><Typography variant='caption'>Last Recorded Date</Typography></Divider>
-    }
+    const dummy = DummyEntry({ id: value.id })
+    if (dummy) return dummy
 
     return (
         <>

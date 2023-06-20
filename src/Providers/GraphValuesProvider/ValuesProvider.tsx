@@ -180,8 +180,20 @@ export const ValuesProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         setGraphValues(updatedGraphValues)
     }, [values, startDate, endDate])
 
+    const dummyStartScenario = new Value({ date: scenario.startDate, id: "startScenario" })
+    const dummyEndScenario = new Value({ date: scenario.endDate, id: "endScenario" })
+
+    let valuesWithDummy: Value[] = []
+
+    if (values && values.length > 0) {
+        if (values.find((value) => sortValuesFunction(value, dummyStartScenario) > 0)) valuesWithDummy.push(dummyStartScenario)
+        if (values.find((value) => sortValuesFunction(value, dummyEndScenario) < 0)) valuesWithDummy.push(dummyEndScenario)
+
+        valuesWithDummy = valuesWithDummy.concat(values).sort(sortValuesFunction)
+    }
+
     return (
-        <ValuesContext.Provider value={(new Values(values, graphValues, addValue, deleteValue, updateValue))}>
+        <ValuesContext.Provider value={(new Values(valuesWithDummy, graphValues, addValue, deleteValue, updateValue))}>
             {children}
         </ValuesContext.Provider>
     )

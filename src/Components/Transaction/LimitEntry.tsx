@@ -8,6 +8,7 @@ import { compareDate, getFormattedDate } from "../../helpers"
 import AmountField from "../Fields/AmountField"
 import CustomDatePicker from "../Fields/CustomDatePicker"
 import DeleteButton from './DeleteButton'
+import DummyEntry from './DummyEntry'
 
 const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) => {
     const { isBodyFullSize } = useDeviceDetails()
@@ -21,6 +22,9 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
     const handleClose = () => {
         setOpen(false)
     }
+
+    const dummy = DummyEntry({ id: value.id })
+    if (dummy) return dummy
 
     return (
         <>
