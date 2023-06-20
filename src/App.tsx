@@ -6,6 +6,7 @@ import './App.css'
 import MainView from './Components/MainView'
 import { AuthenticationProvider } from './Providers/AuthenticationProvider'
 import { DeviceDetailsProvider } from './Providers/DeviceDetailsProvider'
+import { FirebaseRepositoryProvider } from './Providers/FirebaseRepositoryProvider'
 import { GraphProvider } from './Providers/GraphProvider'
 import { ToggleThemeProvider } from './Providers/ToggleThemeProvider'
 
@@ -22,9 +23,11 @@ function App(): JSX.Element {
             <DeviceDetailsProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <GraphProvider>
-                        <AuthenticationProvider>
-                            <MainView />
-                        </AuthenticationProvider>
+                        <FirebaseRepositoryProvider>
+                            <AuthenticationProvider>
+                                <MainView />
+                            </AuthenticationProvider>
+                        </FirebaseRepositoryProvider>
                     </GraphProvider>
                 </LocalizationProvider>
             </DeviceDetailsProvider>

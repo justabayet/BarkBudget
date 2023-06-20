@@ -1,6 +1,7 @@
-import { CollectionReference, FirestoreDataConverter, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
+import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate, getValidDate } from "../../helpers"
+import { useFirebaseRepository } from "../FirebaseRepositoryProvider"
 import { GraphValue } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { GenericValues, GenericValuesContext } from "./GenericValues"
@@ -66,6 +67,7 @@ const sortLimitsFunction = (limit1: Limit, limit2: Limit): number => {
 export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const { scenarioDoc, scenario } = useScenario()
     const { startDate, endDate } = scenario
+    const { addDoc, deleteDoc, setDoc } = useFirebaseRepository()
 
     const [limits, setLimits] = useState<Limit[] | null>(null)
     const [graphLimits, setGraphLimits] = useState<GraphValue[] | null>(null)

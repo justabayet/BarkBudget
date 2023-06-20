@@ -1,8 +1,9 @@
 
-import { CollectionReference, FirestoreDataConverter, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
+import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
 import { useAuthentication } from "./AuthenticationProvider"
+import { useFirebaseRepository } from "./FirebaseRepositoryProvider"
 
 class Scenarios {
     scenarios: Scenario[] | null
@@ -107,6 +108,7 @@ const converter: FirestoreDataConverter<Scenario> = {
 
 export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const { userDoc } = useAuthentication()
+    const { addDoc, deleteDoc, setDoc } = useFirebaseRepository()
 
     const [scenarios, setScenarios] = useState<Scenario[] | null>(null)
     const [scenariosCollection, setScenariosCollection] = useState<CollectionReference | null>(null)

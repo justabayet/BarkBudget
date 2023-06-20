@@ -1,6 +1,7 @@
-import { CollectionReference, FirestoreDataConverter, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
+import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate, getValidDate } from "../../helpers"
+import { useFirebaseRepository } from "../FirebaseRepositoryProvider"
 import { GraphValue, compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { GenericValues, GenericValuesContext } from "./GenericValues"
@@ -55,6 +56,7 @@ const sortValuesFunction = (value1: Value, value2: Value): number => {
 export const ValuesProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const { scenarioDoc, scenario } = useScenario()
     const { startDate, endDate } = scenario
+    const { addDoc, deleteDoc, setDoc } = useFirebaseRepository()
 
     const [values, setValues] = useState<Value[] | null>(null)
     const [graphValues, setGraphValues] = useState<GraphValue[] | null>([])

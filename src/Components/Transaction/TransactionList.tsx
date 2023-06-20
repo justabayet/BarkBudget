@@ -33,11 +33,9 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
             }
 
             {!hasValues &&
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', height: '300px' }}>
-                    <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: 'center' }}>
-                        Press the + button to add an element
-                    </Typography>
-                </Box>}
+                <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: 'center', mt: '150px' }}>
+                    Press the + button to add an element
+                </Typography>}
 
             {hasValues &&
                 <List id='transaction-list'>

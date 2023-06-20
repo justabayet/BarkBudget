@@ -1,10 +1,10 @@
-import { Box, IconButton, useTheme } from '@mui/material'
+import { Box, Button, IconButton, useTheme } from '@mui/material'
 import React from 'react'
 import { useAuthentication } from '../Providers/AuthenticationProvider'
 import GoogleIcon from './GoogleLogo'
 
 const LoggedOutView = (): JSX.Element => {
-    const { handleSignIn } = useAuthentication()
+    const { handleSignIn, signInTestAccount } = useAuthentication()
     const theme = useTheme()
     const fileSuffix = theme.palette.mode === "dark" ? 'primary' : 'secondary'
 
@@ -23,6 +23,9 @@ const LoggedOutView = (): JSX.Element => {
             <IconButton sx={{ margin: 'auto' }} onClick={handleSignIn}>
                 <GoogleIcon sx={{ fontSize: '80px' }} />
             </IconButton>
+            <Button sx={{ position: 'fixed', bottom: 20, left: '50vw', transform: 'translateX(-50%)' }} size='small' onClick={signInTestAccount} variant='outlined'>
+                Test as a Guest first?
+            </Button>
         </Box>
     )
 }

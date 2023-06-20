@@ -1,8 +1,9 @@
-import { CollectionReference, FirestoreDataConverter, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore"
+import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { ForecastEngine } from "../../Modes/ForecastEngine"
 import { modeNames, modes } from "../../Modes/const"
 import { getFormattedDate, getValidDate } from "../../helpers"
+import { useFirebaseRepository } from "../FirebaseRepositoryProvider"
 import { GraphValue, compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { GenericValues, GenericValuesContext } from "./GenericValues"
@@ -87,6 +88,7 @@ const sortExpensesFunction = (expense1: Expense, expense2: Expense): number => {
 
 export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const { scenario, scenarioDoc } = useScenario()
+    const { addDoc, deleteDoc, setDoc } = useFirebaseRepository()
 
     let startDateScenario = scenario.startDate
     let endDate = scenario.endDate
