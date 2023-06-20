@@ -9,8 +9,6 @@ import { useScenario } from "../ScenarioProvider"
 import { GenericValues, GenericValuesContext } from "./GenericValues"
 import { useValues } from "./ValuesProvider"
 
-const currentDate = new Date()
-
 export type ExpensesContextType = GenericValuesContext<Expense>
 
 const Expenses = GenericValues<Expense>
@@ -105,7 +103,7 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
     const [graphExpenses, setGraphExpenses] = useState<GraphValue[] | null>(null)
     const [expensesCollection, setExpensesCollection] = useState<CollectionReference | null>(null)
 
-    const [newExpense, setNewExpense] = useState(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
+    const [newExpense, setNewExpense] = useState(new Expense({ startDate: scenario.startDate, endDate: scenario.startDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
 
     useEffect(() => {
         if (scenarioDoc) {
@@ -144,14 +142,17 @@ export const ExpensesProvider = ({ children }: React.PropsWithChildren): JSX.Ele
             return
         }
 
-        addDoc(expensesCollection, newExpense).then(document => {
-            newExpense.id = document.id
+        addDoc(expensesCollection, newExpense).then(fbDocument => {
+            newExpense.id = fbDocument.id
 
             const newExpenses = [newExpense, ...expenses]
             newExpenses.sort(sortExpensesFunction)
             setExpenses(newExpenses)
 
-            setNewExpense(new Expense({ startDate: currentDate, endDate: currentDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
+            let element = document.getElementById("startScenario")
+            window.scrollTo({ behavior: "smooth", top: element?.offsetTop })
+
+            setNewExpense(new Expense({ startDate: scenario.startDate, endDate: scenario.startDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
         })
     }
 
