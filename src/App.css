@@ -1,10 +1,11 @@
 :root {
-  --primary: #9a9aff;
-  --filter-primary-logo: invert(62%) sepia(71%) saturate(1658%) hue-rotate(203deg) brightness(101%) contrast(101%);
-  --secondary: #04003d;
-  --filter-secondary-logo: invert(6%) sepia(58%) saturate(5248%) hue-rotate(236deg) brightness(82%) contrast(121%);
+    --primary: #9a9aff;
+    --filter-primary-logo: invert(62%) sepia(71%) saturate(1658%) hue-rotate(203deg) brightness(101%) contrast(101%);
+    --secondary: #04003d;
+    --filter-secondary-logo: invert(6%) sepia(58%) saturate(5248%) hue-rotate(236deg) brightness(82%) contrast(121%);
 }
 
 body {
     width: 100vw;
+    overflow-x: hidden;
 }
