@@ -1,7 +1,7 @@
 
 import { DocumentReference, doc } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { ExpensesProvider } from "./GraphValuesProvider/ExpensesProvider"
+import { ExpectationsProvider } from "./GraphValuesProvider/ExpectationsProvider"
 import { LimitsProvider } from "./GraphValuesProvider/LimitsProvider"
 import { ValuesProvider } from "./GraphValuesProvider/ValuesProvider"
 import { Scenario, useScenarios } from "./ScenariosProvider"
@@ -41,11 +41,11 @@ export const ScenarioProvider = React.memo(({ scenario, children }: React.PropsW
     return (
         <ScenarioContext.Provider value={(new ScenarioDocumented(scenarioDoc, scenario))}>
             <ValuesProvider>
-                <ExpensesProvider>
+                <ExpectationsProvider>
                     <LimitsProvider>
                         {children}
                     </LimitsProvider>
-                </ExpensesProvider>
+                </ExpectationsProvider>
             </ValuesProvider>
         </ScenarioContext.Provider>
     )

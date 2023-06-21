@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
 import { useGraph } from "../../Providers/GraphProvider"
-import { useExpenses } from '../../Providers/GraphValuesProvider/ExpensesProvider'
+import { useExpectations } from '../../Providers/GraphValuesProvider/ExpectationsProvider'
 import { useLimits } from "../../Providers/GraphValuesProvider/LimitsProvider"
 import { useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
 
 const DataScenario = (): JSX.Element => {
-    const { setMainExpenses, setMainLimits, setMainValues } = useGraph()
+    const { setMainExpectations, setMainLimits, setMainValues } = useGraph()
 
-    const graphExpenses = useExpenses().graphValues
+    const graphExpectations = useExpectations().graphValues
     useEffect(() => {
-        console.log("DataScenario set graphExpenses")
-        setMainExpenses(graphExpenses || [])
-    }, [graphExpenses, setMainExpenses])
+        console.log("DataScenario set graphExpectations")
+        setMainExpectations(graphExpectations || [])
+    }, [graphExpectations, setMainExpectations])
 
     const graphValues = useValues().graphValues
     useEffect(() => {

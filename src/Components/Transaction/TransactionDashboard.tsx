@@ -1,11 +1,11 @@
 import { BottomNavigation, BottomNavigationAction, Box, Paper } from '@mui/material'
 import React, { useState } from 'react'
 import { useDeviceDetails } from '../../Providers/DeviceDetailsProvider'
-import { Expense, useExpenses } from '../../Providers/GraphValuesProvider/ExpensesProvider'
+import { Expectation, useExpectations } from '../../Providers/GraphValuesProvider/ExpectationsProvider'
 import { Limit, useLimits } from '../../Providers/GraphValuesProvider/LimitsProvider'
 import { Value, useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
 import ScenarioPanel from '../Scenario/ScenarioPanel'
-import ExpenseEntry from './ExpenseEntry'
+import ExpectationEntry from './ExpectationEntry'
 import LimitEntry from './LimitEntry'
 import TransactionList from './TransactionList'
 import ValueEntry from './ValueEntry'
@@ -44,7 +44,7 @@ const TransactionDashboard = () => {
                 {tabIndex === 0 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} />}
                 {tabIndex === 1 && <ScenarioPanel />}
                 {tabIndex === 2 && <TransactionList<Value> useValues={useValues} ChildComponent={ValueEntry} />}
-                {tabIndex === 3 && <TransactionList<Expense> useValues={useExpenses} ChildComponent={ExpenseEntry} />}
+                {tabIndex === 3 && <TransactionList<Expectation> useValues={useExpectations} ChildComponent={ExpectationEntry} />}
             </Box>
 
             <Box height={"124px"}></Box>

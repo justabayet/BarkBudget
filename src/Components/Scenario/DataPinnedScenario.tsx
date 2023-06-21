@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useGraph } from "../../Providers/GraphProvider"
-import { useExpenses } from '../../Providers/GraphValuesProvider/ExpensesProvider'
+import { useExpectations } from '../../Providers/GraphValuesProvider/ExpectationsProvider'
 import { useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
 import { useScenario } from "../../Providers/ScenarioProvider"
 
@@ -9,20 +9,20 @@ const DataPinnedScenario = (): JSX.Element => {
     const { scenario } = useScenario()
     const { pinScenario, unpinScenario } = useGraph()
 
-    const graphExpenses = useExpenses().graphValues
+    const graphExpectations = useExpectations().graphValues
     const graphValues = useValues().graphValues
 
 
     useEffect(() => {
-        if (!graphValues || !graphExpenses || !pinScenario || !unpinScenario) return
-        pinScenario.current(scenario, [...graphValues, ...graphExpenses])
+        if (!graphValues || !graphExpectations || !pinScenario || !unpinScenario) return
+        pinScenario.current(scenario, [...graphValues, ...graphExpectations])
 
         const unpin = unpinScenario.current
         return () => {
             unpin(scenario)
         }
 
-    }, [scenario, graphExpenses, graphValues, pinScenario, unpinScenario])
+    }, [scenario, graphExpectations, graphValues, pinScenario, unpinScenario])
 
     return <></>
 }

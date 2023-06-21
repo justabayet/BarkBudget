@@ -2,7 +2,7 @@
 import { ChartConfiguration, ChartOptions, Tick } from 'chart.js';
 import { GraphValue } from "../Providers/GraphProvider";
 
-const colorExpense = '132, 94, 194'
+const colorExpectation = '132, 94, 194'
 const colorValue = '214, 93, 177'
 const colorTarget = '255, 111, 145'
 /**
@@ -128,8 +128,8 @@ const config: ChartConfiguration<"line"> = {
             {
                 label: 'Expected',
                 data: [],
-                backgroundColor: `rgba(${colorExpense}, 0.2)`,
-                borderColor: `rgba(${colorExpense}, 1)`,
+                backgroundColor: `rgba(${colorExpectation}, 0.2)`,
+                borderColor: `rgba(${colorExpectation}, 1)`,
                 borderWidth: 2,
                 pointRadius: 0,
                 fill: true,

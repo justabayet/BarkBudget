@@ -28,17 +28,17 @@ const Graph = (): JSX.Element => {
     }, [canvasRef, chartRef])
 
 
-    const { mainExpenses, mainLimits, mainValues, pinnedScenarios } = useGraph()
+    const { mainExpectations, mainLimits, mainValues, pinnedScenarios } = useGraph()
 
     useEffect(() => {
         console.log("Graph main data")
         if (!chartRef.current) return
         chartRef.current.data.datasets[0].data = mainValues as any
         chartRef.current.data.datasets[1].data = mainLimits as any
-        chartRef.current.data.datasets[2].data = mainExpenses as any
+        chartRef.current.data.datasets[2].data = mainExpectations as any
         console.log(chartRef.current?.data)
         chartRef.current.update()
-    }, [mainExpenses, mainLimits, mainValues, chartRef])
+    }, [mainExpectations, mainLimits, mainValues, chartRef])
 
 
     useEffect(() => {
@@ -88,13 +88,13 @@ const Graph = (): JSX.Element => {
     /**
      * Way to keep the graph on top of the dialog: 
         <div className="graphBox" style={{ zIndex: theme.zIndex.modal + 1 }}>
-            <canvas ref={canvasRef} id="expenseChart" />
+            <canvas ref={canvasRef} id="expectationChart" />
         </div>
      */
 
     return (
         <div className="graphBox">
-            <canvas ref={canvasRef} id="expenseChart" />
+            <canvas ref={canvasRef} id="expectationChart" />
         </div>
     )
 }

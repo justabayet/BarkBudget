@@ -3,7 +3,7 @@ import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, 
 import React from "react"
 import { modeNames } from "../../Modes/const"
 import { useDeviceDetails } from "../../Providers/DeviceDetailsProvider"
-import { Expense } from "../../Providers/GraphValuesProvider/ExpensesProvider"
+import { Expectation } from "../../Providers/GraphValuesProvider/ExpectationsProvider"
 import { GenericEntry } from "../../Providers/GraphValuesProvider/GenericValues"
 import { compareDate, getFormattedDate } from "../../helpers"
 import AmountField from "../Fields/AmountField"
@@ -14,7 +14,7 @@ import DummyEntry from './DummyEntry'
 import ModeSelector from "./ModeSelector"
 
 
-const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }) => {
+const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, handleSave }) => {
     const { isBodyFullSize } = useDeviceDetails()
 
     const [open, setOpen] = React.useState(!!value.new)
@@ -187,5 +187,5 @@ const ExpenseEntry: GenericEntry<Expense> = ({ value, handleDelete, handleSave }
     )
 }
 
-export default ExpenseEntry
+export default ExpectationEntry
 
