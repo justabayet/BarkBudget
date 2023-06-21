@@ -109,7 +109,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
     useEffect(() => {
         if (scenarioDoc) {
-            setExpectationsCollection(collection(scenarioDoc, 'expenses').withConverter(converter))
+            setExpectationsCollection(collection(scenarioDoc, 'expectations').withConverter(converter))
         } else {
             setExpectationsCollection(null)
         }

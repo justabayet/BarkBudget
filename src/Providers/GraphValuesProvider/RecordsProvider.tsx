@@ -68,7 +68,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     useEffect(() => {
         if (scenarioDoc) {
-            setRecordsCollection(collection(scenarioDoc, 'values').withConverter(converter))
+            setRecordsCollection(collection(scenarioDoc, 'records').withConverter(converter))
         } else {
             setRecordsCollection(null)
         }

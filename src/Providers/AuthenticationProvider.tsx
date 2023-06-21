@@ -112,13 +112,13 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
                 await Promise.all(querySnapshot.docs.map(async document => {
                     const scenarioDoc = doc(scenariosCollection, document.id)
 
-                    const expectationsCollection = collection(scenarioDoc, 'expenses')
+                    const expectationsCollection = collection(scenarioDoc, 'expectations')
                     const limitsCollection = collection(scenarioDoc, 'limits')
-                    const recordsCollection = collection(scenarioDoc, 'values')
+                    const recordsCollection = collection(scenarioDoc, 'records')
 
-                    await deleteCollection(expectationsCollection, 'expenses')
+                    await deleteCollection(expectationsCollection, 'expectations')
                     await deleteCollection(limitsCollection, 'limits')
-                    await deleteCollection(recordsCollection, 'values')
+                    await deleteCollection(recordsCollection, 'records')
 
                     await deleteDoc(doc(scenariosCollection, document.id))
                     console.log(`Delete succesful: scenario ${document.id}`)
