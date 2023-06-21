@@ -7,7 +7,7 @@ import { useFirebaseRepository } from "../FirebaseRepositoryProvider"
 import { GraphValue, compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { GenericValues, GenericValuesContext } from "./GenericValues"
-import { useValues } from "./ValuesProvider"
+import { useRecords } from "./RecordsProvider"
 
 export type ExpectationsContextType = GenericValuesContext<Expectation>
 
@@ -94,11 +94,11 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
     let endDate = scenario.endDate
     let startAmount = 0
 
-    const { graphValues } = useValues()
+    const { graphValues } = useRecords()
     if (graphValues !== null && graphValues.length > 0) {
-        const lastValue = graphValues[graphValues.length - 1]
-        startDateRecords = lastValue.x
-        startAmount = lastValue.y
+        const lastRecord = graphValues[graphValues.length - 1]
+        startDateRecords = lastRecord.x
+        startAmount = lastRecord.y
     }
 
     const [expectations, setExpectations] = useState<Expectation[] | null>(null)

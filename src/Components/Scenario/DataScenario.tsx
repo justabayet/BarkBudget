@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useGraph } from "../../Providers/GraphProvider"
 import { useExpectations } from '../../Providers/GraphValuesProvider/ExpectationsProvider'
 import { useLimits } from "../../Providers/GraphValuesProvider/LimitsProvider"
-import { useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
+import { useRecords } from '../../Providers/GraphValuesProvider/RecordsProvider'
 
 const DataScenario = (): JSX.Element => {
-    const { setMainExpectations, setMainLimits, setMainValues } = useGraph()
+    const { setMainExpectations, setMainLimits, setMainRecords } = useGraph()
 
     const graphExpectations = useExpectations().graphValues
     useEffect(() => {
@@ -13,11 +13,11 @@ const DataScenario = (): JSX.Element => {
         setMainExpectations(graphExpectations || [])
     }, [graphExpectations, setMainExpectations])
 
-    const graphValues = useValues().graphValues
+    const graphRecords = useRecords().graphValues
     useEffect(() => {
         console.log("DataScenario set graphValues")
-        setMainValues(graphValues || [])
-    }, [graphValues, setMainValues])
+        setMainRecords(graphRecords || [])
+    }, [graphRecords, setMainRecords])
 
     const graphLimits = useLimits().graphValues
     useEffect(() => {

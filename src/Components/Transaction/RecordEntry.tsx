@@ -3,7 +3,7 @@ import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, 
 import React from "react"
 import { useDeviceDetails } from "../../Providers/DeviceDetailsProvider"
 import { GenericEntry } from "../../Providers/GraphValuesProvider/GenericValues"
-import { Value } from "../../Providers/GraphValuesProvider/ValuesProvider"
+import { Record } from "../../Providers/GraphValuesProvider/RecordsProvider"
 import { compareDate, getFormattedDate } from "../../helpers"
 import AmountField from "../Fields/AmountField"
 import CustomDatePicker from "../Fields/CustomDatePicker"
@@ -11,7 +11,7 @@ import DeleteButton from "./DeleteButton"
 import DummyEntry from "./DummyEntry"
 
 
-const ValueEntry: GenericEntry<Value> = ({ value, handleDelete, handleSave }) => {
+const RecordEntry: GenericEntry<Record> = ({ value, handleDelete, handleSave }) => {
 
     const { isBodyFullSize } = useDeviceDetails()
 
@@ -105,5 +105,5 @@ const ValueEntry: GenericEntry<Value> = ({ value, handleDelete, handleSave }) =>
     )
 }
 
-export default ValueEntry
+export default RecordEntry
 

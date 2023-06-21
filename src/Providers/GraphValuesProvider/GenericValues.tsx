@@ -1,7 +1,7 @@
 import { GraphValue } from "../GraphProvider"
 import { Expectation } from "./ExpectationsProvider"
 import { Limit } from "./LimitsProvider"
-import { Value } from "./ValuesProvider"
+import { Record } from "./RecordsProvider"
 
 export interface EntryProps<Transaction extends TransactionType> {
     value: Transaction
@@ -10,29 +10,29 @@ export interface EntryProps<Transaction extends TransactionType> {
 }
 
 export type GenericEntry<Transaction extends TransactionType> = ({ value, handleDelete, handleSave }: EntryProps<Transaction>) => JSX.Element
-export type TransactionType = Expectation | Limit | Value
+export type TransactionType = Expectation | Limit | Record
 
 export interface GenericValuesContext<Transaction extends TransactionType> {
     values: Transaction[] | null
     graphValues: GraphValue[] | null
     addValue: () => void
-    deleteValue: (expectation: Transaction, index: number) => void
-    updateValue: (expectation: Transaction, index: number) => void
+    deleteValue: (transaction: Transaction, index: number) => void
+    updateValue: (newTransaction: Transaction, index: number) => void
 }
 
 export class GenericValues<Transaction extends TransactionType> implements GenericValuesContext<Transaction>{
     values: Transaction[] | null
     graphValues: GraphValue[] | null
     addValue: () => void
-    deleteValue: (expectation: Transaction, index: number) => void
-    updateValue: (expectation: Transaction, index: number) => void
+    deleteValue: (transaction: Transaction, index: number) => void
+    updateValue: (newTransaction: Transaction, index: number) => void
 
     constructor(
         values: Transaction[] | null,
         graphValues: GraphValue[] | null,
         addValue: () => void,
-        deleteValue: (expectation: Transaction, index: number) => void,
-        updateValue: (expectation: Transaction, index: number) => void) {
+        deleteValue: (transaction: Transaction, index: number) => void,
+        updateValue: (newTransaction: Transaction, index: number) => void) {
 
         this.values = values
         this.graphValues = graphValues

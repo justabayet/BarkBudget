@@ -3,7 +3,7 @@ import { ChartConfiguration, ChartOptions, Tick } from 'chart.js';
 import { GraphValue } from "../Providers/GraphProvider";
 
 const colorExpectation = '132, 94, 194'
-const colorValue = '214, 93, 177'
+const colorRecord = '214, 93, 177'
 const colorTarget = '255, 111, 145'
 /**
     #845EC2 : rgba(132, 94, 194, 1)
@@ -119,8 +119,8 @@ const config: ChartConfiguration<"line"> = {
             {
                 label: 'Limit',
                 data: [],
-                backgroundColor: `rgba(${colorValue}, 0.2)`,
-                borderColor: `rgba(${colorValue}, 1)`,
+                backgroundColor: `rgba(${colorRecord}, 0.2)`,
+                borderColor: `rgba(${colorRecord}, 1)`,
                 borderWidth: 2,
                 pointRadius: 0,
                 fill: true,

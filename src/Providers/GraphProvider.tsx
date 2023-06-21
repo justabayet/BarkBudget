@@ -19,8 +19,8 @@ export interface GraphValue {
 class Graph {
     mainExpectations: GraphValue[]
     setMainExpectations: (newMainExpectations: GraphValue[]) => void
-    mainValues: GraphValue[]
-    setMainValues: (newMainValues: GraphValue[]) => void
+    mainRecords: GraphValue[]
+    setMainRecords: (newMainRecords: GraphValue[]) => void
     mainLimits: GraphValue[]
     setMainLimits: (newMainLimits: GraphValue[]) => void
     pinnedScenarios: PinnedScenario[]
@@ -30,8 +30,8 @@ class Graph {
     constructor(
         mainExpectations: GraphValue[],
         setMainExpectations: (newMainExpectations: GraphValue[]) => void,
-        mainValues: GraphValue[],
-        setMainValues: (newMainValues: GraphValue[]) => void,
+        mainRecords: GraphValue[],
+        setMainRecords: (newMainRecords: GraphValue[]) => void,
         mainLimits: GraphValue[],
         setMainLimits: (newMainLimits: GraphValue[]) => void,
         pinnedScenarios: PinnedScenario[],
@@ -41,8 +41,8 @@ class Graph {
         this.mainExpectations = mainExpectations
         this.setMainExpectations = setMainExpectations
 
-        this.mainValues = mainValues
-        this.setMainValues = setMainValues
+        this.mainRecords = mainRecords
+        this.setMainRecords = setMainRecords
 
         this.mainLimits = mainLimits
         this.setMainLimits = setMainLimits
@@ -64,7 +64,7 @@ export const GraphProvider = ({ children }: React.PropsWithChildren): JSX.Elemen
     const [pinnedScenarios, setPinnedScenarios] = useState<PinnedScenario[]>([])
 
     const [mainExpectations, setMainExpectations] = useState<GraphValue[]>([])
-    const [mainValues, setMainValues] = useState<GraphValue[]>([])
+    const [mainRecords, setMainRecords] = useState<GraphValue[]>([])
     const [mainLimits, setMainLimits] = useState<GraphValue[]>([])
 
     const pinScenario = useRef<((scenario: Scenario, data: GraphValue[]) => void) | (() => void)>(() => { })
@@ -94,7 +94,7 @@ export const GraphProvider = ({ children }: React.PropsWithChildren): JSX.Elemen
 
     return (
         <GraphContext.Provider
-            value={(new Graph(mainExpectations, setMainExpectations, mainValues, setMainValues, mainLimits, setMainLimits, pinnedScenarios, pinScenario, unpinScenario))}
+            value={(new Graph(mainExpectations, setMainExpectations, mainRecords, setMainRecords, mainLimits, setMainLimits, pinnedScenarios, pinScenario, unpinScenario))}
         >
             {children}
         </GraphContext.Provider>

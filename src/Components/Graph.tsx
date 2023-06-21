@@ -28,17 +28,17 @@ const Graph = (): JSX.Element => {
     }, [canvasRef, chartRef])
 
 
-    const { mainExpectations, mainLimits, mainValues, pinnedScenarios } = useGraph()
+    const { mainExpectations, mainLimits, mainRecords, pinnedScenarios } = useGraph()
 
     useEffect(() => {
         console.log("Graph main data")
         if (!chartRef.current) return
-        chartRef.current.data.datasets[0].data = mainValues as any
+        chartRef.current.data.datasets[0].data = mainRecords as any
         chartRef.current.data.datasets[1].data = mainLimits as any
         chartRef.current.data.datasets[2].data = mainExpectations as any
         console.log(chartRef.current?.data)
         chartRef.current.update()
-    }, [mainExpectations, mainLimits, mainValues, chartRef])
+    }, [mainExpectations, mainLimits, mainRecords, chartRef])
 
 
     useEffect(() => {

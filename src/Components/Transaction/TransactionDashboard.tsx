@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { useDeviceDetails } from '../../Providers/DeviceDetailsProvider'
 import { Expectation, useExpectations } from '../../Providers/GraphValuesProvider/ExpectationsProvider'
 import { Limit, useLimits } from '../../Providers/GraphValuesProvider/LimitsProvider'
-import { Value, useValues } from '../../Providers/GraphValuesProvider/ValuesProvider'
+import { Record, useRecords } from '../../Providers/GraphValuesProvider/RecordsProvider'
 import ScenarioPanel from '../Scenario/ScenarioPanel'
 import ExpectationEntry from './ExpectationEntry'
 import LimitEntry from './LimitEntry'
+import RecordEntry from './RecordEntry'
 import TransactionList from './TransactionList'
-import ValueEntry from './ValueEntry'
 
 const TransactionDashboard = () => {
     const [tabIndex, setTabIndex] = useState(1)
@@ -43,7 +43,7 @@ const TransactionDashboard = () => {
             <Box sx={{ width: '100%' }} id="dashboard-list">
                 {tabIndex === 0 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} />}
                 {tabIndex === 1 && <ScenarioPanel />}
-                {tabIndex === 2 && <TransactionList<Value> useValues={useValues} ChildComponent={ValueEntry} />}
+                {tabIndex === 2 && <TransactionList<Record> useValues={useRecords} ChildComponent={RecordEntry} />}
                 {tabIndex === 3 && <TransactionList<Expectation> useValues={useExpectations} ChildComponent={ExpectationEntry} />}
             </Box>
 
