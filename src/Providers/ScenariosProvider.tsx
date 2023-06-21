@@ -108,7 +108,7 @@ const converter: FirestoreDataConverter<Scenario> = {
 
 export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const { userDoc } = useAuthentication()
-    const { addDoc, deleteDoc, setDoc } = useFirebaseRepository()
+    const { addDoc, setDoc, deleteScenarioFirestore } = useFirebaseRepository()
 
     const [scenarios, setScenarios] = useState<Scenario[] | null>(null)
     const [scenariosCollection, setScenariosCollection] = useState<CollectionReference | null>(null)
@@ -185,7 +185,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
             setScenarioId(null)
         }
 
-        deleteDoc(doc(scenariosCollection, scenario.id))
+        if (scenario.id) deleteScenarioFirestore(scenariosCollection, scenario.id)
     }
 
     const updateScenario = (scenario: Scenario, index: number): void => {

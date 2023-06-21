@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
-import { CollectionReference, DocumentReference, collection, doc, getDocs } from "firebase/firestore"
+import { DocumentReference, collection, doc, getDocs } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import AccountDeletedSnackbar from "../Components/AccountDeletedSnackbar"
 import { auth, db } from '../firebase'
@@ -43,7 +43,7 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
     const [user, setUser] = useState<UserType | null>(null)
     const [userDoc, setUserDoc] = useState<DocumentReference | null>(null)
     const [openAcountDeletedSnackbar, setOpenAccountDeletedSnackbar] = useState<boolean>(false)
-    const { deleteDoc, setCanUpdate } = useFirebaseRepository()
+    const { deleteDoc, setCanUpdate, deleteScenarioFirestore } = useFirebaseRepository()
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user): void => {
@@ -95,33 +95,13 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
     }
 
     const deleteAccount = (): void => {
-        const deleteCollection = async (collection: CollectionReference, docType: string) => {
-            const querySnapshot = await getDocs(collection)
-
-            querySnapshot.forEach(async el => {
-                await deleteDoc(doc(collection, el.id))
-                console.log(`Delete successful: ${docType} ${el.id}`)
-            })
-        }
-
         console.log(`Delete in process: user account ${userDoc?.path}`)
         if (userDoc) {
             const scenariosCollection = collection(userDoc, 'scenarios')
 
             getDocs(scenariosCollection).then((async querySnapshot => {
                 await Promise.all(querySnapshot.docs.map(async document => {
-                    const scenarioDoc = doc(scenariosCollection, document.id)
-
-                    const expectationsCollection = collection(scenarioDoc, 'expectations')
-                    const limitsCollection = collection(scenarioDoc, 'limits')
-                    const recordsCollection = collection(scenarioDoc, 'records')
-
-                    await deleteCollection(expectationsCollection, 'expectations')
-                    await deleteCollection(limitsCollection, 'limits')
-                    await deleteCollection(recordsCollection, 'records')
-
-                    await deleteDoc(doc(scenariosCollection, document.id))
-                    console.log(`Delete succesful: scenario ${document.id}`)
+                    await deleteScenarioFirestore(scenariosCollection, document.id)
                 }))
 
                 deleteDoc(userDoc).then((value) => {
