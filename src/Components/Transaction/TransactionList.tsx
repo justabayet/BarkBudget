@@ -8,11 +8,12 @@ import { GenericEntry, GenericValuesContext, TransactionType } from '../../Provi
 interface TransactionListProps<Transaction extends TransactionType> {
     useValues: (() => GenericValuesContext<Transaction>)
     ChildComponent: GenericEntry<Transaction>
+    textEmpty: string
 }
 
-type TransactionListType = <Transaction extends TransactionType>({ useValues, ChildComponent }: TransactionListProps<Transaction>) => JSX.Element
+type TransactionListType = <Transaction extends TransactionType>({ useValues, ChildComponent, textEmpty }: TransactionListProps<Transaction>) => JSX.Element
 
-const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => {
+const TransactionList: TransactionListType = ({ useValues, ChildComponent, textEmpty }) => {
     const { values, addValue, deleteValue, updateValue } = useValues()
     const { isMobile, isBodyFullSize } = useDeviceDetails()
 
@@ -34,7 +35,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
 
             {!hasValues &&
                 <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: 'center', mt: '150px' }}>
-                    Press <Fab size='small' color='info' disabled><AddIcon /></Fab> to start adding elements
+                    {textEmpty}
                 </Typography>}
 
             {hasValues &&

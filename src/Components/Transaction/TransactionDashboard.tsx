@@ -44,21 +44,22 @@ const TransactionDashboard = () => {
             }
 
             <Box sx={{ width: '100%' }} id="dashboard-list">
-                {tabIndex === 0 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} />}
+                {tabIndex === 0 && <TransactionList<Limit> useValues={useLimits} ChildComponent={LimitEntry} textEmpty={"Set limits to check that you won't go below it"} />}
                 {tabIndex === 1 && <ScenarioPanel />}
-                {tabIndex === 2 && <TransactionList<Record> useValues={useRecords} ChildComponent={RecordEntry} />}
-                {tabIndex === 3 && <TransactionList<Expectation> useValues={useExpectations} ChildComponent={ExpectationEntry} />}
+                {tabIndex === 2 && <TransactionList<Record> useValues={useRecords} ChildComponent={RecordEntry} textEmpty={"Record your current funds to track your budget's progress"} />}
+                {tabIndex === 3 && <TransactionList<Expectation> useValues={useExpectations} ChildComponent={ExpectationEntry} textEmpty={"Add expected earnings and expenses (e.g. salary, rent, trips)"} />}
             </Box>
 
             <Box height={"124px"}></Box>
 
-            {isMobile &&
+            {
+                isMobile &&
                 <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                     {navigation}
                 </Paper>
             }
 
-        </Box>
+        </Box >
     )
 }
 
