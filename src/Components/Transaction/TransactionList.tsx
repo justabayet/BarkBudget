@@ -42,7 +42,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent }) => 
                     <TransitionGroup id='transition-group' component={null}>
                         {values?.map((value, index) => {
                             return (
-                                <Collapse key={value.id} id={`collapse-${value.id}`}>
+                                <Collapse key={value.id} id={`collapse-${value.id}`} timeout={500}>
                                     <ChildComponent
                                         value={value}
                                         handleDelete={() => { deleteValue(value, index) }}

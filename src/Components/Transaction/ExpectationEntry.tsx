@@ -1,6 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@mui/material"
-import React from "react"
+import React, { createRef, useEffect, useState } from "react"
 import { modeNames } from "../../Modes/const"
 import { useDeviceDetails } from "../../Providers/DeviceDetailsProvider"
 import { Expectation } from "../../Providers/GraphValuesProvider/ExpectationsProvider"
@@ -17,7 +17,25 @@ import ModeSelector from "./ModeSelector"
 const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, handleSave }) => {
     const { isBodyFullSize } = useDeviceDetails()
 
-    const [open, setOpen] = React.useState(!!value.new)
+    const [open, setOpen] = useState(!!value.new)
+    const [highlighted, setHighlighted] = useState(false)
+
+    const elementRef = createRef<HTMLDivElement>()
+
+    useEffect(() => {
+        if (!!value.new || !!value.edited) {
+            window.scrollTo({ behavior: "smooth", top: elementRef.current?.offsetTop })
+
+            setHighlighted(true)
+
+            value.new = false
+            value.edited = false
+
+            setTimeout(() => {
+                setHighlighted(false)
+            }, 1000)
+        }
+    }, [value.new, value.edited, value, elementRef])
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -34,7 +52,7 @@ const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, hand
         <>
             {!isBodyFullSize ?
                 <>
-                    <Card elevation={3} sx={{ mt: 3 }}>
+                    <Card elevation={highlighted ? 5 : 3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
                         <CardActionArea onClick={handleClickOpen}>
                             <CardContent sx={{ p: 1.5 }}>
                                 <Box>
@@ -123,7 +141,7 @@ const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, hand
                 </>
 
                 :
-                <Card elevation={3} sx={{ mt: 3 }}>
+                <Card elevation={highlighted ? 5 : 3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
                     <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
                             <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: "center", flexDirection: "column" }}>

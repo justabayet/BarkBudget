@@ -21,6 +21,7 @@ interface ExpectationParameter {
     name: string
     id?: string
     new?: boolean
+    edited?: boolean
 }
 
 export class Expectation {
@@ -31,6 +32,7 @@ export class Expectation {
     name: string
     id?: string
     new?: boolean
+    edited?: boolean
 
     constructor({ startDate, endDate, amount, id, mode, name }: ExpectationParameter) {
         this.id = id
@@ -146,16 +148,13 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
         addDoc(expectationsCollection, newExpectation).then(fbDocument => {
             newExpectation.id = fbDocument.id
-            newExpectation.new = true
 
+            newExpectation.new = true
             expectations.forEach(expectation => expectation.new = false)
 
             const newExpectations = [newExpectation, ...expectations]
             newExpectations.sort(sortExpectationsFunction)
             setExpectations(newExpectations)
-
-            let element = document.getElementById("startScenario")
-            window.scrollTo({ behavior: "smooth", top: element?.offsetTop })
 
             setNewExpectation(new Expectation({ startDate: scenario.startDate, endDate: scenario.startDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
         })
@@ -193,6 +192,8 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
         }
 
         const index: number = getIndex(expectation.id)
+        expectation.edited = true
+        expectations.forEach(expe => expe.edited = false)
 
         const updatedExpectations = [...expectations]
 
