@@ -1,3 +1,7 @@
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
+import AddModeratorIcon from '@mui/icons-material/AddModerator'
+import HomeIcon from '@mui/icons-material/Home'
+import UpdateIcon from '@mui/icons-material/Update'
 import { BottomNavigation, BottomNavigationAction, Box, Paper } from '@mui/material'
 import React, { useState } from 'react'
 import { useDeviceDetails } from '../../Providers/DeviceDetailsProvider'
@@ -20,14 +24,13 @@ const TransactionDashboard = () => {
 
     const navigation = (
         <BottomNavigation
-            showLabels
             value={tabIndex}
             onChange={handleTabChange}
         >
-            <BottomNavigationAction label="" icon={<>Limits</>} />
-            <BottomNavigationAction label="" icon={<>Scenario</>} />
-            <BottomNavigationAction label="" icon={<>Records</>} />
-            <BottomNavigationAction label="" icon={<>Expectations</>} />
+            <BottomNavigationAction label="Limits" icon={<AddModeratorIcon />} />
+            <BottomNavigationAction label="Home" icon={<HomeIcon />} />
+            <BottomNavigationAction label="Records" icon={<AccountBalanceIcon />} />
+            <BottomNavigationAction label="Expectations" icon={<UpdateIcon />} />
         </BottomNavigation>
     )
 
