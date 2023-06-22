@@ -34,7 +34,7 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent, textE
             }
 
             {!hasValues &&
-                <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38, textAlign: 'center', mt: '150px' }}>
+                <Typography sx={{ fontWeight: 400, opacity: 0.38, textAlign: 'center', mt: '150px' }}>
                     {textEmpty}
                 </Typography>}
 

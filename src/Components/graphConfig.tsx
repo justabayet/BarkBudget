@@ -37,7 +37,6 @@ const options: ChartOptions<"line"> = {
     scales: {
         x: {
             gridLines: {
-                color: 'rgba(0, 0, 0, 0.05)',
                 lineWidth: 1,
             },
             type: 'time',
@@ -70,7 +69,6 @@ const options: ChartOptions<"line"> = {
                 display: false
             },
             gridLines: {
-                color: 'rgba(0, 0, 0, 0.05)',
                 lineWidth: 1,
             },
             beginAtZero: true,

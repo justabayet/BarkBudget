@@ -57,7 +57,7 @@ const PinnedScenariosSelector = ({ scenarios, updateScenario }: PinnedScenariosS
                 }}
                 renderValue={selected => {
                     if (selected.length === 0) {
-                        return <Typography sx={{ color: '#333333', fontWeight: 400, opacity: 0.38 }}>No scenario pinned</Typography>
+                        return <Typography sx={{ fontWeight: 400, opacity: 0.38 }}>No scenario pinned</Typography>
                     } else {
                         return (
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>

@@ -1,48 +1,39 @@
 import { PaletteMode } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
-import { grey } from '@mui/material/colors'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
+
 import React, { createContext, useContext } from 'react'
 
 
-const primary = {
-    main: '#9a9aff'
+declare module '@mui/material/styles' {
+    interface Theme {
+        grid: {
+            line: string;
+        }
+    }
+    // allow configuration using `createTheme`
+    interface ThemeOptions {
+        grid?: {
+            line?: string;
+        }
+    }
 }
 
-const secondary = {
-    main: '#04003d'
-}
-
-const getDesignTokens = (mode: PaletteMode) => ({
+const getDesignTokensDefault = (mode: PaletteMode) => ({
     palette: {
         mode,
-        ...(mode === 'light'
-            ? {
-                // palette values for light mode
-                primary: secondary,
-                secondary: primary,
-                text: {
-                    primary: grey[900],
-                    secondary: grey[800],
-                },
-                background: {
-                    default: '#fff',
-                    paper: '#fff'
-                }
-            }
-            : {
-                // palette values for dark mode
-                primary: primary,
-                secondary: secondary,
-                background: {
-                    default: secondary.main,
-                },
-                text: {
-                    primary: grey[200],
-                    secondary: grey[300],
-                },
-            }),
     },
+    ...(mode === 'light'
+        ? {
+            grid: {
+                line: 'rgba(0, 0, 0, 0.1)'
+            }
+        }
+        : {
+            grid: {
+                line: 'rgba(255, 255, 255, 0.1)'
+            }
+        }),
 })
 
 class ToggleTheme {
@@ -68,7 +59,7 @@ export const ToggleThemeProvider = ({ children }: React.PropsWithChildren): JSX.
 
     const theme = React.useMemo(
         () =>
-            createTheme(getDesignTokens(mode)),
+            createTheme(getDesignTokensDefault(mode)),
         [mode],
     )
 

@@ -1,17 +1,22 @@
-import React, { useEffect, useRef } from "react"
-import { useGraph } from "../Providers/GraphProvider"
+// @ts-nocheck
+import React, { useEffect, useRef } from 'react'
+import { useGraph } from '../Providers/GraphProvider'
 
-import { Chart, registerables } from "chart.js"
+import { Container } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Chart, registerables } from 'chart.js'
 import 'chartjs-adapter-moment'
-import { useDeviceDetails } from "../Providers/DeviceDetailsProvider"
+import { useDeviceDetails } from '../Providers/DeviceDetailsProvider'
 import './Graph.css'
-import config from "./graphConfig"
+import config from './graphConfig'
 
 Chart.register(...registerables)
 
 const Graph = (): JSX.Element => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const chartRef = useRef<Chart | null>(null)
+
+    const theme = useTheme()
 
     const { isMobile } = useDeviceDetails()
 
@@ -67,23 +72,29 @@ const Graph = (): JSX.Element => {
         if (chartRef.current === null) return
 
         if (isMobile) {
-            if (chartRef.current?.options?.scales?.x?.ticks) {
-                chartRef.current.options.scales.x.ticks.display = false
-            }
-            if (chartRef.current?.options?.scales?.y?.ticks) {
-                chartRef.current.options.scales.y.ticks.display = false
-            }
+            chartRef.current.options.scales.x.ticks.display = false
+            chartRef.current.options.scales.y.ticks.display = false
         } else {
-            if (chartRef.current?.options?.scales?.x?.ticks) {
-                chartRef.current.options.scales.x.ticks.display = true
-            }
-            if (chartRef.current?.options?.scales?.y?.ticks) {
-                chartRef.current.options.scales.y.ticks.display = true
-            }
+            chartRef.current.options.scales.x.ticks.display = true
+            chartRef.current.options.scales.y.ticks.display = true
         }
         chartRef.current.update()
-
     }, [isMobile])
+
+    useEffect(() => {
+        if (chartRef.current === null) return
+
+        chartRef.current.options.scales.x.grid.color = theme.grid.line
+        chartRef.current.options.scales.y.grid.color = theme.grid.line
+
+        chartRef.current.options.scales.x.ticks.color = theme.palette.text.disabled
+        chartRef.current.options.scales.y.ticks.color = theme.palette.text.disabled
+
+        chartRef.current.options.scales.x.border.color = theme.grid.line
+        chartRef.current.options.scales.y.border.color = theme.grid.line
+
+        chartRef.current.update()
+    }, [theme])
 
     /**
      * Way to keep the graph on top of the dialog: 
@@ -93,9 +104,13 @@ const Graph = (): JSX.Element => {
      */
 
     return (
-        <div className="graphBox">
+        <Container className="graphBox" disableGutters sx={{
+            '&::before': {
+                backgroundColor: theme.palette.background.default
+            }
+        }}>
             <canvas ref={canvasRef} id="expectationChart" />
-        </div>
+        </Container>
     )
 }
 
