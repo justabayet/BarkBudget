@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAuthentication } from '../Providers/AuthenticationProvider'
 import LoggedInView from './LoggedInView'
-import LoggedOutView from './LoggedOutView'
+import LoginPage from './LoginPage'
 
 
 const MainView = (): JSX.Element => {
@@ -9,7 +9,7 @@ const MainView = (): JSX.Element => {
 
     return (
         <>
-            {userDoc ? <LoggedInView /> : <LoggedOutView />}
+            {userDoc ? <LoggedInView /> : <LoginPage />}
         </>
     )
 }
