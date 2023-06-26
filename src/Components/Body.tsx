@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
-import { Box, Button, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material'
 import React from 'react'
 import { ScenarioProvider } from '../Providers/ScenarioProvider'
 import { useScenarios } from '../Providers/ScenariosProvider'
@@ -9,15 +9,28 @@ import DataScenario from './Scenario/DataScenario'
 import TransactionDashboard from './Transaction/TransactionDashboard'
 
 const Body = (): JSX.Element => {
-    const { currentScenario, scenarios, addScenario } = useScenarios()
+    const { currentScenario, scenarios, addScenario, loadingScenarios } = useScenarios()
 
     if (!scenarios) {
         return (
-            <Typography>Error while getting scenarios</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 10 }} gap={2}>
+                {loadingScenarios ?
+                    <>
+                        <CircularProgress color="inherit" />
+                        <Typography textAlign={"center"}>
+                            Our good boy 🐶 is searching for your data 🦴<br />
+                            He'll be done anytime soon 🙌
+                        </Typography>
+                    </>
+                    :
+                    <Typography>
+                        Sadly our good boy 🐶 didn't find anything<br />
+                        Try to refresh the page
+                    </Typography>
+                }
+            </Box>
         )
-    }
-
-    if (scenarios.length === 0) {
+    } else if (scenarios.length === 0) {
         return (
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 10 }} gap={2}>
                 <Button color="primary" onClick={addScenario}>
@@ -48,7 +61,7 @@ const Body = (): JSX.Element => {
                             </>
                         )
                     } else if (scenario.isPinned) {
-                        body = (<DataPinnedScenario />)
+                        body = <DataPinnedScenario />
                     }
                     return (
                         <ScenarioProvider scenario={scenario} key={scenario.id}>

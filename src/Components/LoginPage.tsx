@@ -10,8 +10,6 @@ const LoginPage = (): JSX.Element => {
     const theme = useTheme()
     const fileSuffix = theme.palette.mode === "dark" ? 'primary' : 'secondary'
 
-    console.log("##", signingIn)
-
     return (
         <Box sx={{
             display: 'flex',

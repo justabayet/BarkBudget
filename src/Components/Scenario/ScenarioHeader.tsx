@@ -97,7 +97,6 @@ const ScenarioHeader = ({ scenario, scenarios, addScenario, deleteScenario, upda
                     date={scenario.startDate}
                     setDate={(newDate) => {
                         if (!compareDate(newDate, scenario.startDate)) {
-                            console.log("## Update Scenario")
                             updateScenario({ ...scenario, startDate: newDate }, index)
                         }
                     }} />

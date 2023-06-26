@@ -14,6 +14,7 @@ class Scenarios {
     deleteScenario: (scenario: Scenario, index: number) => void
     updateScenario: (scenario: Scenario, index: number) => void
     currentScenario?: Scenario | null
+    loadingScenarios: boolean
 
     constructor(
         scenarios: Scenario[] | null,
@@ -22,7 +23,8 @@ class Scenarios {
         setScenarioId: (newScenarioId: string | null) => void,
         addScenario: () => void,
         deleteScenario: (scenario: Scenario, index: number) => void,
-        updateScenario: (scenario: Scenario, index: number) => void) {
+        updateScenario: (scenario: Scenario, index: number) => void,
+        loadingScenarios: boolean) {
 
         this.scenarios = scenarios
         this.scenariosCollection = scenariosCollection
@@ -37,6 +39,8 @@ class Scenarios {
         this.addScenario = addScenario
         this.deleteScenario = deleteScenario
         this.updateScenario = updateScenario
+
+        this.loadingScenarios = loadingScenarios
     }
 }
 
@@ -75,7 +79,7 @@ export class Scenario {
     }
 }
 
-const ScenariosContext = createContext(new Scenarios([], null, null, () => { }, () => { }, () => { }, () => { }))
+const ScenariosContext = createContext(new Scenarios([], null, null, () => { }, () => { }, () => { }, () => { }, false))
 
 interface ScenarioFirestore {
     startDate: string,
@@ -115,6 +119,8 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
 
     const [scenarioId, setScenarioId] = useState<string | null | undefined>(null)
 
+    const [loadingScenarios, setLoadingScenarios] = useState<boolean>(false)
+
     useEffect(() => {
         // TODO might loop indefinitily if scenarios is undefined
         if (!scenarios || scenarios.length === 0) {
@@ -134,7 +140,9 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     }, [userDoc])
 
     useEffect(() => {
+        setLoadingScenarios(true)
         if (scenariosCollection) {
+
             getDocs(scenariosCollection)
                 .then((querySnapshot) => {
                     console.log("ScenariosProvider Full read get", querySnapshot.size)
@@ -147,6 +155,9 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
                     setScenarios(scenariosQueried)
                 })
                 .catch(reason => console.log(reason))
+                .finally(() => {
+                    setLoadingScenarios(false)
+                })
         } else {
             setScenarios(null)
         }
@@ -203,7 +214,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     }
 
     return (
-        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario))}>
+        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario, loadingScenarios))}>
             {children}
         </ScenariosContext.Provider>
     )
