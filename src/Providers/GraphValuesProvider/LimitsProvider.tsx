@@ -35,7 +35,7 @@ export class Limit {
     }
 }
 
-const LimitsContext = createContext<LimitsContextType>(new Limits([], [], () => { }, () => { }, () => { }))
+const LimitsContext = createContext<LimitsContextType>(new Limits([], [], () => { }, () => { }, () => { }, true))
 
 interface LimitFirestore {
     startDate: string,
@@ -77,6 +77,8 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
     const [newLimit, setNewLimit] = useState(new Limit({ startDate: currentDate, endDate: currentDate, amount: 0 }))
 
+    const [isLoadingLimits, setIsLoadingLimits] = useState<boolean>(true)
+
     useEffect(() => {
         if (scenarioDoc) {
             setLimitsCollection(collection(scenarioDoc, 'limits').withConverter(converter))
@@ -88,6 +90,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
     useEffect(() => {
         if (limitsCollection) {
+            setIsLoadingLimits(true)
             getDocs(limitsCollection)
                 .then((querySnapshot) => {
                     console.log("LimitsProvider Full read get", querySnapshot.size)
@@ -99,6 +102,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
                     limitsQueried.sort(sortLimitsFunction)
                     setLimits(limitsQueried)
+                    setIsLoadingLimits(false)
                 })
                 .catch(reason => console.log(reason))
         } else {
@@ -249,7 +253,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
     return (
         <LimitsContext.Provider
-            value={(new Limits(limitsWithDummy, graphLimits, addLimit, deleteLimit, updateLimit))}
+            value={(new Limits(limitsWithDummy, graphLimits, addLimit, deleteLimit, updateLimit, isLoadingLimits))}
         >
             {children}
         </LimitsContext.Provider>

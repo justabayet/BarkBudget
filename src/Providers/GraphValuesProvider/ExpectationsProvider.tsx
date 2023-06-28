@@ -44,7 +44,7 @@ export class Expectation {
     }
 }
 
-const ExpectationsContext = createContext<ExpectationsContextType>(new Expectations([], [], () => { }, () => { }, () => { }))
+const ExpectationsContext = createContext<ExpectationsContextType>(new Expectations([], [], () => { }, () => { }, () => { }, true))
 
 interface ExpectationFirestore {
     startDate: string,
@@ -109,6 +109,8 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
     const [newExpectation, setNewExpectation] = useState(new Expectation({ startDate: scenario.startDate, endDate: scenario.startDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
 
+    const [isLoadingExpectations, setIsLoadingExpectations] = useState<boolean>(true)
+
     useEffect(() => {
         if (scenarioDoc) {
             setExpectationsCollection(collection(scenarioDoc, 'expectations').withConverter(converter))
@@ -120,6 +122,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
     useEffect(() => {
         if (expectationsCollection) {
+            setIsLoadingExpectations(true)
             getDocs(expectationsCollection)
                 .then((querySnapshot) => {
                     console.log("ExpectationsProvider Full read get", querySnapshot.size)
@@ -131,6 +134,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
                     expectationsQueried.sort(sortExpectationsFunction)
                     setExpectations(expectationsQueried)
+                    setIsLoadingExpectations(false)
                 })
                 .catch(reason => console.log(reason))
         } else {
@@ -245,7 +249,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
     return (
         <ExpectationsContext.Provider
-            value={(new Expectations(expectationsWithDummy, graphExpectations, addExpectation, deleteExpectation, updateExpectation))}
+            value={(new Expectations(expectationsWithDummy, graphExpectations, addExpectation, deleteExpectation, updateExpectation, isLoadingExpectations))}
         >
             {children}
         </ExpectationsContext.Provider>

@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import AccountDeletedSnackbar from "../Components/AccountDeletedSnackbar"
 import { auth, db } from '../firebase'
 import { useFirebaseRepository } from "./FirebaseRepositoryProvider"
+import { useLoadingStatus } from "./LoadingStatusProvider"
 
 type UserType = { uid: string, displayName: string | null, email: string | null }
 class Authentication {
@@ -13,7 +14,6 @@ class Authentication {
     handleSignOut: () => void
     userDoc: DocumentReference | null
     deleteAccount: () => void
-    signingIn: boolean
 
     constructor(
         user: UserType | null,
@@ -21,8 +21,7 @@ class Authentication {
         signInTestAccount: () => void,
         handleSignOut: () => void,
         userDoc: DocumentReference | null,
-        deleteAccount: () => void,
-        signingIn: boolean) {
+        deleteAccount: () => void) {
 
         this.user = user
         this.handleSignIn = handleSignIn
@@ -30,7 +29,6 @@ class Authentication {
         this.handleSignOut = handleSignOut
         this.userDoc = userDoc
         this.deleteAccount = deleteAccount
-        this.signingIn = signingIn
     }
 }
 
@@ -40,14 +38,21 @@ const testUser: UserType = {
     email: 'test.account@gmail.com'
 }
 
-const AuthenticationContext = createContext(new Authentication(null, () => { }, () => { }, () => { }, null, () => { }, false))
+const AuthenticationContext = createContext(new Authentication(null, () => { }, () => { }, () => { }, null, () => { }))
 
 export const AuthenticationProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const [user, setUser] = useState<UserType | null>(null)
     const [userDoc, setUserDoc] = useState<DocumentReference | null>(null)
     const [openAcountDeletedSnackbar, setOpenAccountDeletedSnackbar] = useState<boolean>(false)
-    const [signingIn, setSigningIn] = useState<boolean>(false)
+    const [_signingIn, _setSigningIn] = useState<boolean>(false)
     const { deleteDoc, setCanUpdate, deleteScenarioFirestore } = useFirebaseRepository()
+
+    const { setSigningIn } = useLoadingStatus()
+
+    useEffect(() => {
+        setSigningIn(_signingIn)
+    }, [_signingIn, setSigningIn])
+
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user): void => {
@@ -81,8 +86,8 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
 
     const handleSignIn = (): void => {
         const provider = new GoogleAuthProvider()
-        setSigningIn(true)
-        signInWithPopup(auth, provider).finally(() => { setSigningIn(false) })
+        _setSigningIn(true)
+        signInWithPopup(auth, provider).finally(() => { _setSigningIn(false) })
     }
 
     const signInTestAccount = (): void => {
@@ -121,7 +126,7 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
 
     return (
         <AuthenticationContext.Provider
-            value={(new Authentication(user, handleSignIn, signInTestAccount, handleSignOut, userDoc, deleteAccount, signingIn))}
+            value={(new Authentication(user, handleSignIn, signInTestAccount, handleSignOut, userDoc, deleteAccount))}
         >
             {children}
             <AccountDeletedSnackbar eventOpen={openAcountDeletedSnackbar} setEventOpen={setOpenAccountDeletedSnackbar} />

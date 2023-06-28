@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
 import { useAuthentication } from "./AuthenticationProvider"
 import { useFirebaseRepository } from "./FirebaseRepositoryProvider"
+import { useLoadingStatus } from "./LoadingStatusProvider"
 
 class Scenarios {
     scenarios: Scenario[] | null
@@ -14,7 +15,6 @@ class Scenarios {
     deleteScenario: (scenario: Scenario, index: number) => void
     updateScenario: (scenario: Scenario, index: number) => void
     currentScenario?: Scenario | null
-    loadingScenarios: boolean
 
     constructor(
         scenarios: Scenario[] | null,
@@ -23,8 +23,7 @@ class Scenarios {
         setScenarioId: (newScenarioId: string | null) => void,
         addScenario: () => void,
         deleteScenario: (scenario: Scenario, index: number) => void,
-        updateScenario: (scenario: Scenario, index: number) => void,
-        loadingScenarios: boolean) {
+        updateScenario: (scenario: Scenario, index: number) => void) {
 
         this.scenarios = scenarios
         this.scenariosCollection = scenariosCollection
@@ -39,8 +38,6 @@ class Scenarios {
         this.addScenario = addScenario
         this.deleteScenario = deleteScenario
         this.updateScenario = updateScenario
-
-        this.loadingScenarios = loadingScenarios
     }
 }
 
@@ -79,7 +76,7 @@ export class Scenario {
     }
 }
 
-const ScenariosContext = createContext(new Scenarios([], null, null, () => { }, () => { }, () => { }, () => { }, false))
+const ScenariosContext = createContext(new Scenarios([], null, null, () => { }, () => { }, () => { }, () => { }))
 
 interface ScenarioFirestore {
     startDate: string,
@@ -119,7 +116,12 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
 
     const [scenarioId, setScenarioId] = useState<string | null | undefined>(null)
 
-    const [loadingScenarios, setLoadingScenarios] = useState<boolean>(false)
+    const [_scenariosLoading, _setScenariosLoading] = useState<boolean>(true)
+    const { setScenariosLoading } = useLoadingStatus()
+
+    useEffect(() => {
+        setScenariosLoading(_scenariosLoading)
+    }, [_scenariosLoading, setScenariosLoading])
 
     useEffect(() => {
         // TODO might loop indefinitily if scenarios is undefined
@@ -140,9 +142,8 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     }, [userDoc])
 
     useEffect(() => {
-        setLoadingScenarios(true)
         if (scenariosCollection) {
-
+            _setScenariosLoading(true)
             getDocs(scenariosCollection)
                 .then((querySnapshot) => {
                     console.log("ScenariosProvider Full read get", querySnapshot.size)
@@ -156,7 +157,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
                 })
                 .catch(reason => console.log(reason))
                 .finally(() => {
-                    setLoadingScenarios(false)
+                    _setScenariosLoading(false)
                 })
         } else {
             setScenarios(null)
@@ -214,7 +215,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     }
 
     return (
-        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario, loadingScenarios))}>
+        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario))}>
             {children}
         </ScenariosContext.Provider>
     )

@@ -1,5 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
-import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import React from 'react'
 import { ScenarioProvider } from '../Providers/ScenarioProvider'
 import { useScenarios } from '../Providers/ScenariosProvider'
@@ -9,25 +9,15 @@ import DataScenario from './Scenario/DataScenario'
 import TransactionDashboard from './Transaction/TransactionDashboard'
 
 const Body = (): JSX.Element => {
-    const { currentScenario, scenarios, addScenario, loadingScenarios } = useScenarios()
+    const { currentScenario, scenarios, addScenario } = useScenarios()
 
     if (!scenarios) {
         return (
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 10 }} gap={2}>
-                {loadingScenarios ?
-                    <>
-                        <CircularProgress color="inherit" />
-                        <Typography textAlign={"center"}>
-                            Our good boy 🐶 is searching for your data 🦴<br />
-                            He'll be done anytime soon 🙌
-                        </Typography>
-                    </>
-                    :
-                    <Typography>
-                        Sadly our good boy 🐶 didn't find anything<br />
-                        Try to refresh the page
-                    </Typography>
-                }
+                <Typography>
+                    Sadly our good boy 🐶 didn't find anything<br />
+                    Try to refresh the page
+                </Typography>
             </Box>
         )
     } else if (scenarios.length === 0) {

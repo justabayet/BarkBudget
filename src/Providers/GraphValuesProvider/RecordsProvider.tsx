@@ -30,7 +30,7 @@ export class Record {
     }
 }
 
-const RecordsContext = createContext<RecordsContextType>(new Records([], [], () => { }, () => { }, () => { }))
+const RecordsContext = createContext<RecordsContextType>(new Records([], [], () => { }, () => { }, () => { }, true))
 
 interface RecordFirestore {
     date: string,
@@ -66,6 +66,8 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     const [newRecord, setNewRecord] = useState(new Record({}))
 
+    const [isLoadingRecords, setIsLoadingRecords] = useState<boolean>(true)
+
     useEffect(() => {
         if (scenarioDoc) {
             setRecordsCollection(collection(scenarioDoc, 'records').withConverter(converter))
@@ -77,6 +79,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     useEffect(() => {
         if (recordsCollection) {
+            setIsLoadingRecords(true)
             getDocs(recordsCollection)
                 .then((querySnapshot) => {
                     console.log("RecordsProvider Full read get", querySnapshot.size)
@@ -89,6 +92,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
                     recordsQueried.sort(sortRecordsFunction)
                     setRecords(recordsQueried)
+                    setIsLoadingRecords(false)
                 })
                 .catch(reason => console.log(reason))
         } else {
@@ -198,7 +202,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
     }
 
     return (
-        <RecordsContext.Provider value={(new Records(recordsWithDummy, graphRecords, addRecord, deleteRecord, updateRecord))}>
+        <RecordsContext.Provider value={(new Records(recordsWithDummy, graphRecords, addRecord, deleteRecord, updateRecord, isLoadingRecords))}>
             {children}
         </RecordsContext.Provider>
     )

@@ -8,6 +8,8 @@ import { AuthenticationProvider } from './Providers/AuthenticationProvider'
 import { DeviceDetailsProvider } from './Providers/DeviceDetailsProvider'
 import { FirebaseRepositoryProvider } from './Providers/FirebaseRepositoryProvider'
 import { GraphProvider } from './Providers/GraphProvider'
+import { LoadingStatusProvider } from './Providers/LoadingStatusProvider'
+import { ScenariosProvider } from './Providers/ScenariosProvider'
 import { ToggleThemeProvider } from './Providers/ToggleThemeProvider'
 
 
@@ -24,9 +26,13 @@ function App(): JSX.Element {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <GraphProvider>
                         <FirebaseRepositoryProvider>
-                            <AuthenticationProvider>
-                                <MainView />
-                            </AuthenticationProvider>
+                            <LoadingStatusProvider>
+                                <AuthenticationProvider>
+                                    <ScenariosProvider>
+                                        <MainView />
+                                    </ScenariosProvider>
+                                </AuthenticationProvider>
+                            </LoadingStatusProvider>
                         </FirebaseRepositoryProvider>
                     </GraphProvider>
                 </LocalizationProvider>
