@@ -37,11 +37,7 @@ const getDesignTokensDefault = (mode: PaletteMode) => ({
 })
 
 class ToggleTheme {
-    toggleTheme: () => void
-
-    constructor(toggleTheme: () => void) {
-        this.toggleTheme = toggleTheme
-    }
+    constructor(public toggleTheme: () => void) { }
 }
 
 const ToggleThemeContext = createContext(new ToggleTheme(() => { }))

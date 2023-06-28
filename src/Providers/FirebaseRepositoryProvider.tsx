@@ -9,26 +9,13 @@ type dataType = WithFieldValue<DocumentData>
 type objWithId = { id: string }
 
 class FirebaseRepository {
-    setCanUpdate: (newState: boolean) => void
-    setDoc: (reference: docRef, data: dataType) => Promise<void>
-    addDoc: (reference: colRef, data: dataType) => Promise<objWithId>
-    deleteDoc: (reference: DocumentReference<unknown>) => Promise<void>
-    deleteScenarioFirestore: (scenariosCollection: CollectionReference, id: string) => Promise<void>
-
-
     constructor(
-        setCanUpdate: (newState: boolean) => void,
-        setDoc: (reference: docRef, data: dataType) => Promise<void>,
-        addDoc: (reference: colRef, data: dataType) => Promise<objWithId>,
-        deleteDoc: (reference: delRef) => Promise<void>,
-        deleteScenarioFirestore: (scenariosCollection: CollectionReference, id: string) => Promise<void>
-    ) {
-        this.setCanUpdate = setCanUpdate
-        this.setDoc = setDoc
-        this.addDoc = addDoc
-        this.deleteDoc = deleteDoc
-        this.deleteScenarioFirestore = deleteScenarioFirestore
-    }
+        public setCanUpdate: (newState: boolean) => void,
+        public setDoc: (reference: docRef, data: dataType) => Promise<void>,
+        public addDoc: (reference: colRef, data: dataType) => Promise<objWithId>,
+        public deleteDoc: (reference: delRef) => Promise<void>,
+        public deleteScenarioFirestore: (scenariosCollection: CollectionReference, id: string) => Promise<void>
+    ) { }
 }
 
 const dummyDoc = { id: generateRandomId() }

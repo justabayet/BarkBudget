@@ -7,13 +7,7 @@ import { RecordsProvider } from "./GraphValuesProvider/RecordsProvider"
 import { Scenario, useScenarios } from "./ScenariosProvider"
 
 class ScenarioDocumented {
-    scenario: Scenario
-    scenarioDoc: DocumentReference | null
-
-    constructor(scenarioDoc: DocumentReference | null, scenario: Scenario) {
-        this.scenarioDoc = scenarioDoc
-        this.scenario = scenario
-    }
+    constructor(public scenarioDoc: DocumentReference | null, public scenario: Scenario) { }
 }
 
 const ScenarioContext = createContext(new ScenarioDocumented(null, new Scenario({ name: "Init Scenario" })))

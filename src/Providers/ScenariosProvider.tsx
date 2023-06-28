@@ -7,37 +7,21 @@ import { useFirebaseRepository } from "./FirebaseRepositoryProvider"
 import { useLoadingStatus } from "./LoadingStatusProvider"
 
 class Scenarios {
-    scenarios: Scenario[] | null
-    scenariosCollection: CollectionReference | null
-    scenarioId: string | null | undefined
-    setScenarioId: (newScenarioId: string | null) => void
-    addScenario: () => void
-    deleteScenario: (scenario: Scenario, index: number) => void
-    updateScenario: (scenario: Scenario, index: number) => void
     currentScenario?: Scenario | null
 
     constructor(
-        scenarios: Scenario[] | null,
-        scenariosCollection: CollectionReference | null,
-        scenarioId: string | null | undefined,
-        setScenarioId: (newScenarioId: string | null) => void,
-        addScenario: () => void,
-        deleteScenario: (scenario: Scenario, index: number) => void,
-        updateScenario: (scenario: Scenario, index: number) => void) {
+        public scenarios: Scenario[] | null,
+        public scenariosCollection: CollectionReference | null,
+        public scenarioId: string | null | undefined,
+        public setScenarioId: (newScenarioId: string | null) => void,
+        public addScenario: () => void,
+        public deleteScenario: (scenario: Scenario, index: number) => void,
+        public updateScenario: (scenario: Scenario, index: number) => void) {
 
-        this.scenarios = scenarios
-        this.scenariosCollection = scenariosCollection
-
-        this.scenarioId = scenarioId
         this.currentScenario = null
         if (scenarios) {
             this.currentScenario = scenarios.find(scenario => this.scenarioId === scenario.id)
         }
-        this.setScenarioId = setScenarioId
-
-        this.addScenario = addScenario
-        this.deleteScenario = deleteScenario
-        this.updateScenario = updateScenario
     }
 }
 

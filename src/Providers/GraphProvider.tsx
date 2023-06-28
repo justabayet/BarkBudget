@@ -17,40 +17,16 @@ export interface GraphValue {
 }
 
 class Graph {
-    mainExpectations: GraphValue[]
-    setMainExpectations: (newMainExpectations: GraphValue[]) => void
-    mainRecords: GraphValue[]
-    setMainRecords: (newMainRecords: GraphValue[]) => void
-    mainLimits: GraphValue[]
-    setMainLimits: (newMainLimits: GraphValue[]) => void
-    pinnedScenarios: PinnedScenario[]
-    pinScenario: React.MutableRefObject<((scenario: Scenario, data: GraphValue[]) => void)> | undefined
-    unpinScenario: React.MutableRefObject<((scenario: Scenario) => void)> | undefined
-
     constructor(
-        mainExpectations: GraphValue[],
-        setMainExpectations: (newMainExpectations: GraphValue[]) => void,
-        mainRecords: GraphValue[],
-        setMainRecords: (newMainRecords: GraphValue[]) => void,
-        mainLimits: GraphValue[],
-        setMainLimits: (newMainLimits: GraphValue[]) => void,
-        pinnedScenarios: PinnedScenario[],
-        pinScenario: React.MutableRefObject<((scenario: Scenario, data: GraphValue[]) => void)> | undefined,
-        unpinScenario: React.MutableRefObject<((scenario: Scenario) => void)> | undefined) {
-
-        this.mainExpectations = mainExpectations
-        this.setMainExpectations = setMainExpectations
-
-        this.mainRecords = mainRecords
-        this.setMainRecords = setMainRecords
-
-        this.mainLimits = mainLimits
-        this.setMainLimits = setMainLimits
-
-        this.pinnedScenarios = pinnedScenarios
-        this.pinScenario = pinScenario
-        this.unpinScenario = unpinScenario
-    }
+        public mainExpectations: GraphValue[],
+        public setMainExpectations: (newMainExpectations: GraphValue[]) => void,
+        public mainRecords: GraphValue[],
+        public setMainRecords: (newMainRecords: GraphValue[]) => void,
+        public mainLimits: GraphValue[],
+        public setMainLimits: (newMainLimits: GraphValue[]) => void,
+        public pinnedScenarios: PinnedScenario[],
+        public pinScenario: React.MutableRefObject<((scenario: Scenario, data: GraphValue[]) => void)> | undefined,
+        public unpinScenario: React.MutableRefObject<((scenario: Scenario) => void)> | undefined) { }
 }
 
 interface PinnedScenario {

@@ -2,13 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 
 class DeviceDetails {
-    isMobile: boolean
-    isBodyFullSize: boolean
-
-    constructor(isMobile: boolean, isBodyFullSize: boolean) {
-        this.isMobile = isMobile
-        this.isBodyFullSize = isBodyFullSize
-    }
+    constructor(public isMobile: boolean, public isBodyFullSize: boolean) { }
 }
 
 const DeviceDetailsContext = createContext(new DeviceDetails(false, false))

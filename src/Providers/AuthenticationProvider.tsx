@@ -8,28 +8,13 @@ import { useLoadingStatus } from "./LoadingStatusProvider"
 
 type UserType = { uid: string, displayName: string | null, email: string | null }
 class Authentication {
-    user: UserType | null
-    handleSignIn: () => void
-    signInTestAccount: () => void
-    handleSignOut: () => void
-    userDoc: DocumentReference | null
-    deleteAccount: () => void
-
     constructor(
-        user: UserType | null,
-        handleSignIn: () => void,
-        signInTestAccount: () => void,
-        handleSignOut: () => void,
-        userDoc: DocumentReference | null,
-        deleteAccount: () => void) {
-
-        this.user = user
-        this.handleSignIn = handleSignIn
-        this.signInTestAccount = signInTestAccount
-        this.handleSignOut = handleSignOut
-        this.userDoc = userDoc
-        this.deleteAccount = deleteAccount
-    }
+        public user: UserType | null,
+        public handleSignIn: () => void,
+        public signInTestAccount: () => void,
+        public handleSignOut: () => void,
+        public userDoc: DocumentReference | null,
+        public deleteAccount: () => void) { }
 }
 
 const testUser: UserType = {
