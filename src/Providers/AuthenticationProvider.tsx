@@ -32,6 +32,8 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
     const [_signingIn, _setSigningIn] = useState<boolean>(false)
     const { deleteDoc, setCanUpdate, deleteScenarioFirestore } = useFirebaseRepository()
 
+    const [isTestAccount, setIsTestAccount] = useState<boolean>(false)
+
     const { setSigningIn } = useLoadingStatus()
 
     useEffect(() => {
@@ -59,29 +61,27 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
             console.log(user.uid)
             setUserDoc(userDoc)
 
-            if (user.uid === testUser.uid) {
-                setCanUpdate(false)
-            } else {
-                setCanUpdate(true)
-            }
+            setCanUpdate(!isTestAccount)
         } else {
             setUserDoc(null)
         }
-    }, [user, setCanUpdate])
+    }, [user, setCanUpdate, isTestAccount])
 
     const handleSignIn = (): void => {
         const provider = new GoogleAuthProvider()
         _setSigningIn(true)
+        setIsTestAccount(false)
         signInWithPopup(auth, provider).finally(() => { _setSigningIn(false) })
     }
 
     const signInTestAccount = (): void => {
+        setIsTestAccount(true)
         setUser(testUser)
     }
 
     const handleSignOut = async (): Promise<void> => {
         if (user) {
-            if (user.uid === testUser.uid) {
+            if (isTestAccount) {
                 setUser(null)
             } else {
                 signOut(auth)
