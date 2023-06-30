@@ -73,7 +73,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
     const [limits, setLimits] = useState<Limit[] | null>(null)
     const [graphLimits, setGraphLimits] = useState<GraphValue[] | null>(null)
-    const [limitsCollection, setLimitsCollection] = useState<CollectionReference | null>(null)
+    const [limitsCollection, setLimitsCollection] = useState<CollectionReference<Limit> | null>(null)
 
     const [newLimit, setNewLimit] = useState(new Limit({ startDate: startDate, endDate: endDate, amount: 0 }))
 
@@ -97,7 +97,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
                     const limitsQueried: Limit[] = []
                     querySnapshot.forEach(doc => {
-                        limitsQueried.push(converter.fromFirestore(doc))
+                        limitsQueried.push(doc.data())
                     })
 
                     limitsQueried.sort(sortLimitsFunction)

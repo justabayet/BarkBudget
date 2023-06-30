@@ -90,10 +90,10 @@ const converter: FirestoreDataConverter<Scenario> = {
     }
 }
 
-const updateDuplicatedName = (newScenario: Scenario, scenarios: Scenario[]) => {
+const updateDuplicatedName = (newScenario: Scenario, scenarios: Scenario[], nbDuplicatedAccepted: number = 0) => {
     const duplicatedName = scenarios.filter(scenario => scenario.name === newScenario.name).length
 
-    if (duplicatedName > 0) newScenario.name += ` ${duplicatedName}`
+    if (duplicatedName > nbDuplicatedAccepted) newScenario.name += ` ${duplicatedName - nbDuplicatedAccepted}`
 }
 
 
@@ -102,7 +102,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     const { addDoc, setDoc, deleteScenarioFirestore } = useFirebaseRepository()
 
     const [scenarios, setScenarios] = useState<Scenario[] | null>(null)
-    const [scenariosCollection, setScenariosCollection] = useState<CollectionReference | null>(null)
+    const [scenariosCollection, setScenariosCollection] = useState<CollectionReference<Scenario> | null>(null)
 
     const [scenarioId, setScenarioId] = useState<string | null | undefined>(null)
 
@@ -143,11 +143,9 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
             _setScenariosLoading(true)
             getDocs(scenariosCollection)
                 .then((querySnapshot) => {
-                    console.log("ScenariosProvider Full read get", querySnapshot.size)
-
                     const scenariosQueried: Scenario[] = []
                     querySnapshot.forEach(doc => {
-                        scenariosQueried.push(converter.fromFirestore(doc))
+                        scenariosQueried.push(doc.data())
                     })
 
                     setScenarios(scenariosQueried)
@@ -206,7 +204,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
             return
         }
 
-        updateDuplicatedName(scenario, scenarios)
+        updateDuplicatedName(scenario, scenarios, 1)
 
         const updatedScenarios = [...scenarios]
         updatedScenarios[index] = scenario

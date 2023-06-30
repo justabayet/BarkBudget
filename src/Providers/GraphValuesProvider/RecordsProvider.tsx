@@ -64,7 +64,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     const [records, setRecords] = useState<Record[] | null>(null)
     const [graphRecords, setGraphRecords] = useState<GraphValue[] | null>([])
-    const [recordsCollection, setRecordsCollection] = useState<CollectionReference | null>(null)
+    const [recordsCollection, setRecordsCollection] = useState<CollectionReference<Record> | null>(null)
 
     const [newRecord, setNewRecord] = useState(new Record({}))
 
@@ -89,7 +89,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
                     const recordsQueried: Record[] = []
 
                     querySnapshot.forEach(doc => {
-                        recordsQueried.push(converter.fromFirestore(doc))
+                        recordsQueried.push(doc.data())
                     })
 
                     recordsQueried.sort(sortRecordsFunction)

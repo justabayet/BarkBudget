@@ -97,7 +97,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
     const [expectations, setExpectations] = useState<Expectation[] | null>(null)
     const [graphExpectations, setGraphExpectations] = useState<GraphValue[] | null>(null)
-    const [expectationsCollection, setExpectationsCollection] = useState<CollectionReference | null>(null)
+    const [expectationsCollection, setExpectationsCollection] = useState<CollectionReference<Expectation> | null>(null)
 
     const [newExpectation, setNewExpectation] = useState(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
 
@@ -121,7 +121,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
                     const expectationsQueried: Expectation[] = []
                     querySnapshot.forEach(doc => {
-                        expectationsQueried.push(converter.fromFirestore(doc))
+                        expectationsQueried.push(doc.data())
                     })
 
                     expectationsQueried.sort(sortExpectationsFunction)
