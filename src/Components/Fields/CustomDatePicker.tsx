@@ -45,6 +45,11 @@ const CustomDatePicker = ({ date, setDate, label }: CustomDatePickerProps): JSX.
                     },
                     onBlur: () => {
                         save(internalData)
+                    },
+                    onKeyDown: (e) => {
+                        if (e.key === 'Enter') {
+                            save(internalData)
+                        }
                     }
                 }
             }}

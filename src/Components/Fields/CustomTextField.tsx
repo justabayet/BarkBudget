@@ -24,6 +24,11 @@ const CustomTextField = ({ text, setText, label }: CustomTextFieldProps): JSX.El
             onBlur={() => {
                 setText(internalText)
             }}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                    setText(internalText)
+                }
+            }}
         />
     )
 }

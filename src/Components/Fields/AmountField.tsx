@@ -35,6 +35,13 @@ const AmountField = ({ amount, setAmount, label }: AmountFieldProps): JSX.Elemen
                     setAmount(parseInt(internalAmount))
                 }
             }}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                    if (regex.test(internalAmount)) {
+                        setAmount(parseInt(internalAmount))
+                    }
+                }
+            }}
         />
     )
 }
