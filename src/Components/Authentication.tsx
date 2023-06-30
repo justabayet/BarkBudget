@@ -1,21 +1,18 @@
 import { Logout } from '@mui/icons-material'
 import CloseIcon from '@mui/icons-material/Close'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import LightModeIcon from '@mui/icons-material/LightMode'
 import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import SettingsIcon from '@mui/icons-material/Settings'
-import { Avatar, Box, Button, ButtonBase, Collapse, Dialog, DialogContent, DialogTitle, Divider, IconButton, ListItemIcon, Menu, MenuItem, Stack, Switch, Tooltip, Typography } from '@mui/material'
+import { Avatar, Box, Button, ButtonBase, Collapse, Dialog, DialogContent, DialogTitle, Divider, IconButton, ListItemIcon, Menu, MenuItem, Stack, Tooltip, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import React from 'react'
 import { useAuthentication } from '../Providers/AuthenticationProvider'
-import { useToggleTheme } from '../Providers/ToggleThemeProvider'
+import DarkModeSwitch from './DarkModeSwitch'
 import GoogleIcon from './GoogleLogo'
 
 const Authentication = (): JSX.Element => {
     const { user, handleSignOut, handleSignIn, deleteAccount } = useAuthentication()
     const theme = useTheme()
-    const { toggleTheme } = useToggleTheme()
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
@@ -111,10 +108,7 @@ const Authentication = (): JSX.Element => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuItem disableRipple>
-                    <ListItemIcon>
-                        {theme.palette.mode === 'light' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
-                    </ListItemIcon>
-                    <Switch checked={theme.palette.mode === 'dark'} onClick={toggleTheme}></Switch>
+                    <DarkModeSwitch />
                 </MenuItem>
 
                 <Divider />
