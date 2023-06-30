@@ -38,6 +38,7 @@ const LoginPage = (): JSX.Element => {
                             position: 'absolute',
                             top: '13.5px',
                             left: '13px',
+                            opacity: 0.5
                         }}
                     />
                 )}
