@@ -6,8 +6,9 @@ import { auth, db } from '../firebase'
 import { useFirebaseRepository } from "./FirebaseRepositoryProvider"
 import { useLoadingStatus } from "./LoadingStatusProvider"
 
-type UserType = { uid: string, displayName: string | null, email: string | null, scenarioId?: string | null }
+type UserType = UserAuthenticationType & { scenarioId?: string | null }
 type UserAuthenticationType = { uid: string, displayName: string | null, email: string | null }
+
 class Authentication {
     constructor(
         public user: UserType | null,
