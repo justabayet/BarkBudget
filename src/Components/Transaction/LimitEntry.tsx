@@ -16,6 +16,8 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
     const [open, setOpen] = useState(!!value.new)
     const [highlighted, setHighlighted] = useState(false)
 
+    const [valueCopy, setValueCopy] = useState<Limit | null>(null)
+
     const elementRef = createRef<HTMLDivElement>()
 
     useEffect(() => {
@@ -34,11 +36,17 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
     }, [value.new, value.edited, value, elementRef])
 
     const handleClickOpen = () => {
+        setValueCopy(new Limit(value))
         setOpen(true)
     }
 
     const handleClose = () => {
         setOpen(false)
+    }
+
+    const handleCancel = () => {
+        handleClose()
+        if (valueCopy) handleSave(valueCopy)
     }
 
     const dummy = DummyEntry({ id: value.id })
@@ -101,7 +109,7 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
                         </DialogContent>
                         <DialogActions>
                             <DeleteButton sx={{ m: 1, mr: 'auto' }} action={() => { handleClose(); handleDelete() }} />
-                            <Button onClick={handleClose} variant="outlined" autoFocus>Cancel</Button>
+                            <Button onClick={handleCancel} variant="outlined" autoFocus>Cancel</Button>
                             <Button onClick={handleClose} variant="contained" color="primary">Confirm</Button>
                         </DialogActions>
                     </Dialog>

@@ -20,6 +20,8 @@ const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, hand
     const [open, setOpen] = useState(!!value.new)
     const [highlighted, setHighlighted] = useState(false)
 
+    const [valueCopy, setValueCopy] = useState<Expectation | null>(null)
+
     const elementRef = createRef<HTMLDivElement>()
 
     useEffect(() => {
@@ -38,11 +40,17 @@ const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, hand
     }, [value.new, value.edited, value, elementRef])
 
     const handleClickOpen = () => {
+        setValueCopy(new Expectation(value))
         setOpen(true)
     }
 
     const handleClose = () => {
         setOpen(false)
+    }
+
+    const handleCancel = () => {
+        handleClose()
+        if (valueCopy) handleSave(valueCopy)
     }
 
     const dummy = DummyEntry({ id: value.id })
@@ -134,7 +142,7 @@ const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, hand
                         </DialogContent>
                         <DialogActions>
                             <DeleteButton sx={{ m: 1, mr: 'auto' }} action={() => { handleClose(); handleDelete() }} />
-                            <Button onClick={handleClose} variant="outlined" autoFocus>Cancel</Button>
+                            <Button onClick={handleCancel} variant="outlined" autoFocus>Cancel</Button>
                             <Button onClick={handleClose} variant="contained" color="primary">Confirm</Button>
                         </DialogActions>
                     </Dialog>
