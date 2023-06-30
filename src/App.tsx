@@ -14,11 +14,7 @@ import { ToggleThemeProvider } from './Providers/ToggleThemeProvider'
 
 
 function App(): JSX.Element {
-    try {
-        if (screen.width <= 425) screen.orientation.lock('portrait')
-    } catch (error) {
-        console.log("screen.orientation.lock('portrait'): Can't be called on this device")
-    }
+    if (screen.width <= 425) screen.orientation.lock('portrait').catch(reason => console.log(reason))
 
     return (
         <ToggleThemeProvider>

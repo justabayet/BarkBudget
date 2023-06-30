@@ -21,8 +21,6 @@ export const LoadingStatusProvider = ({ children }: React.PropsWithChildren): JS
     const [signingIn, setSigningIn] = useState<boolean>(false)
     const [currentScenarioLoading, setCurrentScenarioLoading] = useState<boolean>(false)
 
-    console.log({ scenariosLoading, signingIn, currentScenarioLoading })
-
     const isLoading = signingIn || scenariosLoading || !currentScenarioLoading
 
     return (
