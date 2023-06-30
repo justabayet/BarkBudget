@@ -1,5 +1,5 @@
 
-import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs, updateDoc } from "firebase/firestore"
+import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
 import { useAuthentication } from "./AuthenticationProvider"
@@ -115,9 +115,9 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
 
     useEffect(() => {
         if (!!scenarioId && userDoc) {
-            updateDoc(userDoc, { scenarioId })
+            setDoc(userDoc, { scenarioId })
         }
-    }, [scenarioId, userDoc])
+    }, [scenarioId, userDoc, setDoc])
 
     useEffect(() => {
         if (!scenarios || scenarios.length === 0) {
