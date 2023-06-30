@@ -77,15 +77,7 @@ const converter: FirestoreDataConverter<Expectation> = {
 }
 
 const sortExpectationsFunction = (expectation1: Expectation, expectation2: Expectation): number => {
-    const getTime = (expectation: Expectation): number => {
-        if ([modeNames.DAILY, modeNames.MONTHLY].includes(expectation.mode)) {
-            return expectation.endDate.getTime()
-        } else {
-            return expectation.startDate.getTime()
-        }
-    }
-
-    return getTime(expectation1) - getTime(expectation2)
+    return expectation1.startDate.getTime() - expectation2.startDate.getTime()
 }
 
 export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
