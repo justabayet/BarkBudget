@@ -16,6 +16,7 @@ interface LimitParameter {
     amount?: number
     id?: string
     new?: boolean
+    edited?: boolean
 }
 
 export class Limit {
@@ -24,6 +25,7 @@ export class Limit {
     amount: number
     id?: string
     new?: boolean
+    edited?: boolean
 
     constructor({ startDate, endDate, amount, id }: LimitParameter) {
         this.id = id
@@ -162,6 +164,8 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         }
 
         const index: number = getIndex(limit.id)
+        limit.edited = true
+        limits.forEach(lim => lim.edited = false)
 
         const updatedLimits = [...limits]
         updatedLimits[index] = limit

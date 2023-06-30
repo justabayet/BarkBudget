@@ -1,6 +1,6 @@
 import DeleteIcon from "@mui/icons-material/Delete"
 import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, IconButton, Typography } from "@mui/material"
-import React from "react"
+import React, { createRef, useEffect, useState } from "react"
 import { useDeviceDetails } from "../../Providers/DeviceDetailsProvider"
 import { GenericEntry } from "../../Providers/GraphValuesProvider/GenericValues"
 import { Record } from "../../Providers/GraphValuesProvider/RecordsProvider"
@@ -12,10 +12,27 @@ import DummyEntry from "./DummyEntry"
 
 
 const RecordEntry: GenericEntry<Record> = ({ value, handleDelete, handleSave }) => {
-
     const { isBodyFullSize } = useDeviceDetails()
 
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = useState(!!value.new)
+    const [highlighted, setHighlighted] = useState(false)
+
+    const elementRef = createRef<HTMLDivElement>()
+
+    useEffect(() => {
+        if (!!value.new || !!value.edited) {
+            window.scrollTo({ behavior: "smooth", top: elementRef.current?.offsetTop })
+
+            setHighlighted(true)
+
+            value.new = false
+            value.edited = false
+
+            setTimeout(() => {
+                setHighlighted(false)
+            }, 1000)
+        }
+    }, [value.new, value.edited, value, elementRef])
 
     const handleClickOpen = () => {
         setOpen(true)
@@ -32,7 +49,7 @@ const RecordEntry: GenericEntry<Record> = ({ value, handleDelete, handleSave }) 
         <>
             {!isBodyFullSize ?
                 <>
-                    <Card elevation={3} sx={{ mt: 3 }}>
+                    <Card elevation={highlighted ? 5 : 3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
                         <CardActionArea onClick={handleClickOpen}>
                             <CardContent>
                                 <Box>
@@ -79,27 +96,31 @@ const RecordEntry: GenericEntry<Record> = ({ value, handleDelete, handleSave }) 
                     </Dialog>
                 </>
                 :
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between", mt: 3 }}>
-                    <CustomDatePicker
-                        date={value.date}
-                        setDate={(newDate) => {
-                            if (!compareDate(newDate, value.date)) {
-                                handleSave({ ...value, date: newDate })
-                            }
-                        }} />
+                <Card elevation={highlighted ? 5 : 3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
+                    <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+                            <CustomDatePicker
+                                date={value.date}
+                                setDate={(newDate) => {
+                                    if (!compareDate(newDate, value.date)) {
+                                        handleSave({ ...value, date: newDate })
+                                    }
+                                }} />
 
-                    <AmountField
-                        amount={value.amount}
-                        setAmount={(newAmount) => {
-                            if (newAmount !== value.amount) {
-                                handleSave({ ...value, amount: newAmount })
-                            }
-                        }} />
+                            <AmountField
+                                amount={value.amount}
+                                setAmount={(newAmount) => {
+                                    if (newAmount !== value.amount) {
+                                        handleSave({ ...value, amount: newAmount })
+                                    }
+                                }} />
 
-                    <IconButton onClick={handleDelete} style={{ "marginLeft": "auto" }}>
-                        <DeleteIcon />
-                    </IconButton>
-                </Box>
+                            <IconButton onClick={handleDelete} style={{ "marginLeft": "auto" }}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Box>
+                    </CardContent>
+                </Card>
             }
         </>
     )

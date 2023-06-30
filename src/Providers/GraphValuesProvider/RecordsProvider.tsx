@@ -15,6 +15,7 @@ interface RecordParameter {
     amount?: number
     id?: string
     new?: boolean
+    edited?: boolean
 }
 
 export class Record {
@@ -22,6 +23,7 @@ export class Record {
     amount: number
     id?: string
     new?: boolean
+    edited?: boolean
 
     constructor({ date, amount, id }: RecordParameter) {
         this.date = getValidDate(date)
@@ -155,6 +157,8 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
         }
 
         const index: number = getIndex(record.id)
+        record.edited = true
+        records.forEach(rec => rec.edited = false)
 
         const updatedRecords = [...records]
         updatedRecords[index] = record
