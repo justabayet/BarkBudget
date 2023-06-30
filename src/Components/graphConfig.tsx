@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { ChartConfiguration, ChartOptions, Tick } from 'chart.js';
-import { GraphValue } from "../Providers/GraphProvider";
+import { ChartConfiguration, ChartOptions, Tick } from 'chart.js'
+import { GraphValue } from "../Providers/GraphProvider"
 
 const colorExpectation = '132, 94, 194'
 const colorRecord = '214, 93, 177'
@@ -25,8 +25,8 @@ const options: ChartOptions<"line"> = {
                 title: function (tooltipItems, data) {
                     const date = new Date(tooltipItems[0].raw.x)
 
-                    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-                    const title = date.toLocaleDateString('en-US', options);
+                    const options = { month: 'short', day: 'numeric', year: 'numeric' }
+                    const title = date.toLocaleDateString('en-US', options)
 
                     return title
                 },
@@ -57,12 +57,20 @@ const options: ChartOptions<"line"> = {
                 callback: function (value: string | number, index: number, values: Tick[]) {
                     value = parseInt(value)
 
+                    function format(number) {
+                        if (number % 1 !== 0) {
+                            return number.toFixed(1)
+                        } else {
+                            return number.toFixed(0)
+                        }
+                    }
+
                     if (value >= 1000000000) {
-                        value = (value / 1000000000).toFixed(0) + 'M';
+                        value = format(value / 1000000000) + 'M'
                     } else if (value >= 1000000) {
-                        value = (value / 1000000).toFixed(0) + 'm';
+                        value = format(value / 1000000) + 'm'
                     } else if (value >= 1000) {
-                        value = (value / 1000).toFixed(0) + 'k';
+                        value = format(value / 1000) + 'k'
                     }
                     return value
                 },
@@ -82,7 +90,7 @@ const options: ChartOptions<"line"> = {
                 }))
 
                 // Calculate the suggested maximum by adding 10% to the max value
-                return max * 1.1;
+                return max * 1.1
             }
         },
     },
