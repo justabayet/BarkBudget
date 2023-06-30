@@ -114,10 +114,8 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     }, [_scenariosLoading, setScenariosLoading])
 
     useEffect(() => {
-        // TODO might loop indefinitily if scenarios is undefined
         if (!scenarios || scenarios.length === 0) {
             setScenarioId(null)
-
         } else if (scenarioId === null) {
             setScenarioId(scenarios[0].id)
         }
