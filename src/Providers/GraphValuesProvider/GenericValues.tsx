@@ -16,8 +16,8 @@ export interface GenericValuesContext<Transaction extends TransactionType> {
     values: Transaction[] | null
     graphValues: GraphValue[] | null
     addValue: () => void
-    deleteValue: (transaction: Transaction, index: number) => void
-    updateValue: (newTransaction: Transaction, index: number) => void
+    deleteValue: (transaction: Transaction) => void
+    updateValue: (newTransaction: Transaction) => void
     isLoading: boolean
 }
 
@@ -25,16 +25,16 @@ export class GenericValues<Transaction extends TransactionType> implements Gener
     values: Transaction[] | null
     graphValues: GraphValue[] | null
     addValue: () => void
-    deleteValue: (transaction: Transaction, index: number) => void
-    updateValue: (newTransaction: Transaction, index: number) => void
+    deleteValue: (transaction: Transaction) => void
+    updateValue: (newTransaction: Transaction) => void
     isLoading: boolean
 
     constructor(
         values: Transaction[] | null,
         graphValues: GraphValue[] | null,
         addValue: () => void,
-        deleteValue: (transaction: Transaction, index: number) => void,
-        updateValue: (newTransaction: Transaction, index: number) => void,
+        deleteValue: (transaction: Transaction) => void,
+        updateValue: (newTransaction: Transaction) => void,
         isLoading: boolean) {
 
         this.values = values

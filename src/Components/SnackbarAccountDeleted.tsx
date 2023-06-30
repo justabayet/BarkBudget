@@ -1,16 +1,14 @@
 import { Alert, Snackbar } from '@mui/material'
 import React from 'react'
 
-interface AccountDeletedSnackbarProps {
+interface SnackbarAccountDeletedProps {
     eventOpen: boolean
     setEventOpen: (newEventOpen: boolean) => void
 }
 
-const AccountDeletedSnackbar = ({ eventOpen, setEventOpen }: AccountDeletedSnackbarProps): JSX.Element => {
+const SnackbarAccountDeleted = ({ eventOpen, setEventOpen }: SnackbarAccountDeletedProps): JSX.Element => {
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return
-        }
+        if (reason === 'clickaway') return
 
         setEventOpen(false)
     }
@@ -24,4 +22,4 @@ const AccountDeletedSnackbar = ({ eventOpen, setEventOpen }: AccountDeletedSnack
     )
 }
 
-export default AccountDeletedSnackbar
+export default SnackbarAccountDeleted

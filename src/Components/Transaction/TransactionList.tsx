@@ -46,8 +46,8 @@ const TransactionList: TransactionListType = ({ useValues, ChildComponent, textE
                                 <Collapse key={value.id} id={`collapse-${value.id}`} timeout={500}>
                                     <ChildComponent
                                         value={value}
-                                        handleDelete={() => { deleteValue(value, index) }}
-                                        handleSave={(updatedValue) => { updateValue(updatedValue, index) }} />
+                                        handleDelete={() => { deleteValue(value) }}
+                                        handleSave={(updatedValue) => { updateValue(updatedValue) }} />
                                 </Collapse>
                             )
                         })}

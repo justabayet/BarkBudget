@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
 import { DocumentReference, FirestoreDataConverter, collection, doc, getDoc, getDocs } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import AccountDeletedSnackbar from "../Components/AccountDeletedSnackbar"
+import SnackbarAccountDeleted from "../Components/SnackbarAccountDeleted"
 import { auth, db } from '../firebase'
 import { useFirebaseRepository } from "./FirebaseRepositoryProvider"
 import { useLoadingStatus } from "./LoadingStatusProvider"
@@ -140,7 +140,7 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
             value={(new Authentication(user, handleSignIn, signInTestAccount, handleSignOut, userDoc, deleteAccount))}
         >
             {children}
-            <AccountDeletedSnackbar eventOpen={openAcountDeletedSnackbar} setEventOpen={setOpenAccountDeletedSnackbar} />
+            <SnackbarAccountDeleted eventOpen={openAcountDeletedSnackbar} setEventOpen={setOpenAccountDeletedSnackbar} />
         </AuthenticationContext.Provider>
     )
 }
