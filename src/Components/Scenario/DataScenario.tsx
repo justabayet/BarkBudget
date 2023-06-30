@@ -27,7 +27,9 @@ const DataScenario = (): JSX.Element => {
         setMainLimits(graphLimits || [])
     }, [graphLimits, setMainLimits])
 
-    setCurrentScenarioLoading(areExpectationsLoading || areRecordsLoading || areLimitsLoading)
+    useEffect(() => {
+        setCurrentScenarioLoading(areExpectationsLoading || areRecordsLoading || areLimitsLoading)
+    }, [areExpectationsLoading, areLimitsLoading, areRecordsLoading, setCurrentScenarioLoading])
 
     return <></>
 }
