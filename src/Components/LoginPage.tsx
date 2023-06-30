@@ -24,7 +24,8 @@ const LoginPage = (): JSX.Element => {
                 right: 0,
                 top: 0,
                 '&:hover': { backgroundColor: 'inherit' },
-                cursor: 'default'
+                cursor: 'default',
+                padding: 1
             }}>
                 <DarkModeSwitch />
             </MenuItem>
