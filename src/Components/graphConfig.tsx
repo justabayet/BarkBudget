@@ -43,7 +43,7 @@ const options: ChartOptions<"line"> = {
             time: {
                 unit: 'month',
                 displayFormats: {
-                    month: 'MM',
+                    month: 'MMM',
                 },
             },
             ticks: {
