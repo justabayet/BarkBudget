@@ -70,6 +70,7 @@ const ScenarioHeader = ({ scenario, scenarios, addScenario, deleteScenario, upda
                         <DeleteIcon />
                     </IconButton>
                     <Dialog
+                        disableScrollLock
                         open={open}
                         onClose={closeDeleteDialog}
                         aria-labelledby="alert-dialog-title"
