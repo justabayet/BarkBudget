@@ -74,6 +74,7 @@ const Authentication = (): JSX.Element => {
                 }
             </Box>
             <Menu
+                disableScrollLock
                 anchorEl={anchorEl}
                 id="account-menu"
                 open={open}

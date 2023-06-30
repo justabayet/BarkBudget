@@ -86,7 +86,7 @@ const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, hand
                         </CardActionArea>
                     </Card>
 
-                    <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
+                    <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth disableScrollLock>
                         <DialogContent>
                             <Box sx={{ pt: 3, flexWrap: 'nowrap', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} gap={3}>
                                 <CustomTextField
