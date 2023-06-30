@@ -87,7 +87,7 @@ const PinnedScenariosSelector = ({ scenarios, updateScenario }: PinnedScenariosS
                             key={scenario.id}
                             sx={scenario.isPinned ? { display: 'none' } : {}}
                         >
-                            {scenario.name} {scenario.id}
+                            {scenario.name}
                         </MenuItem>
                     )
                 })}

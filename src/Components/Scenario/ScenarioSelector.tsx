@@ -40,7 +40,7 @@ const ScenarioSelector = ({ scenarios, setScenarioId, currentScenario }: Scenari
                             key={scenario.id}
                             sx={isSelected ? { display: 'none' } : {}}
                         >
-                            {scenario.name} {scenario.id}
+                            {scenario.name}
                         </MenuItem>
                     )
                 })}
