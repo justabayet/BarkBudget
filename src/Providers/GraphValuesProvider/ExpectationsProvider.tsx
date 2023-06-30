@@ -99,7 +99,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
     const [graphExpectations, setGraphExpectations] = useState<GraphValue[] | null>(null)
     const [expectationsCollection, setExpectationsCollection] = useState<CollectionReference | null>(null)
 
-    const [newExpectation, setNewExpectation] = useState(new Expectation({ startDate: scenario.startDate, endDate: scenario.startDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
+    const [newExpectation, setNewExpectation] = useState(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
 
     const [isLoadingExpectations, setIsLoadingExpectations] = useState<boolean>(true)
 
@@ -152,7 +152,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
             newExpectations.sort(sortExpectationsFunction)
             setExpectations(newExpectations)
 
-            setNewExpectation(new Expectation({ startDate: scenario.startDate, endDate: scenario.startDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
+            setNewExpectation(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
         })
     }
 

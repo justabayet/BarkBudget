@@ -6,8 +6,6 @@ import { GraphValue } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
 import { GenericValues, GenericValuesContext } from "./GenericValues"
 
-const currentDate = new Date()
-
 export type LimitsContextType = GenericValuesContext<Limit>
 
 const Limits = GenericValues<Limit>
@@ -75,7 +73,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
     const [graphLimits, setGraphLimits] = useState<GraphValue[] | null>(null)
     const [limitsCollection, setLimitsCollection] = useState<CollectionReference | null>(null)
 
-    const [newLimit, setNewLimit] = useState(new Limit({ startDate: currentDate, endDate: currentDate, amount: 0 }))
+    const [newLimit, setNewLimit] = useState(new Limit({ startDate: startDate, endDate: endDate, amount: 0 }))
 
     const [isLoadingLimits, setIsLoadingLimits] = useState<boolean>(true)
 
@@ -128,7 +126,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
             newLimits.sort(sortLimitsFunction)
             setLimits(newLimits)
 
-            setNewLimit(new Limit({ startDate: currentDate, endDate: currentDate, amount: 0 }))
+            setNewLimit(new Limit({ startDate: startDate, endDate: endDate, amount: 0 }))
         })
     }
 
