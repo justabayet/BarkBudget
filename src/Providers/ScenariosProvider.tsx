@@ -1,5 +1,5 @@
 
-import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
+import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs, updateDoc } from "firebase/firestore"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { getFormattedDate } from "../helpers"
 import { useAuthentication } from "./AuthenticationProvider"
@@ -98,7 +98,7 @@ const updateDuplicatedName = (newScenario: Scenario, scenarios: Scenario[]) => {
 
 
 export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
-    const { userDoc } = useAuthentication()
+    const { userDoc, user } = useAuthentication()
     const { addDoc, setDoc, deleteScenarioFirestore } = useFirebaseRepository()
 
     const [scenarios, setScenarios] = useState<Scenario[] | null>(null)
@@ -114,12 +114,21 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     }, [_scenariosLoading, setScenariosLoading])
 
     useEffect(() => {
+        if (!!scenarioId && userDoc) {
+            updateDoc(userDoc, { scenarioId })
+        }
+    }, [scenarioId, userDoc])
+
+    useEffect(() => {
         if (!scenarios || scenarios.length === 0) {
             setScenarioId(null)
         } else if (scenarioId === null) {
-            setScenarioId(scenarios[0].id)
+            let defaultScenarioId = scenarios.findIndex(({ id }) => id === user?.scenarioId)
+            defaultScenarioId = defaultScenarioId !== -1 ? defaultScenarioId : 0
+
+            setScenarioId(scenarios[defaultScenarioId].id)
         }
-    }, [scenarios, scenarioId])
+    }, [scenarios, scenarioId, user])
 
     useEffect(() => {
         if (userDoc) {
