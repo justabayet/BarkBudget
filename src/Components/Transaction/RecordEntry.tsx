@@ -27,14 +27,16 @@ const RecordEntry: GenericEntry<Record> = ({ value, handleDelete, handleSave }) 
 
             setHighlighted(true)
 
-            value.new = false
-            value.edited = false
+            if (isBodyFullSize) {
+                value.new = false
+                value.edited = false
 
-            setTimeout(() => {
-                setHighlighted(false)
-            }, 1000)
+                setTimeout(() => {
+                    setHighlighted(false)
+                }, 1000)
+            }
         }
-    }, [value.new, value.edited, value, elementRef])
+    }, [value.new, value.edited, value, elementRef, isBodyFullSize])
 
     const handleClickOpen = () => {
         setValueCopy(new Record(value))
@@ -42,12 +44,26 @@ const RecordEntry: GenericEntry<Record> = ({ value, handleDelete, handleSave }) 
     }
 
     const handleClose = () => {
+        if (!isBodyFullSize) {
+            value.new = false
+            value.edited = false
+
+            setTimeout(() => {
+                setHighlighted(false)
+            }, 1000)
+        }
+
         setOpen(false)
     }
 
     const handleCancel = () => {
-        handleClose()
-        if (valueCopy) handleSave(valueCopy)
+        if (value.new) {
+            handleClose()
+            handleDelete()
+        } else {
+            handleClose()
+            if (valueCopy) handleSave(valueCopy)
+        }
     }
 
     const dummy = DummyEntry({ id: value.id })

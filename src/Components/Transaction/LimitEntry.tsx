@@ -26,14 +26,16 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
 
             setHighlighted(true)
 
-            value.new = false
-            value.edited = false
+            if (isBodyFullSize) {
+                value.new = false
+                value.edited = false
 
-            setTimeout(() => {
-                setHighlighted(false)
-            }, 1000)
+                setTimeout(() => {
+                    setHighlighted(false)
+                }, 1000)
+            }
         }
-    }, [value.new, value.edited, value, elementRef])
+    }, [value.new, value.edited, value, elementRef, isBodyFullSize])
 
     const handleClickOpen = () => {
         setValueCopy(new Limit(value))
@@ -41,12 +43,26 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
     }
 
     const handleClose = () => {
+        if (!isBodyFullSize) {
+            value.new = false
+            value.edited = false
+
+            setTimeout(() => {
+                setHighlighted(false)
+            }, 1000)
+        }
+
         setOpen(false)
     }
 
     const handleCancel = () => {
-        handleClose()
-        if (valueCopy) handleSave(valueCopy)
+        if (value.new) {
+            handleClose()
+            handleDelete()
+        } else {
+            handleClose()
+            if (valueCopy) handleSave(valueCopy)
+        }
     }
 
     const dummy = DummyEntry({ id: value.id })
@@ -56,7 +72,7 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
         <>
             {!isBodyFullSize ?
                 <>
-                    <Card elevation={highlighted ? 5 : 3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
+                    <Card elevation={3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
                         <CardActionArea onClick={handleClickOpen}>
                             <CardContent sx={{ p: 2 }}>
                                 <Box>
@@ -116,7 +132,7 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
                 </>
 
                 :
-                <Card elevation={highlighted ? 5 : 3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
+                <Card elevation={3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
                     <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
 
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
