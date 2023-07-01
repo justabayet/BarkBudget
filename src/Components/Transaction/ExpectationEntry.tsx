@@ -30,7 +30,7 @@ const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, hand
 
             setHighlighted(true)
 
-            if (isBodyFullSize) {
+            if (isBodyFullSize || !open) {
                 value.new = false
                 value.edited = false
 
@@ -39,7 +39,7 @@ const ExpectationEntry: GenericEntry<Expectation> = ({ value, handleDelete, hand
                 }, 1000)
             }
         }
-    }, [value.new, value.edited, value, elementRef, isBodyFullSize])
+    }, [value.new, value.edited, value, elementRef, isBodyFullSize, open])
 
     const handleClickOpen = () => {
         setValueCopy(new Expectation(value))

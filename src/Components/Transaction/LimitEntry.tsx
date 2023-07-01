@@ -26,7 +26,7 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
 
             setHighlighted(true)
 
-            if (isBodyFullSize) {
+            if (isBodyFullSize || !open) {
                 value.new = false
                 value.edited = false
 
@@ -35,7 +35,7 @@ const LimitEntry: GenericEntry<Limit> = ({ value, handleDelete, handleSave }) =>
                 }, 1000)
             }
         }
-    }, [value.new, value.edited, value, elementRef, isBodyFullSize])
+    }, [value.new, value.edited, value, elementRef, isBodyFullSize, open])
 
     const handleClickOpen = () => {
         setValueCopy(new Limit(value))
