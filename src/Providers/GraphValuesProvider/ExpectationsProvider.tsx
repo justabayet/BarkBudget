@@ -1,13 +1,17 @@
-import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
-import React, { createContext, useContext, useEffect, useState } from "react"
-import { ForecastEngine } from "../../Modes/ForecastEngine"
-import { modeNames, modes } from "../../Modes/const"
-import { getFormattedDate, getValidDate } from "../../helpers"
-import { useFirebaseRepository } from "../FirebaseRepositoryProvider"
-import { GraphValue, compareGraphValues } from "../GraphProvider"
-import { useScenario } from "../ScenarioProvider"
-import { useRecords } from "./RecordsProvider"
-import { GenericValues, GenericValuesContext } from "./TransactionTypes"
+import React, { createContext, useContext, useEffect, useState } from 'react'
+
+import { CollectionReference, FirestoreDataConverter, collection, getDocs } from 'firebase/firestore'
+
+import { ForecastEngine, modeNames, modes } from 'Modes'
+import { getFormattedDate, getValidDate } from 'helpers'
+
+import { useFirebaseRepository } from 'Providers/FirebaseRepositoryProvider'
+import { GraphValue, compareGraphValues } from 'Providers/GraphProvider'
+import { useRecords } from 'Providers/GraphValuesProvider/RecordsProvider'
+import { useScenario } from 'Providers/ScenarioProvider'
+
+import { addTransaction, deleteTransaction, updateTransaction } from './GenericFunctions'
+import { GenericValues, GenericValuesContext } from './TransactionTypes'
 
 export type ExpectationsContextType = GenericValuesContext<Expectation>
 
@@ -40,7 +44,7 @@ export class Expectation {
         this.endDate = getValidDate(endDate)
         this.amount = amount !== undefined && !isNaN(amount) ? amount : 0
         this.mode = mode && Object.values(modeNames).includes(mode) ? mode : modeNames.ONE_TIME
-        this.name = name ? name : "New Expectation"
+        this.name = name ? name : 'New Expectation'
     }
 }
 
@@ -99,7 +103,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
     const [graphExpectations, setGraphExpectations] = useState<GraphValue[] | null>(null)
     const [expectationsCollection, setExpectationsCollection] = useState<CollectionReference<Expectation> | null>(null)
 
-    const [newExpectation, setNewExpectation] = useState(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
+    const [newExpectation, setNewExpectation] = useState(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: 'New Expectation' }))
 
     const [isLoadingExpectations, setIsLoadingExpectations] = useState<boolean>(true)
 
@@ -117,7 +121,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
             setIsLoadingExpectations(true)
             getDocs(expectationsCollection)
                 .then((querySnapshot) => {
-                    console.log("ExpectationsProvider Full read get", querySnapshot.size)
+                    console.log('ExpectationsProvider Full read get', querySnapshot.size)
 
                     const expectationsQueried: Expectation[] = []
                     querySnapshot.forEach(doc => {
@@ -135,69 +139,37 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
     }, [expectationsCollection])
 
-    const addExpectation = (): void => {
-        console.log("add", newExpectation)
-
-        if (expectationsCollection === null || expectations === null) {
-            return
-        }
-
-        addDoc(expectationsCollection, newExpectation).then(fbDocument => {
-            newExpectation.id = fbDocument.id
-
-            newExpectation.new = true
-            expectations.forEach(expectation => expectation.new = false)
-
-            const newExpectations = [newExpectation, ...expectations]
-            newExpectations.sort(sortExpectationsFunction)
-            setExpectations(newExpectations)
-
-            setNewExpectation(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: "New Expectation" }))
-        })
+    const addExpectation = () => {
+        addTransaction<Expectation>(
+            newExpectation,
+            expectations,
+            expectationsCollection,
+            addDoc,
+            setExpectations,
+            () => { setNewExpectation(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: 'New Expectation' })) },
+            sortExpectationsFunction
+        )
     }
 
-    const getIndex = (id: string | undefined): number => {
-        const index = expectations?.findIndex((expectation) => {
-            return expectation.id === id
-        })
-
-        return index ? index : 0
+    const deleteExpectation = (expectation: Expectation) => {
+        deleteTransaction<Expectation>(
+            expectation,
+            expectations,
+            expectationsCollection,
+            setExpectations,
+            deleteDoc
+        )
     }
 
-    const deleteExpectation = (expectation: Expectation): void => {
-        console.log("delete", expectation)
-
-        if (expectationsCollection === null || expectations === null) {
-            return
-        }
-
-        const index: number = getIndex(expectation.id)
-
-        const updatedExpectations = [...expectations]
-        updatedExpectations.splice(index, 1)
-        setExpectations(updatedExpectations)
-
-        deleteDoc(doc(expectationsCollection, expectation.id))
-    }
-
-    const updateExpectation = (expectation: Expectation): void => {
-        console.log("update", expectation)
-
-        if (expectationsCollection === null || expectations === null) {
-            return
-        }
-
-        const index: number = getIndex(expectation.id)
-        expectation.edited = true
-        expectations.forEach(expe => expe.edited = false)
-
-        const updatedExpectations = [...expectations]
-
-        updatedExpectations[index] = expectation
-        updatedExpectations.sort(sortExpectationsFunction)
-        setExpectations(updatedExpectations)
-
-        setDoc(doc(expectationsCollection, expectation.id), expectation)
+    const updateExpectation = (expectation: Expectation) => {
+        updateTransaction<Expectation>(
+            expectation,
+            expectations,
+            expectationsCollection,
+            sortExpectationsFunction,
+            setExpectations,
+            setDoc
+        )
     }
 
     useEffect(() => {
@@ -210,7 +182,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
         }
 
         if (expectations === null) return
-        console.log("ExpectationsProvider compute graph expectations:", startDateRecords.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), startAmount, expectations?.length)
+        console.log('ExpectationsProvider compute graph expectations:', startDateRecords.toLocaleDateString('en-US'), endDate.toLocaleDateString('en-US'), startAmount, expectations?.length)
         const engine = getEngine(startDateRecords, endDate, startAmount)
 
         engine.iterate()
@@ -225,9 +197,9 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
         setGraphExpectations(updatedGraphExpectations)
     }, [expectations, startDateRecords, endDate, startAmount])
 
-    const dummyStartRecords = new Expectation({ startDate: startDateRecords, endDate: startDateRecords, amount: startAmount, id: "startRecords", name: "startRecords" })
-    const dummyStartScenario = new Expectation({ startDate: scenario.startDate, endDate: scenario.startDate, amount: startAmount, id: "startScenario", name: "startScenario" })
-    const dummyEndScenario = new Expectation({ startDate: scenario.endDate, endDate: scenario.endDate, amount: startAmount, id: "endScenario", name: "endScenario", mode: modeNames.MONTHLY })
+    const dummyStartRecords = new Expectation({ startDate: startDateRecords, endDate: startDateRecords, amount: startAmount, id: 'startRecords', name: 'startRecords' })
+    const dummyStartScenario = new Expectation({ startDate: scenario.startDate, endDate: scenario.startDate, amount: startAmount, id: 'startScenario', name: 'startScenario' })
+    const dummyEndScenario = new Expectation({ startDate: scenario.endDate, endDate: scenario.endDate, amount: startAmount, id: 'endScenario', name: 'endScenario', mode: modeNames.MONTHLY })
 
     let expectationsWithDummy: Expectation[] = []
 

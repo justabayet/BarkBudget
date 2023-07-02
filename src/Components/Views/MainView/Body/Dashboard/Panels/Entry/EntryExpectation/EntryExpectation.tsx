@@ -4,12 +4,11 @@ import { Delete } from '@mui/icons-material'
 import { Box, IconButton, Typography } from '@mui/material'
 
 import { modeNames } from 'Modes/const'
-import CustomTextField from '../../Fields/CustomTextField'
 import ModeSelector from './SelectorMode'
 
 import { Expectation, GenericEntryType } from 'Providers/GraphValuesProvider'
 import { compareDate, getFormattedDate } from 'helpers'
-import { AmountField, CustomDatePicker } from '../../Fields'
+import { AmountField, CustomDatePicker, CustomTextField } from '../../Fields'
 import EntryGeneric from '../EntryGeneric'
 
 

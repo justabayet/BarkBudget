@@ -1,4 +1,4 @@
-import { Mode } from "./Mode"
+import { Mode } from './Mode'
 
 export class ForecastEngine {
     startDate: Date

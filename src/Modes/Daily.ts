@@ -1,4 +1,4 @@
-import { Mode } from "./Mode"
+import { Mode } from './Mode'
 
 interface DailyParameters {
     startDate: Date
@@ -13,7 +13,7 @@ export class Daily extends Mode {
 
     constructor({ startDate, endDate, amount }: DailyParameters) {
         super({ amount })
-        this.name = "daily"
+        this.name = 'daily'
         this.startDate = startDate
         this.endDate = endDate
     }

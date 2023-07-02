@@ -1,12 +1,14 @@
-import { CollectionReference, DocumentData, DocumentReference, WithFieldValue, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore'
 import React, { createContext, useContext, useState } from 'react'
-import { generateRandomId } from '../helpers'
 
-type docRef = DocumentReference<DocumentData>
-type colRef = CollectionReference<DocumentData>
-type delRef = DocumentReference<unknown>
-type dataType = WithFieldValue<DocumentData>
-type objWithId = { id: string }
+import { CollectionReference, DocumentData, DocumentReference, WithFieldValue, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore'
+
+import { generateRandomId } from 'helpers'
+
+export type docRef = DocumentReference<DocumentData>
+export type colRef = CollectionReference<DocumentData>
+export type delRef = DocumentReference<unknown>
+export type dataType = WithFieldValue<DocumentData>
+export type objWithId = { id: string }
 
 class FirebaseRepository {
     constructor(

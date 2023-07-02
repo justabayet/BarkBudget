@@ -99,20 +99,20 @@ const EntryGeneric = <Transaction extends TransactionType>({ value, handleDelete
                             {CardMobileElements.map(el => el)}
                         </Box>
                     </CardContent>
-
-                    <Dialog open={open} onClose={handleClose} maxWidth='xs' fullWidth disableScrollLock>
-                        <DialogContent>
-                            <Box sx={{ pt: 3, flexWrap: 'nowrap', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} gap={3}>
-                                {DialogElements.map(el => el)}
-                            </Box>
-                        </DialogContent>
-                        <DialogActions>
-                            <ButtonDelete sx={{ m: 1, mr: 'auto' }} onClick={() => { handleClose(); handleDelete() }} />
-                            <Button onClick={handleCancel} variant='outlined' autoFocus>Cancel</Button>
-                            <Button onClick={handleClose} variant='contained' color='primary'>Confirm</Button>
-                        </DialogActions>
-                    </Dialog>
                 </CardActionArea>
+
+                <Dialog open={open} onClose={handleClose} maxWidth='xs' fullWidth disableScrollLock>
+                    <DialogContent>
+                        <Box sx={{ pt: 3, flexWrap: 'nowrap', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }} gap={3}>
+                            {DialogElements.map(el => el)}
+                        </Box>
+                    </DialogContent>
+                    <DialogActions>
+                        <ButtonDelete sx={{ m: 1, mr: 'auto' }} onClick={() => { handleClose(); handleDelete() }} />
+                        <Button onClick={handleCancel} variant='outlined' autoFocus>Cancel</Button>
+                        <Button onClick={handleClose} variant='contained' color='primary'>Confirm</Button>
+                    </DialogActions>
+                </Dialog>
             </Card>
         )
     }

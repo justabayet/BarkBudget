@@ -1,10 +1,14 @@
-import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
-import React, { createContext, useContext, useEffect, useState } from "react"
-import { getFormattedDate, getValidDate } from "../../helpers"
-import { useFirebaseRepository } from "../FirebaseRepositoryProvider"
-import { GraphValue, compareGraphValues } from "../GraphProvider"
-import { useScenario } from "../ScenarioProvider"
-import { GenericValues, GenericValuesContext } from "./TransactionTypes"
+import React, { createContext, useContext, useEffect, useState } from 'react'
+
+import { CollectionReference, FirestoreDataConverter, collection, getDocs } from 'firebase/firestore'
+
+import { getFormattedDate, getValidDate } from 'helpers'
+
+import { useFirebaseRepository } from 'Providers/FirebaseRepositoryProvider'
+import { GraphValue, compareGraphValues } from 'Providers/GraphProvider'
+import { GenericValues, GenericValuesContext } from 'Providers/GraphValuesProvider/TransactionTypes'
+import { useScenario } from 'Providers/ScenarioProvider'
+import { addTransaction, deleteTransaction, updateTransaction } from './GenericFunctions'
 
 export type RecordsContextType = GenericValuesContext<Record>
 
@@ -70,6 +74,8 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     const [isLoadingRecords, setIsLoadingRecords] = useState<boolean>(true)
 
+    console.log("####", records)
+
     useEffect(() => {
         if (scenarioDoc) {
             setRecordsCollection(collection(scenarioDoc, 'records').withConverter(converter))
@@ -84,7 +90,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
             setIsLoadingRecords(true)
             getDocs(recordsCollection)
                 .then((querySnapshot) => {
-                    console.log("RecordsProvider Full read get", querySnapshot.size)
+                    console.log('RecordsProvider Full read get', querySnapshot.size)
 
                     const recordsQueried: Record[] = []
 
@@ -103,76 +109,43 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     }, [recordsCollection])
 
-    const addRecord = (): void => {
-        console.log("add", newRecord)
-
-        if (recordsCollection === null || records === null) {
-            return
-        }
-
-        addDoc(recordsCollection, newRecord).then(document => {
-            newRecord.id = document.id
-            newRecord.new = true
-
-            records.forEach(record => record.new = false)
-
-            const newRecords = [newRecord, ...records]
-            newRecords.sort(sortRecordsFunction)
-            setRecords(newRecords)
-
-            setNewRecord(new Record({}))
-        })
+    const addRecord = () => {
+        addTransaction<Record>(
+            newRecord,
+            records,
+            recordsCollection,
+            addDoc,
+            setRecords,
+            () => { setNewRecord(new Record({})) },
+            sortRecordsFunction
+        )
     }
 
-    const getIndex = (id: string | undefined): number => {
-        const index = records?.findIndex((record) => {
-            return record.id === id
-        })
-
-        return index ? index : 0
+    const deleteRecord = (record: Record) => {
+        deleteTransaction<Record>(
+            record,
+            records,
+            recordsCollection,
+            setRecords,
+            deleteDoc
+        )
     }
 
-    const deleteRecord = (record: Record): void => {
-        console.log("delete", record)
-
-        if (recordsCollection === null || records === null) {
-            return
-        }
-
-        const index: number = getIndex(record.id)
-
-        console.log("delete", record)
-        const updatedRecords = [...records]
-        updatedRecords.splice(index, 1)
-        setRecords(updatedRecords)
-
-        deleteDoc(doc(recordsCollection, record.id))
+    const updateRecord = (record: Record) => {
+        updateTransaction<Record>(
+            record,
+            records,
+            recordsCollection,
+            sortRecordsFunction,
+            setRecords,
+            setDoc
+        )
     }
-
-    const updateRecord = (record: Record): void => {
-        console.log("update", record)
-
-        if (recordsCollection === null || records === null) {
-            return
-        }
-
-        const index: number = getIndex(record.id)
-        record.edited = true
-        records.forEach(rec => rec.edited = false)
-
-        const updatedRecords = [...records]
-        updatedRecords[index] = record
-        updatedRecords.sort(sortRecordsFunction)
-        setRecords(updatedRecords)
-
-        setDoc(doc(recordsCollection, record.id), record)
-    }
-
 
     useEffect(() => {
         if (records === null) return
 
-        console.log("RecordsProvider compute graph records:", startDate.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), records?.length)
+        console.log('RecordsProvider compute graph records:', startDate.toLocaleDateString('en-US'), endDate.toLocaleDateString('en-US'), records?.length)
         const updatedGraphRecords = []
 
         updatedGraphRecords.push({
@@ -193,8 +166,8 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
         setGraphRecords(updatedGraphRecords)
     }, [records, startDate, endDate])
 
-    const dummyStartScenario = new Record({ date: scenario.startDate, id: "startScenario" })
-    const dummyEndScenario = new Record({ date: scenario.endDate, id: "endScenario" })
+    const dummyStartScenario = new Record({ date: scenario.startDate, id: 'startScenario' })
+    const dummyEndScenario = new Record({ date: scenario.endDate, id: 'endScenario' })
 
     let recordsWithDummy: Record[] = []
 

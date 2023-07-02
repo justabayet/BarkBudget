@@ -1,16 +1,15 @@
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
-import { DocumentReference, doc } from "firebase/firestore"
-import React, { createContext, useContext, useEffect, useState } from "react"
-import { ExpectationsProvider } from "./GraphValuesProvider/ExpectationsProvider"
-import { LimitsProvider } from "./GraphValuesProvider/LimitsProvider"
-import { RecordsProvider } from "./GraphValuesProvider/RecordsProvider"
-import { Scenario, useScenarios } from "./ScenariosProvider"
+import { DocumentReference, doc } from 'firebase/firestore'
+
+import { ExpectationsProvider, LimitsProvider, RecordsProvider } from 'Providers/GraphValuesProvider'
+import { Scenario, useScenarios } from 'Providers/ScenariosProvider'
 
 class ScenarioDocumented {
     constructor(public scenarioDoc: DocumentReference | null, public scenario: Scenario) { }
 }
 
-const ScenarioContext = createContext(new ScenarioDocumented(null, new Scenario({ name: "Init Scenario" })))
+const ScenarioContext = createContext(new ScenarioDocumented(null, new Scenario({ name: 'Init Scenario' })))
 
 interface ScenarioProviderProps {
     scenario: Scenario
@@ -25,7 +24,7 @@ export const ScenarioProvider = React.memo(({ scenario, children }: React.PropsW
 
     useEffect(() => {
         if (scenariosCollection && scenarioId) {
-            console.log("ScenarioProvider setScenarioDoc:", scenarioId)
+            console.log('ScenarioProvider setScenarioDoc:', scenarioId)
             setScenarioDoc(doc(scenariosCollection, scenarioId))
         } else {
             setScenarioDoc(null)

@@ -51,21 +51,17 @@ const converter: FirestoreDataConverter<UserType> = {
 const usersCollection = collection(db, 'users').withConverter(converter)
 
 export const AuthenticationProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
+    const { deleteDoc, setCanUpdate, deleteScenarioFirestore } = useFirebaseRepository()
+
     const [user, setUser] = useState<UserType | null>(null)
     const [userAuthentication, setUserAuthentication] = useState<UserAuthenticationType | null>(null)
     const [userDoc, setUserDoc] = useState<DocumentReference | null>(null)
-    const [openAcountDeletedSnackbar, setOpenAccountDeletedSnackbar] = useState<boolean>(false)
-    const [_signingIn, _setSigningIn] = useState<boolean>(false)
-    const { deleteDoc, setCanUpdate, deleteScenarioFirestore } = useFirebaseRepository()
 
-    const [isTestAccount, setIsTestAccount] = useState<boolean>(false)
+    const [openAcountDeletedSnackbar, setOpenAccountDeletedSnackbar] = useState<boolean>(false)
 
     const { setSigningIn } = useLoadingStatus()
 
-    useEffect(() => {
-        setSigningIn(_signingIn)
-    }, [_signingIn, setSigningIn])
-
+    const [isTestAccount, setIsTestAccount] = useState<boolean>(false)
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user): void => {
@@ -99,11 +95,11 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
 
     const handleSignIn = (): void => {
         const provider = new GoogleAuthProvider()
-        _setSigningIn(true)
+        setSigningIn(true)
         setIsTestAccount(false)
         signInWithPopup(auth, provider)
             .catch(reason => console.log(reason))
-            .finally(() => { _setSigningIn(false) })
+            .finally(() => { setSigningIn(false) })
     }
 
     const signInTestAccount = (): void => {

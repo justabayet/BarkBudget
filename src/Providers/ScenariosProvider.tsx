@@ -1,10 +1,13 @@
 
-import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
-import React, { createContext, useContext, useEffect, useState } from "react"
-import { getFormattedDate } from "../helpers"
-import { useAuthentication } from "./AuthenticationProvider"
-import { useFirebaseRepository } from "./FirebaseRepositoryProvider"
-import { useLoadingStatus } from "./LoadingStatusProvider"
+import React, { createContext, useContext, useEffect, useState } from 'react'
+
+import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from 'firebase/firestore'
+
+import { getFormattedDate } from 'helpers'
+
+import { useAuthentication } from './AuthenticationProvider'
+import { useFirebaseRepository } from './FirebaseRepositoryProvider'
+import { useLoadingStatus } from './LoadingStatusProvider'
 
 class Scenarios {
     currentScenario?: Scenario | null
@@ -159,10 +162,10 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
         }
     }, [scenariosCollection])
 
-    const [newScenario, setNewScenario] = useState(new Scenario({ name: "New Scenario" }))
+    const [newScenario, setNewScenario] = useState(new Scenario({ name: 'New Scenario' }))
 
     const addScenario = () => {
-        console.log("add", newScenario)
+        console.log('add', newScenario)
 
         if (scenariosCollection === null || scenarios === null) {
             return
@@ -174,12 +177,12 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
             newScenario.id = document.id
             setScenarios([newScenario, ...scenarios])
             setScenarioId(newScenario.id)
-            setNewScenario(new Scenario({ name: "New Scenario" }))
+            setNewScenario(new Scenario({ name: 'New Scenario' }))
         })
     }
 
     const deleteScenario = (scenario: Scenario, index: number): void => {
-        console.log("delete", scenario)
+        console.log('delete', scenario)
 
         if (scenariosCollection === null || scenarios === null) {
             return
@@ -198,7 +201,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     }
 
     const updateScenario = (scenario: Scenario, index: number): void => {
-        console.log("update", scenario)
+        console.log('update', scenario)
 
         if (scenariosCollection === null || scenarios === null) {
             return

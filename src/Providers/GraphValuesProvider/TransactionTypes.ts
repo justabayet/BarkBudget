@@ -1,7 +1,7 @@
-import { GraphValue } from "../GraphProvider"
-import { Expectation } from "./ExpectationsProvider"
-import { Limit } from "./LimitsProvider"
-import { Record } from "./RecordsProvider"
+import { GraphValue } from "Providers/GraphProvider"
+import { Expectation } from "Providers/GraphValuesProvider/ExpectationsProvider"
+import { Limit } from "Providers/GraphValuesProvider/LimitsProvider"
+import { Record } from "Providers/GraphValuesProvider/RecordsProvider"
 
 export interface EntryProps<Transaction extends TransactionType> {
     value: Transaction

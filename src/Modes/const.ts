@@ -4,9 +4,9 @@ import { OneTime } from "./OneTime"
 
 
 export const modeNames = {
-    ONE_TIME: "One time",
-    DAILY: "Daily",
-    MONTHLY: "Monthly"
+    ONE_TIME: 'One time',
+    DAILY: 'Daily',
+    MONTHLY: 'Monthly'
 }
 
 export const modes = {

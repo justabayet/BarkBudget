@@ -1,10 +1,14 @@
-import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from "firebase/firestore"
-import React, { createContext, useContext, useEffect, useState } from "react"
-import { getFormattedDate, getValidDate } from "../../helpers"
-import { useFirebaseRepository } from "../FirebaseRepositoryProvider"
-import { GraphValue } from "../GraphProvider"
-import { useScenario } from "../ScenarioProvider"
-import { GenericValues, GenericValuesContext } from "./TransactionTypes"
+import React, { createContext, useContext, useEffect, useState } from 'react'
+
+import { CollectionReference, FirestoreDataConverter, collection, getDocs } from 'firebase/firestore'
+
+import { useFirebaseRepository } from 'Providers/FirebaseRepositoryProvider'
+import { GraphValue } from 'Providers/GraphProvider'
+import { GenericValues, GenericValuesContext } from 'Providers/GraphValuesProvider/TransactionTypes'
+import { useScenario } from 'Providers/ScenarioProvider'
+
+import { getFormattedDate, getValidDate } from 'helpers'
+import { addTransaction, deleteTransaction, updateTransaction } from './GenericFunctions'
 
 export type LimitsContextType = GenericValuesContext<Limit>
 
@@ -93,7 +97,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
             setIsLoadingLimits(true)
             getDocs(limitsCollection)
                 .then((querySnapshot) => {
-                    console.log("LimitsProvider Full read get", querySnapshot.size)
+                    console.log('LimitsProvider Full read get', querySnapshot.size)
 
                     const limitsQueried: Limit[] = []
                     querySnapshot.forEach(doc => {
@@ -111,76 +115,43 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
     }, [limitsCollection])
 
-    const addLimit = (): void => {
-        console.log("add", newLimit)
-
-        if (limitsCollection === null || limits === null) {
-            return
-        }
-
-        addDoc(limitsCollection, newLimit).then(document => {
-            newLimit.id = document.id
-            newLimit.new = true
-
-            limits.forEach(limit => limit.new = false)
-
-            const newLimits = [newLimit, ...limits]
-            newLimits.sort(sortLimitsFunction)
-            setLimits(newLimits)
-
-            setNewLimit(new Limit({ startDate: startDate, endDate: endDate, amount: 0 }))
-        })
+    const addLimit = () => {
+        addTransaction<Limit>(
+            newLimit,
+            limits,
+            limitsCollection,
+            addDoc,
+            setLimits,
+            () => { setNewLimit(new Limit({ startDate: startDate, endDate: endDate, amount: 0 })) },
+            sortLimitsFunction
+        )
     }
 
-    const getIndex = (id: string | undefined): number => {
-        const index = limits?.findIndex((limit) => {
-            return limit.id === id
-        })
-
-        return index ? index : 0
+    const deleteLimit = (limit: Limit) => {
+        deleteTransaction<Limit>(
+            limit,
+            limits,
+            limitsCollection,
+            setLimits,
+            deleteDoc
+        )
     }
 
-    const deleteLimit = (limit: Limit): void => {
-        console.log("delete", limit)
-
-        if (limitsCollection === null || limits === null) {
-            return
-        }
-
-        const index: number = getIndex(limit.id)
-
-        const updatedLimits = [...limits]
-        updatedLimits.splice(index, 1)
-        setLimits(updatedLimits)
-
-        deleteDoc(doc(limitsCollection, limit.id))
+    const updateLimit = (limit: Limit) => {
+        updateTransaction<Limit>(
+            limit,
+            limits,
+            limitsCollection,
+            sortLimitsFunction,
+            setLimits,
+            setDoc
+        )
     }
-
-    const updateLimit = (limit: Limit): void => {
-        console.log("update", limit)
-
-        if (limitsCollection === null || limits === null) {
-            return
-        }
-
-        const index: number = getIndex(limit.id)
-        limit.edited = true
-        limits.forEach(lim => lim.edited = false)
-
-        const updatedLimits = [...limits]
-        updatedLimits[index] = limit
-
-        updatedLimits.sort(sortLimitsFunction)
-        setLimits(updatedLimits)
-
-        setDoc(doc(limitsCollection, limit.id), limit)
-    }
-
 
     useEffect(() => {
         if (limits === null) return
 
-        console.log("LimitsProvider compute graph values:", startDate.toLocaleDateString("en-US"), endDate.toLocaleDateString("en-US"), limits?.length)
+        console.log('LimitsProvider compute graph values:', startDate.toLocaleDateString('en-US'), endDate.toLocaleDateString('en-US'), limits?.length)
         const updatedGraphLimits = []
 
         const validLimits = limits.filter(limit =>
@@ -241,8 +212,8 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         setGraphLimits(updatedGraphLimits)
     }, [limits, startDate, endDate])
 
-    const dummyStartScenario = new Limit({ startDate: scenario.startDate, endDate: scenario.startDate, id: "startScenario" })
-    const dummyEndScenario = new Limit({ startDate: scenario.endDate, endDate: scenario.endDate, id: "endScenario" })
+    const dummyStartScenario = new Limit({ startDate: scenario.startDate, endDate: scenario.startDate, id: 'startScenario' })
+    const dummyEndScenario = new Limit({ startDate: scenario.endDate, endDate: scenario.endDate, id: 'endScenario' })
 
     let limitsWithDummy: Limit[] = []
 

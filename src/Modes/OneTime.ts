@@ -1,5 +1,5 @@
-import { compareDate } from "../helpers"
-import { Mode } from "./Mode"
+import { compareDate } from 'helpers'
+import { Mode } from './Mode'
 
 interface OneTimeParameters {
     startDate: Date
@@ -12,7 +12,7 @@ export class OneTime extends Mode {
 
     constructor({ startDate, amount }: OneTimeParameters) {
         super({ amount })
-        this.name = "one time"
+        this.name = 'one time'
         if (startDate instanceof Date) {
             this.date = startDate
         } else {

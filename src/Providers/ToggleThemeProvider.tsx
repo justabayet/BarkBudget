@@ -1,21 +1,21 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react'
 
-import { PaletteMode } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { PaletteMode } from '@mui/material'
+import CssBaseline from '@mui/material/CssBaseline'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 
 
 declare module '@mui/material/styles' {
     interface Theme {
         grid: {
-            line: string;
+            line: string
         },
         fileSuffix: string
     }
     // allow configuration using `createTheme`
     interface ThemeOptions {
         grid: {
-            line: string;
+            line: string
         },
         fileSuffix: string
     }
@@ -47,11 +47,11 @@ class ToggleTheme {
 const ToggleThemeContext = createContext(new ToggleTheme(() => { }))
 
 export const ToggleThemeProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
-    const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+    const [mode, setMode] = React.useState<'light' | 'dark'>('light')
     const colorMode = React.useMemo(
         () => ({
             toggleTheme: () => {
-                setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+                setMode(prevMode => prevMode === 'light' ? 'dark' : 'light')
             },
         }),
         [],

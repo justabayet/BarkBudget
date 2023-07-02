@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useRef, useState } from "react"
-import { Scenario } from "./ScenariosProvider"
+import React, { createContext, useContext, useRef, useState } from 'react'
+
+import { Scenario } from 'Providers/ScenariosProvider'
 
 export function compareGraphValues(a: GraphValue, b: GraphValue): number {
     if (a.x < b.x) {
@@ -43,7 +44,7 @@ export const GraphProvider = ({ children }: React.PropsWithChildren): JSX.Elemen
     const [mainRecords, setMainRecords] = useState<GraphValue[]>([])
     const [mainLimits, setMainLimits] = useState<GraphValue[]>([])
 
-    const pinScenario = useRef<((scenario: Scenario, data: GraphValue[]) => void) | (() => void)>(() => { })
+    const pinScenario = useRef<(scenario: Scenario, data: GraphValue[]) => void>(() => { })
     pinScenario.current = (scenario: Scenario, data: GraphValue[]): void => {
         setPinnedScenarios(pinnedScenarios => {
             const index = pinnedScenarios.findIndex((pinnedScenario) => pinnedScenario.scenario.id === scenario.id)
@@ -57,13 +58,12 @@ export const GraphProvider = ({ children }: React.PropsWithChildren): JSX.Elemen
         })
     }
 
-    const unpinScenario = useRef<((scenario: Scenario) => void) | (() => void)>(() => { })
+    const unpinScenario = useRef<(scenario: Scenario) => void>(() => { })
     unpinScenario.current = (scenario) => {
         setPinnedScenarios(pinnedScenarios => {
             const index = pinnedScenarios.findIndex((pinnedScenario) => pinnedScenario.scenario.id === scenario.id)
-            if (index !== -1) {
-                pinnedScenarios.splice(index, 1)
-            }
+            if (index !== -1) pinnedScenarios.splice(index, 1)
+
             return [...pinnedScenarios]
         })
     }

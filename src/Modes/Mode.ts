@@ -9,11 +9,11 @@ export class Mode {
 
     constructor({ amount = 0 }: ModeParameters) {
         this.amount = amount
-        this.name = "default"
+        this.name = 'default'
     }
 
     getIcon() {
-        console.log("Mode getIcon")
+        console.log('Mode getIcon')
     }
 
     isValid(date: Date): boolean {

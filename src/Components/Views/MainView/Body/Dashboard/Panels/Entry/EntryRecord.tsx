@@ -4,13 +4,22 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { Box, IconButton, Typography } from '@mui/material'
 
 import { GenericEntryType, Record } from 'Providers/GraphValuesProvider'
-import { getFormattedDate } from 'helpers'
-import { AmountField } from '../Fields'
+import { compareDate, getFormattedDate } from 'helpers'
+import { AmountField, CustomDatePicker } from '../Fields'
 import EntryGeneric from './EntryGeneric'
 
 
 const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave }) => {
     const DialogElements = [
+        <CustomDatePicker
+            key='record-date'
+            label={'Date'}
+            date={value.date}
+            setDate={(newDate) => {
+                if (!compareDate(newDate, value.date)) {
+                    handleSave({ ...value, date: newDate })
+                }
+            }} />,
         <AmountField
             key='record-amount'
             label='Amount'
@@ -30,11 +39,18 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
             <Typography>
                 {value.amount}
             </Typography>
-        </ Box>
+        </Box>
     ]
 
     const CardDesktopElements = [
-
+        <CustomDatePicker
+            key='record-data'
+            date={value.date}
+            setDate={(newDate) => {
+                if (!compareDate(newDate, value.date)) {
+                    handleSave({ ...value, date: newDate })
+                }
+            }} />,
         <AmountField
             key='record-amount'
             amount={value.amount}

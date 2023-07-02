@@ -1,16 +1,21 @@
 /* eslint-disable no-restricted-globals */
+import React from 'react'
+
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import React from 'react'
-import './App.css'
-import Router from './Components/Router'
-import { AuthenticationProvider } from './Providers/AuthenticationProvider'
-import { DeviceDetailsProvider } from './Providers/DeviceDetailsProvider'
-import { FirebaseRepositoryProvider } from './Providers/FirebaseRepositoryProvider'
-import { GraphProvider } from './Providers/GraphProvider'
-import { LoadingStatusProvider } from './Providers/LoadingStatusProvider'
-import { ScenariosProvider } from './Providers/ScenariosProvider'
-import { ToggleThemeProvider } from './Providers/ToggleThemeProvider'
+
+import {
+    AuthenticationProvider,
+    DeviceDetailsProvider,
+    FirebaseRepositoryProvider,
+    GraphProvider,
+    LoadingStatusProvider,
+    ScenariosProvider,
+    ToggleThemeProvider
+} from 'Providers'
+
+import 'App.css'
+import Router from 'Components/Router'
 
 
 function App(): JSX.Element {
