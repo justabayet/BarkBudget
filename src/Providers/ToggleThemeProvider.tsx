@@ -1,21 +1,23 @@
-import { PaletteMode } from '@mui/material'
-import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
+import React, { createContext, useContext } from 'react';
 
-import React, { createContext, useContext } from 'react'
+import { PaletteMode } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 
 declare module '@mui/material/styles' {
     interface Theme {
         grid: {
             line: string;
-        }
+        },
+        fileSuffix: string
     }
     // allow configuration using `createTheme`
     interface ThemeOptions {
-        grid?: {
-            line?: string;
-        }
+        grid: {
+            line: string;
+        },
+        fileSuffix: string
     }
 }
 
@@ -27,12 +29,14 @@ const getDesignTokensDefault = (mode: PaletteMode) => ({
         ? {
             grid: {
                 line: 'rgba(0, 0, 0, 0.1)'
-            }
+            },
+            fileSuffix: 'secondary'
         }
         : {
             grid: {
                 line: 'rgba(255, 255, 255, 0.1)'
-            }
+            },
+            fileSuffix: 'primary'
         }),
 })
 

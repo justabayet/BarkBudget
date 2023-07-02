@@ -6,8 +6,8 @@ import { getFormattedDate, getValidDate } from "../../helpers"
 import { useFirebaseRepository } from "../FirebaseRepositoryProvider"
 import { GraphValue, compareGraphValues } from "../GraphProvider"
 import { useScenario } from "../ScenarioProvider"
-import { GenericValues, GenericValuesContext } from "./GenericValues"
 import { useRecords } from "./RecordsProvider"
+import { GenericValues, GenericValuesContext } from "./TransactionTypes"
 
 export type ExpectationsContextType = GenericValuesContext<Expectation>
 

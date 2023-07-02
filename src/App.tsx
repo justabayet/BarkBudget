@@ -3,7 +3,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import React from 'react'
 import './App.css'
-import MainView from './Components/MainView'
+import Router from './Components/Router'
 import { AuthenticationProvider } from './Providers/AuthenticationProvider'
 import { DeviceDetailsProvider } from './Providers/DeviceDetailsProvider'
 import { FirebaseRepositoryProvider } from './Providers/FirebaseRepositoryProvider'
@@ -25,7 +25,7 @@ function App(): JSX.Element {
                             <LoadingStatusProvider>
                                 <AuthenticationProvider>
                                     <ScenariosProvider>
-                                        <MainView />
+                                        <Router />
                                     </ScenariosProvider>
                                 </AuthenticationProvider>
                             </LoadingStatusProvider>

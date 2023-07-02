@@ -1,10 +1,14 @@
-import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth"
-import { DocumentReference, FirestoreDataConverter, collection, doc, getDoc, getDocs } from "firebase/firestore"
-import React, { createContext, useContext, useEffect, useState } from "react"
-import SnackbarAccountDeleted from "../Components/SnackbarAccountDeleted"
+import React, { createContext, useContext, useEffect, useState } from 'react'
+
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
+import { DocumentReference, FirestoreDataConverter, collection, doc, getDoc, getDocs } from 'firebase/firestore'
+
 import { auth, db } from '../firebase'
-import { useFirebaseRepository } from "./FirebaseRepositoryProvider"
-import { useLoadingStatus } from "./LoadingStatusProvider"
+
+import { SnackbarAccountDeleted } from 'Components/Shared'
+import { useFirebaseRepository } from 'Providers/FirebaseRepositoryProvider'
+import { useLoadingStatus } from 'Providers/LoadingStatusProvider'
+
 
 type UserType = UserAuthenticationType & { scenarioId?: string | null }
 type UserAuthenticationType = { uid: string, displayName: string | null, email: string | null }
@@ -66,10 +70,10 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user): void => {
             if (user) {
-                console.log("Signed in: ", user)
+                console.log('Signed in: ', user)
                 setUserAuthentication(user)
             } else {
-                console.log("Signed out")
+                console.log('Signed out')
                 setUserAuthentication(null)
             }
         })
@@ -97,7 +101,9 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
         const provider = new GoogleAuthProvider()
         _setSigningIn(true)
         setIsTestAccount(false)
-        signInWithPopup(auth, provider).finally(() => { _setSigningIn(false) })
+        signInWithPopup(auth, provider)
+            .catch(reason => console.log(reason))
+            .finally(() => { _setSigningIn(false) })
     }
 
     const signInTestAccount = (): void => {
