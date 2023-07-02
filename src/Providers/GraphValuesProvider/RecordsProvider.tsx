@@ -74,8 +74,6 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     const [isLoadingRecords, setIsLoadingRecords] = useState<boolean>(true)
 
-    console.log("####", records)
-
     useEffect(() => {
         if (scenarioDoc) {
             setRecordsCollection(collection(scenarioDoc, 'records').withConverter(converter))
