@@ -1,26 +1,26 @@
 import React from 'react'
 
-import { Avatar } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { Person } from '@mui/icons-material'
+import { Avatar, useTheme } from '@mui/material'
+
+import { UserType } from 'Providers'
 
 
 interface CustomAvatarProps {
-    name: string
+    user: UserType
 }
 
-const CustomAvatar = ({ name }: CustomAvatarProps): JSX.Element => {
+const CustomAvatar = ({ user }: CustomAvatarProps): JSX.Element => {
     const theme = useTheme()
 
-    function stringAvatar(name: string) {
-        return {
-            sx: {
-                bgcolor: theme.palette.primary.main
-            },
-            children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-        }
-    }
-
-    return <Avatar {...stringAvatar(name)} />
+    return (
+        <Avatar
+            sx={{ bgcolor: theme.palette.primary.main }}
+            alt={user.displayName || undefined}
+            src={user.photoURL || undefined}>
+            <Person />
+        </Avatar>
+    )
 }
 
 

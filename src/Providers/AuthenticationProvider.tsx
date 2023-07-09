@@ -10,8 +10,8 @@ import { useFirebaseRepository } from 'Providers/FirebaseRepositoryProvider'
 import { useLoadingStatus } from 'Providers/LoadingStatusProvider'
 
 
-type UserType = UserAuthenticationType & { scenarioId?: string | null }
-type UserAuthenticationType = { uid: string, displayName: string | null, email: string | null }
+export type UserType = UserAuthenticationType & { scenarioId?: string | null }
+type UserAuthenticationType = { uid: string, displayName: string | null, email: string | null, photoURL?: string | null }
 
 class Authentication {
     constructor(

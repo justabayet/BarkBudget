@@ -21,7 +21,7 @@ const ButtonCustom = ({ openMenu }: ButtonCustomProps): JSX.Element => {
             {user ?
                 <ButtonBody
                     title="Account Menu"
-                    Icon={<CustomAvatar name={user!.displayName!} />}
+                    Icon={<CustomAvatar user={user} />}
                     action={openMenu} />
                 :
                 <ButtonBody
