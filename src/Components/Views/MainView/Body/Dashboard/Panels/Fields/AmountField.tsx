@@ -21,6 +21,15 @@ const AmountField = ({ amount, setAmount, label }: AmountFieldProps): JSX.Elemen
 
     const regex = /^(?!^0\d)-?\d*\.?\d*$|^$/
 
+    const save = () => {
+        if (!internalAmount || internalAmount === '-') {
+            setAmount(0)
+            setInternalAmount('0')
+        } else if (regex.test(internalAmount)) {
+            setAmount(parseInt(internalAmount))
+        }
+    }
+
     return (
         <TextField
             variant='outlined'
@@ -34,18 +43,13 @@ const AmountField = ({ amount, setAmount, label }: AmountFieldProps): JSX.Elemen
             onChange={(event) => {
                 setInternalAmount(event.target.value)
             }}
-            onBlur={() => {
-                if (regex.test(internalAmount)) {
-                    setAmount(parseInt(internalAmount))
-                }
-            }}
+            onBlur={save}
             onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                    if (regex.test(internalAmount)) {
-                        setAmount(parseInt(internalAmount))
-                    }
+                    save()
                 }
             }}
+            color={!regex.test(internalAmount) ? 'error' : 'primary'}
         />
     )
 }
