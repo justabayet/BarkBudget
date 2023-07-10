@@ -93,12 +93,6 @@ const converter: FirestoreDataConverter<Scenario> = {
     }
 }
 
-const updateDuplicatedName = (newScenario: Scenario, scenarios: Scenario[], nbDuplicatedAccepted: number = 0) => {
-    const duplicatedName = scenarios.filter(scenario => scenario.name === newScenario.name).length
-
-    if (duplicatedName > nbDuplicatedAccepted) newScenario.name += ` ${duplicatedName - nbDuplicatedAccepted}`
-}
-
 
 export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const { userDoc, user } = useAuthentication()
@@ -171,8 +165,6 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
             return
         }
 
-        updateDuplicatedName(newScenario, scenarios)
-
         addDoc(scenariosCollection, newScenario).then(document => {
             newScenario.id = document.id
             setScenarios([newScenario, ...scenarios])
@@ -206,8 +198,6 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
         if (scenariosCollection === null || scenarios === null) {
             return
         }
-
-        updateDuplicatedName(scenario, scenarios, 1)
 
         const updatedScenarios = [...scenarios]
         updatedScenarios[index] = scenario
