@@ -3,15 +3,10 @@ import React, { useState } from 'react'
 import { TextField } from '@mui/material'
 
 import { textFieldStyle } from 'style'
+import { FieldComponent } from './InterfaceField'
 
-interface CustomTextFieldProps {
-    text: string
-    setText: (newText: string) => void
-    label?: string
-}
-
-const CustomTextField = ({ text, setText, label }: CustomTextFieldProps): JSX.Element => {
-    const [internalText, setInternalText] = useState<string>(text.toString())
+const CustomTextField: FieldComponent<string> = ({ value, setValue, label }) => {
+    const [internalText, setInternalText] = useState<string>(value.toString())
 
     return (
         <TextField
@@ -24,11 +19,11 @@ const CustomTextField = ({ text, setText, label }: CustomTextFieldProps): JSX.El
                 setInternalText(event.target.value)
             }}
             onBlur={() => {
-                setText(internalText)
+                setValue(internalText)
             }}
             onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                    setText(internalText)
+                    setValue(internalText)
                 }
             }}
             onFocus={event => {

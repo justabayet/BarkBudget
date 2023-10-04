@@ -20,6 +20,7 @@ const Expectations = GenericValues<Expectation>
 interface ExpectationParameter {
     startDate?: Date
     endDate?: Date
+    updateDay?: number
     amount?: number
     mode?: string
     name: string
@@ -34,17 +35,19 @@ export class Expectation {
     amount: number
     mode: string
     name: string
+    updateDay?: number
     id?: string
     new?: boolean
     edited?: boolean
 
-    constructor({ startDate, endDate, amount, id, mode, name }: ExpectationParameter) {
+    constructor({ startDate, endDate, amount, id, mode, name, updateDay }: ExpectationParameter) {
         this.id = id
         this.startDate = getValidDate(startDate)
         this.endDate = getValidDate(endDate)
         this.amount = amount !== undefined && !isNaN(amount) ? amount : 0
         this.mode = mode && Object.values(modeNames).includes(mode) ? mode : modeNames.ONE_TIME
         this.name = name ? name : 'New Expectation'
+        this.updateDay = updateDay ? updateDay : 1
     }
 }
 
@@ -53,6 +56,7 @@ const ExpectationsContext = createContext<ExpectationsContextType>(new Expectati
 interface ExpectationFirestore {
     startDate: string,
     endDate: string,
+    updateDay?: string
     amount: string,
     mode: string,
     name: string
@@ -64,6 +68,7 @@ const converter: FirestoreDataConverter<Expectation> = {
             startDate: getFormattedDate(expectation.startDate),
             endDate: getFormattedDate(expectation.endDate),
             amount: expectation.amount.toString(),
+            updateDay: expectation.updateDay?.toString(),
             mode: expectation.mode,
             name: expectation.name
         }
@@ -76,7 +81,8 @@ const converter: FirestoreDataConverter<Expectation> = {
         const mode = expectationDb.mode
         const name = expectationDb.name
         const id = snapshot.id
-        return new Expectation({ startDate, endDate, amount, id, mode, name })
+        const updateDay = expectationDb.updateDay ? parseInt(expectationDb.updateDay) : undefined
+        return new Expectation({ startDate, endDate, amount, id, mode, name, updateDay })
     }
 }
 

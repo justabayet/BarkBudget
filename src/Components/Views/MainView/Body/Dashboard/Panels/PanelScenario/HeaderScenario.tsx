@@ -26,8 +26,8 @@ const HeaderScenario = ({ scenario, scenarios, addScenario, deleteScenario, upda
     const NameField = () => (
         <CustomTextField
             label={'Name'}
-            text={scenario.name}
-            setText={(newName) => {
+            value={scenario.name}
+            setValue={(newName) => {
                 if (newName !== scenario.name) {
                     updateScenario({ ...scenario, name: newName }, index)
                 }
@@ -59,8 +59,8 @@ const HeaderScenario = ({ scenario, scenarios, addScenario, deleteScenario, upda
     const StartDateField = () => (
         <CustomDatePicker
             label='Starting Date'
-            date={scenario.startDate}
-            setDate={(newDate) => {
+            value={scenario.startDate}
+            setValue={(newDate) => {
                 if (!compareDate(newDate, scenario.startDate)) {
                     updateScenario({ ...scenario, startDate: newDate }, index)
                 }
@@ -70,8 +70,8 @@ const HeaderScenario = ({ scenario, scenarios, addScenario, deleteScenario, upda
     const EndDateField = () => (
         <CustomDatePicker
             label='Ending Date'
-            date={scenario.endDate}
-            setDate={(newDate) => {
+            value={scenario.endDate}
+            setValue={(newDate) => {
                 if (!compareDate(newDate, scenario.endDate)) {
                     updateScenario({ ...scenario, endDate: newDate }, index)
                 }

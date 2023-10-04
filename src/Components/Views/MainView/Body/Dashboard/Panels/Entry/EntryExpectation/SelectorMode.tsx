@@ -7,13 +7,13 @@ import { modeNames } from 'Modes/const'
 import { textFieldStyle } from 'style'
 
 
-interface SelectorPropsMode {
+interface SelectorModeProps {
     mode: string
     setMode: (newMode: string) => void
     label?: string
 }
 
-const SelectorMode = ({ mode, setMode, label }: SelectorPropsMode): JSX.Element => {
+const SelectorMode = ({ mode, setMode, label }: SelectorModeProps): JSX.Element => {
     return (
         <FormControl sx={{ minWidth: 120, ...textFieldStyle }} size='small'>
             {label && <InputLabel>{label}</InputLabel>}

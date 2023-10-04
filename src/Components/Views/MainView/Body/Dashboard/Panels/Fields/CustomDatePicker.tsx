@@ -8,16 +8,10 @@ import { useDeviceDetails } from 'Providers'
 import { getFormattedDate } from 'helpers'
 
 import { textFieldStyle } from 'style'
+import { FieldComponent } from './InterfaceField'
 
-
-interface CustomDatePickerProps {
-    date: Date
-    setDate: (newDate: Date) => void
-    label?: string
-}
-
-const CustomDatePicker = ({ date, setDate, label }: CustomDatePickerProps): JSX.Element => {
-    const [internalData, setInternalDate] = useState<string | undefined>(getFormattedDate(date))
+const CustomDatePicker: FieldComponent<Date> = ({ value, setValue, label }) => {
+    const [internalData, setInternalDate] = useState<string | undefined>(getFormattedDate(value))
     const { isBodyFullSize } = useDeviceDetails()
 
     const maxWidth = isBodyFullSize ? 150 : 120
@@ -28,7 +22,7 @@ const CustomDatePicker = ({ date, setDate, label }: CustomDatePickerProps): JSX.
             return
         }
         const newDate = new Date(newValue)
-        setDate(newDate)
+        setValue(newDate)
     }
 
     return (

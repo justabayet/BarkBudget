@@ -14,8 +14,8 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
         <CustomDatePicker
             key='record-date'
             label={'Date'}
-            date={value.date}
-            setDate={(newDate) => {
+            value={value.date}
+            setValue={(newDate) => {
                 if (!compareDate(newDate, value.date)) {
                     handleSave({ ...value, date: newDate })
                 }
@@ -23,8 +23,8 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
         <AmountField
             key='record-amount'
             label='Amount'
-            amount={value.amount}
-            setAmount={(newAmount) => {
+            value={value.amount}
+            setValue={(newAmount) => {
                 if (newAmount !== value.amount) {
                     handleSave({ ...value, amount: newAmount })
                 }
@@ -45,16 +45,16 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
     const CardDesktopElements = [
         <CustomDatePicker
             key='record-data'
-            date={value.date}
-            setDate={(newDate) => {
+            value={value.date}
+            setValue={(newDate) => {
                 if (!compareDate(newDate, value.date)) {
                     handleSave({ ...value, date: newDate })
                 }
             }} />,
         <AmountField
             key='record-amount'
-            amount={value.amount}
-            setAmount={(newAmount) => {
+            value={value.amount}
+            setValue={(newAmount) => {
                 if (newAmount !== value.amount) {
                     handleSave({ ...value, amount: newAmount })
                 }

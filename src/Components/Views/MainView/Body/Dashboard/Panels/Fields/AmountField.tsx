@@ -5,16 +5,11 @@ import { TextField } from '@mui/material'
 import { useDeviceDetails } from 'Providers'
 
 import { textFieldStyle } from 'style'
+import { FieldComponent } from './InterfaceField'
 
 
-interface AmountFieldProps {
-    amount: number
-    setAmount: (newAmount: number) => void
-    label?: string
-}
-
-const AmountField = ({ amount, setAmount, label }: AmountFieldProps): JSX.Element => {
-    const [internalAmount, setInternalAmount] = useState<string>(amount.toString())
+const AmountField: FieldComponent<number> = ({ value, setValue, label }) => {
+    const [internalAmount, setInternalAmount] = useState<string>(value.toString())
     const { isBodyFullSize } = useDeviceDetails()
 
     const maxWidth = isBodyFullSize ? 180 : 120
@@ -23,17 +18,23 @@ const AmountField = ({ amount, setAmount, label }: AmountFieldProps): JSX.Elemen
 
     const save = () => {
         if (!internalAmount || internalAmount === '-') {
-            setAmount(0)
+            setValue(0)
             setInternalAmount('0')
         } else if (regex.test(internalAmount)) {
-            setAmount(parseInt(internalAmount))
+            setValue(parseInt(internalAmount))
         }
     }
 
     return (
         <TextField
             variant='outlined'
-            sx={{ ...textFieldStyle, maxWidth }}
+            sx={{
+                ...textFieldStyle, maxWidth, m: 0, "& .MuiInputBase-root": {
+                    m: 0, p: 0
+                }, "& MuiOutlinedInput-input": {
+                    p: 0
+                }
+            }}
             size='small'
             value={internalAmount}
             label={label}

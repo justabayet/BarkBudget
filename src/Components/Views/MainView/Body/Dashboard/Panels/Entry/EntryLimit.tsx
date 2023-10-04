@@ -13,8 +13,8 @@ const LimitEntry: GenericEntryType<Limit> = ({ value, handleDelete, handleSave }
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }} gap={3} key='limit-dates'>
             <CustomDatePicker
                 label={'Start Date'}
-                date={value.startDate}
-                setDate={(newDate) => {
+                value={value.startDate}
+                setValue={(newDate) => {
                     if (!compareDate(newDate, value.startDate)) {
                         handleSave({ ...value, startDate: newDate })
                     }
@@ -22,8 +22,8 @@ const LimitEntry: GenericEntryType<Limit> = ({ value, handleDelete, handleSave }
 
             <CustomDatePicker
                 label='End Date'
-                date={value.endDate}
-                setDate={(newDate) => {
+                value={value.endDate}
+                setValue={(newDate) => {
                     if (!compareDate(newDate, value.endDate)) {
                         handleSave({ ...value, endDate: newDate })
                     }
@@ -32,8 +32,8 @@ const LimitEntry: GenericEntryType<Limit> = ({ value, handleDelete, handleSave }
         <AmountField
             key='limit-amount'
             label='Amount'
-            amount={value.amount}
-            setAmount={(newAmount) => {
+            value={value.amount}
+            setValue={(newAmount) => {
                 if (newAmount !== value.amount) {
                     handleSave({ ...value, amount: newAmount })
                 }
@@ -54,24 +54,24 @@ const LimitEntry: GenericEntryType<Limit> = ({ value, handleDelete, handleSave }
     const CardDesktopElements = [
         <CustomDatePicker
             key='limit-start-date'
-            date={value.startDate}
-            setDate={(newDate) => {
+            value={value.startDate}
+            setValue={(newDate) => {
                 if (!compareDate(newDate, value.startDate)) {
                     handleSave({ ...value, startDate: newDate })
                 }
             }} />,
         <CustomDatePicker
             key='limit-end-date'
-            date={value.endDate}
-            setDate={(newDate) => {
+            value={value.endDate}
+            setValue={(newDate) => {
                 if (!compareDate(newDate, value.endDate)) {
                     handleSave({ ...value, endDate: newDate })
                 }
             }} />,
         <AmountField
             key='limit-amount'
-            amount={value.amount}
-            setAmount={(newAmount) => {
+            value={value.amount}
+            setValue={(newAmount) => {
                 if (newAmount !== value.amount) {
                     handleSave({ ...value, amount: newAmount })
                 }
