@@ -31,6 +31,9 @@ const CustomTextField = ({ text, setText, label }: CustomTextFieldProps): JSX.El
                     setText(internalText)
                 }
             }}
+            onFocus={event => {
+                event.target.select();
+            }}
         />
     )
 }
