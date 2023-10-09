@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, createRef, useEffect, useState } from 'react'
+import React, { PropsWithChildren, RefObject, createRef, useEffect, useState } from 'react'
 
 import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent } from '@mui/material'
 
@@ -8,6 +8,17 @@ import { EntryProps, TransactionType } from 'Providers/GraphValuesProvider'
 import ButtonDelete from './ButtonDelete'
 import DummyEntry from './EntryDummy'
 
+interface CardEntryProps extends PropsWithChildren {
+    elementRef: RefObject<HTMLDivElement>
+    highlighted: boolean
+}
+
+
+const CardEntry = ({ children, elementRef, highlighted }: CardEntryProps): JSX.Element => (
+    <Card elevation={3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
+        {children}
+    </Card>
+)
 
 interface EntryGenericProps<Transaction extends TransactionType> extends EntryProps<Transaction> {
     CardDesktopElements: JSX.Element[]
@@ -74,15 +85,9 @@ const EntryGeneric = <Transaction extends TransactionType>({ value, handleDelete
     const dummy = DummyEntry({ id: value.id })
     if (dummy) return dummy
 
-    const CardEntry = ({ children }: PropsWithChildren) => (
-        <Card elevation={3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
-            {children}
-        </Card>
-    )
-
     if (isBodyFullSize) {
         return (
-            <CardEntry>
+            <CardEntry highlighted={highlighted} elementRef={elementRef}>
                 <CardContent sx={{ p: 1, '&:last-child': { pb: 1 } }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         {CardDesktopElements.map(el => el)}
@@ -92,7 +97,7 @@ const EntryGeneric = <Transaction extends TransactionType>({ value, handleDelete
         )
     } else {
         return (
-            <Card elevation={3} ref={elementRef} sx={{ mt: 3, border: 1, borderColor: highlighted ? 'secondary.main' : 'transparent', transition: 'border-color 0.3s linear' }}>
+            <CardEntry highlighted={highlighted} elementRef={elementRef}>
                 <CardActionArea onClick={handleClickOpen}>
                     <CardContent sx={{ p: 2 }}>
                         <Box>
@@ -113,7 +118,7 @@ const EntryGeneric = <Transaction extends TransactionType>({ value, handleDelete
                         <Button onClick={handleClose} variant='contained' color='primary'>Confirm</Button>
                     </DialogActions>
                 </Dialog>
-            </Card>
+            </CardEntry>
         )
     }
 }

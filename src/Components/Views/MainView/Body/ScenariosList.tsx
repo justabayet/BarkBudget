@@ -5,9 +5,9 @@ import { Stack } from '@mui/material'
 import { Scenario, ScenarioProvider, useScenarios } from 'Providers'
 
 import { DataPinnedScenario, DataScenario } from './Data'
-import Graph from './Graph/Graph'
+import Graph from './Graph'
 
-import DashboardTransaction from './Dashboard/DashboardTransaction'
+import DashboardTransaction from './Dashboard'
 
 interface ScenariosListProps {
     scenarios: Scenario[]
