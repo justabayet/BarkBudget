@@ -40,7 +40,7 @@ export function getIndexTransaction<Transaction extends TransactionType>(
         return transaction.id === id
     })
 
-    return index ? index : 0
+    return index ?? 0
 }
 
 export function deleteTransaction<Transaction extends TransactionType>(

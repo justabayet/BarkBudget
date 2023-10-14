@@ -59,7 +59,7 @@ const Graph = (): JSX.Element => {
             if (chartRef.current === null) return
             chartRef.current.data.datasets.push({
                 label: scenario.name,
-                data: data as any,
+                data: data,
                 backgroundColor: 'rgba(230, 230, 230, 0.3)',
                 borderColor: 'rgba(100, 100, 100, 0.5)',
                 borderWidth: 1.5,

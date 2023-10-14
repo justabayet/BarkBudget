@@ -57,7 +57,7 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
     const [userAuthentication, setUserAuthentication] = useState<UserAuthenticationType | null>(null)
     const [userDoc, setUserDoc] = useState<DocumentReference | null>(null)
 
-    const [openAcountDeletedSnackbar, setOpenAccountDeletedSnackbar] = useState<boolean>(false)
+    const [openAccountDeletedSnackbar, setOpenAccountDeletedSnackbar] = useState<boolean>(false)
 
     const { setSigningIn } = useLoadingStatus()
 
@@ -142,7 +142,7 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
             value={(new Authentication(user, handleSignIn, signInTestAccount, handleSignOut, userDoc, deleteAccount))}
         >
             {children}
-            <SnackbarAccountDeleted eventOpen={openAcountDeletedSnackbar} setEventOpen={setOpenAccountDeletedSnackbar} />
+            <SnackbarAccountDeleted eventOpen={openAccountDeletedSnackbar} setEventOpen={setOpenAccountDeletedSnackbar} />
         </AuthenticationContext.Provider>
     )
 }

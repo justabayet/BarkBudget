@@ -46,8 +46,8 @@ export class Expectation {
         this.endDate = getValidDate(endDate)
         this.amount = amount !== undefined && !isNaN(amount) ? amount : 0
         this.mode = mode && Object.values(modeNames).includes(mode) ? mode : modeNames.ONE_TIME
-        this.name = name ? name : 'New Expectation'
-        this.updateDay = updateDay ? updateDay : 1
+        this.name = name ?? 'New Expectation'
+        this.updateDay = updateDay ?? 1
     }
 }
 

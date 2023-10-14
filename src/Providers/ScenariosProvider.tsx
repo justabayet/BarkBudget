@@ -103,12 +103,12 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
 
     const [scenarioId, setScenarioId] = useState<string | null | undefined>(null)
 
-    const [_scenariosLoading, _setScenariosLoading] = useState<boolean>(true)
+    const [internalScenariosLoading, setInternalScenariosLoading] = useState<boolean>(true)
     const { setScenariosLoading } = useLoadingStatus()
 
     useEffect(() => {
-        setScenariosLoading(_scenariosLoading)
-    }, [_scenariosLoading, setScenariosLoading])
+        setScenariosLoading(internalScenariosLoading)
+    }, [internalScenariosLoading, setScenariosLoading])
 
     useEffect(() => {
         if (!!scenarioId && userDoc) {
@@ -137,7 +137,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
 
     useEffect(() => {
         if (scenariosCollection) {
-            _setScenariosLoading(true)
+            setInternalScenariosLoading(true)
             getDocs(scenariosCollection)
                 .then((querySnapshot) => {
                     const scenariosQueried: Scenario[] = []
@@ -149,7 +149,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
                 })
                 .catch(reason => console.log(reason))
                 .finally(() => {
-                    _setScenariosLoading(false)
+                    setInternalScenariosLoading(false)
                 })
         } else {
             setScenarios(null)

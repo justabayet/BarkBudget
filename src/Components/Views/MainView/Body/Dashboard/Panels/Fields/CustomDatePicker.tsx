@@ -11,7 +11,7 @@ import { textFieldStyle } from 'style'
 import { FieldComponent } from './InterfaceField'
 
 const CustomDatePicker: FieldComponent<Date> = ({ value, setValue, label }) => {
-    const [internalData, setInternalDate] = useState<string | undefined>(getFormattedDate(value))
+    const [internalDate, setInternalDate] = useState<string | undefined>(getFormattedDate(value))
     const { isBodyFullSize } = useDeviceDetails()
 
     const maxWidth = isBodyFullSize ? 150 : 120
@@ -35,19 +35,19 @@ const CustomDatePicker: FieldComponent<Date> = ({ value, setValue, label }) => {
 
                 save(formattedDate)
             }}
-            value={dayjs(internalData)}
+            value={dayjs(internalDate)}
             slotProps={{
                 textField: {
                     size: 'small',
                     onChange: (newValue) => {
-                        setInternalDate((newValue as any as dayjs.Dayjs)?.format('YYYY-MM-DD'))
+                        setInternalDate((newValue as unknown as dayjs.Dayjs)?.format('YYYY-MM-DD'))
                     },
                     onBlur: () => {
-                        save(internalData)
+                        save(internalDate)
                     },
                     onKeyDown: (e) => {
                         if (e.key === 'Enter') {
-                            save(internalData)
+                            save(internalDate)
                         }
                     }
                 }
