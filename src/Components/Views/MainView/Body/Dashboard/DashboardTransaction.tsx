@@ -2,30 +2,34 @@ import React, { useState } from 'react'
 
 
 import { AccountBalance, AddModerator, Home, Update } from '@mui/icons-material'
-import { BottomNavigation, BottomNavigationAction, Box, Paper, PaperProps } from '@mui/material'
+import { BottomNavigation, BottomNavigationAction, Box, Paper, PaperProps, SxProps, Theme } from '@mui/material'
 
 import { useDeviceDetails } from 'Providers'
 
 import { PanelExpectations, PanelLimits, PanelRecords, PanelScenario } from './Panels'
 
 interface NavigationBarProps extends PaperProps {
+    sx: SxProps<Theme>
     tabIndex: number
     handleTabChange: (_: React.SyntheticEvent<Element, Event>, newValue: number) => void
 }
 
-const NavigationBar = (props: NavigationBarProps) => (
-    <Paper elevation={3} {...props}>
-        <BottomNavigation
-            value={props.tabIndex}
-            onChange={props.handleTabChange} >
+const NavigationBar = ({ sx, tabIndex, handleTabChange }: NavigationBarProps) => {
 
-            <BottomNavigationAction label='Limits' icon={<AddModerator />} />
-            <BottomNavigationAction label='Home' icon={<Home />} />
-            <BottomNavigationAction label='Records' icon={<AccountBalance />} />
-            <BottomNavigationAction label='Expectations' icon={<Update />} />
-        </BottomNavigation>
-    </Paper>
-)
+    return (
+        <Paper elevation={3} sx={sx}>
+            <BottomNavigation
+                value={tabIndex}
+                onChange={handleTabChange} >
+
+                <BottomNavigationAction label='Limits' icon={<AddModerator />} />
+                <BottomNavigationAction label='Home' icon={<Home />} />
+                <BottomNavigationAction label='Records' icon={<AccountBalance />} />
+                <BottomNavigationAction label='Expectations' icon={<Update />} />
+            </BottomNavigation>
+        </Paper>
+    )
+}
 
 const DashboardTransaction = () => {
     const [tabIndex, setTabIndex] = useState(1)
