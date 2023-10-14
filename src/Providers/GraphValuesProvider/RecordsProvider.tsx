@@ -12,7 +12,7 @@ import { addTransaction, deleteTransaction, updateTransaction } from './GenericF
 
 export type RecordsContextType = GenericValuesContext<Record>
 
-const Records = GenericValues<Record>
+class Records extends GenericValues<Record> { }
 
 interface RecordParameter {
     date?: Date

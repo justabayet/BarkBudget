@@ -12,7 +12,7 @@ import { addTransaction, deleteTransaction, updateTransaction } from './GenericF
 
 export type LimitsContextType = GenericValuesContext<Limit>
 
-const Limits = GenericValues<Limit>
+class Limits extends GenericValues<Limit> { }
 
 interface LimitParameter {
     startDate?: Date

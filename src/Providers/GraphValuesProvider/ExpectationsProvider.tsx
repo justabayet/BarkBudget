@@ -15,7 +15,7 @@ import { GenericValues, GenericValuesContext } from './TransactionTypes'
 
 export type ExpectationsContextType = GenericValuesContext<Expectation>
 
-const Expectations = GenericValues<Expectation>
+class Expectations extends GenericValues<Expectation> { }
 
 interface ExpectationParameter {
     startDate?: Date

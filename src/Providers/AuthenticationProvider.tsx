@@ -18,7 +18,7 @@ class Authentication {
         public user: UserType | null,
         public handleSignIn: () => void,
         public signInTestAccount: () => void,
-        public handleSignOut: () => void,
+        public handleSignOut: () => Promise<void>,
         public userDoc: DocumentReference | null,
         public deleteAccount: () => void) { }
 }
@@ -29,7 +29,7 @@ const testUser: UserType = {
     email: 'test.account@gmail.com'
 }
 
-const AuthenticationContext = createContext(new Authentication(null, () => { }, () => { }, () => { }, null, () => { }))
+const AuthenticationContext = createContext(new Authentication(null, () => { }, () => { }, async () => { }, null, () => { }))
 
 interface UserFirestore {
     scenarioId?: string | null

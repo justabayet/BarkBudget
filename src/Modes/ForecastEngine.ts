@@ -26,7 +26,7 @@ export class ForecastEngine {
         while (currentDate <= this.endDate) {
 
             let diff: number = 0
-            this.modeEntries.map((modeEntry) => diff += modeEntry.getAmount(currentDate))
+            this.modeEntries.forEach((modeEntry) => diff += modeEntry.getAmount(currentDate))
 
             currentBalance += diff
 
