@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { CollectionReference, FirestoreDataConverter, collection, getDocs } from 'firebase/firestore'
 
@@ -107,7 +107,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     }, [recordsCollection])
 
-    const addRecord = () => {
+    const addRecord = useCallback(() => {
         addTransaction<Record>(
             newRecord,
             records,
@@ -117,9 +117,9 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
             () => { setNewRecord(new Record({})) },
             sortRecordsFunction
         )
-    }
+    }, [addDoc, newRecord, records, recordsCollection])
 
-    const deleteRecord = (record: Record) => {
+    const deleteRecord = useCallback((record: Record) => {
         deleteTransaction<Record>(
             record,
             records,
@@ -127,9 +127,9 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
             setRecords,
             deleteDoc
         )
-    }
+    }, [deleteDoc, records, recordsCollection])
 
-    const updateRecord = (record: Record) => {
+    const updateRecord = useCallback((record: Record) => {
         updateTransaction<Record>(
             record,
             records,
@@ -138,7 +138,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
             setRecords,
             setDoc
         )
-    }
+    }, [records, recordsCollection, setDoc])
 
     useEffect(() => {
         if (records === null) return
@@ -164,20 +164,27 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
         setGraphRecords(updatedGraphRecords)
     }, [records, startDate, endDate])
 
-    const dummyStartScenario = new Record({ date: scenario.startDate, id: 'startScenario' })
-    const dummyEndScenario = new Record({ date: scenario.endDate, id: 'endScenario' })
+    const recordsWithDummy = useMemo(() => {
+        const dummyStartScenario = new Record({ date: scenario.startDate, id: 'startScenario' })
+        const dummyEndScenario = new Record({ date: scenario.endDate, id: 'endScenario' })
 
-    let recordsWithDummy: Record[] = []
+        let recordsWithDummy: Record[] = []
 
-    if (records && records.length > 0) {
-        if (records.find((record) => sortRecordsFunction(record, dummyStartScenario) > 0)) recordsWithDummy.push(dummyStartScenario)
-        if (records.find((record) => sortRecordsFunction(record, dummyEndScenario) < 0)) recordsWithDummy.push(dummyEndScenario)
+        if (records && records.length > 0) {
+            if (records.find((record) => sortRecordsFunction(record, dummyStartScenario) > 0)) recordsWithDummy.push(dummyStartScenario)
+            if (records.find((record) => sortRecordsFunction(record, dummyEndScenario) < 0)) recordsWithDummy.push(dummyEndScenario)
 
-        recordsWithDummy = recordsWithDummy.concat(records).sort(sortRecordsFunction)
-    }
+            return recordsWithDummy.concat(records).sort(sortRecordsFunction)
+        }
+        return recordsWithDummy
+    }, [records, scenario.endDate, scenario.startDate])
 
+    const value = useMemo(
+        () => new Records(recordsWithDummy, graphRecords, addRecord, deleteRecord, updateRecord, isLoadingRecords),
+        [addRecord, deleteRecord, graphRecords, isLoadingRecords, recordsWithDummy, updateRecord]
+    )
     return (
-        <RecordsContext.Provider value={(new Records(recordsWithDummy, graphRecords, addRecord, deleteRecord, updateRecord, isLoadingRecords))}>
+        <RecordsContext.Provider value={value}>
             {children}
         </RecordsContext.Provider>
     )

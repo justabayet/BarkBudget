@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { CollectionReference, FirestoreDataConverter, collection, getDocs } from 'firebase/firestore'
 
@@ -115,7 +115,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
 
     }, [limitsCollection])
 
-    const addLimit = () => {
+    const addLimit = useCallback(() => {
         addTransaction<Limit>(
             newLimit,
             limits,
@@ -125,9 +125,9 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
             () => { setNewLimit(new Limit({ startDate: startDate, endDate: endDate, amount: 0 })) },
             sortLimitsFunction
         )
-    }
+    }, [addDoc, endDate, limits, limitsCollection, newLimit, startDate])
 
-    const deleteLimit = (limit: Limit) => {
+    const deleteLimit = useCallback((limit: Limit) => {
         deleteTransaction<Limit>(
             limit,
             limits,
@@ -135,9 +135,9 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
             setLimits,
             deleteDoc
         )
-    }
+    }, [deleteDoc, limits, limitsCollection])
 
-    const updateLimit = (limit: Limit) => {
+    const updateLimit = useCallback((limit: Limit) => {
         updateTransaction<Limit>(
             limit,
             limits,
@@ -146,7 +146,7 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
             setLimits,
             setDoc
         )
-    }
+    }, [limits, limitsCollection, setDoc])
 
     useEffect(() => {
         if (limits === null) return
@@ -212,21 +212,29 @@ export const LimitsProvider = ({ children }: React.PropsWithChildren): JSX.Eleme
         setGraphLimits(updatedGraphLimits)
     }, [limits, startDate, endDate])
 
-    const dummyStartScenario = new Limit({ startDate: scenario.startDate, endDate: scenario.startDate, id: 'startScenario' })
-    const dummyEndScenario = new Limit({ startDate: scenario.endDate, endDate: scenario.endDate, id: 'endScenario' })
+    const limitsWithDummy = useMemo(() => {
+        const dummyStartScenario = new Limit({ startDate: scenario.startDate, endDate: scenario.startDate, id: 'startScenario' })
+        const dummyEndScenario = new Limit({ startDate: scenario.endDate, endDate: scenario.endDate, id: 'endScenario' })
 
-    let limitsWithDummy: Limit[] = []
+        let limitsWithDummy: Limit[] = []
 
-    if (limits && limits.length > 0) {
-        if (limits.find((limit) => sortLimitsFunction(limit, dummyStartScenario) < 0)) limitsWithDummy.push(dummyStartScenario)
-        if (limits.find((limit) => sortLimitsFunction(limit, dummyEndScenario) > 0)) limitsWithDummy.push(dummyEndScenario)
+        if (limits && limits.length > 0) {
+            if (limits.find((limit) => sortLimitsFunction(limit, dummyStartScenario) < 0)) limitsWithDummy.push(dummyStartScenario)
+            if (limits.find((limit) => sortLimitsFunction(limit, dummyEndScenario) > 0)) limitsWithDummy.push(dummyEndScenario)
 
-        limitsWithDummy = limitsWithDummy.concat(limits).sort(sortLimitsFunction)
-    }
+            limitsWithDummy = limitsWithDummy.concat(limits).sort(sortLimitsFunction)
+        }
+        return limitsWithDummy
+    }, [limits, scenario.endDate, scenario.startDate])
+
+    const value = useMemo(
+        () => new Limits(limitsWithDummy, graphLimits, addLimit, deleteLimit, updateLimit, isLoadingLimits),
+        [addLimit, deleteLimit, graphLimits, isLoadingLimits, limitsWithDummy, updateLimit]
+    )
 
     return (
         <LimitsContext.Provider
-            value={(new Limits(limitsWithDummy, graphLimits, addLimit, deleteLimit, updateLimit, isLoadingLimits))}
+            value={value}
         >
             {children}
         </LimitsContext.Provider>

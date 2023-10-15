@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
 import { DocumentReference, FirestoreDataConverter, collection, doc, getDoc, getDocs } from 'firebase/firestore'
@@ -93,21 +93,21 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
         }
     }, [userAuthentication, setCanUpdate, isTestAccount])
 
-    const handleSignIn = (): void => {
+    const handleSignIn = useCallback((): void => {
         const provider = new GoogleAuthProvider()
         setSigningIn(true)
         setIsTestAccount(false)
         signInWithPopup(auth, provider)
             .catch(reason => console.log(reason))
             .finally(() => { setSigningIn(false) })
-    }
+    }, [setSigningIn])
 
     const signInTestAccount = (): void => {
         setIsTestAccount(true)
         setUserAuthentication(testUser)
     }
 
-    const handleSignOut = async (): Promise<void> => {
+    const handleSignOut = useCallback(async (): Promise<void> => {
         if (userAuthentication) {
             if (isTestAccount) {
                 setUserAuthentication(null)
@@ -115,9 +115,9 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
                 signOut(auth)
             }
         }
-    }
+    }, [isTestAccount, userAuthentication])
 
-    const deleteAccount = (): void => {
+    const deleteAccount = useCallback((): void => {
         console.log(`Delete in process: user account ${userDoc?.path}`)
         if (userDoc) {
             const scenariosCollection = collection(userDoc, 'scenarios')
@@ -135,11 +135,15 @@ export const AuthenticationProvider = ({ children }: React.PropsWithChildren): J
                 })
             }))
         }
-    }
+    }, [deleteDoc, deleteScenarioFirestore, handleSignOut, userDoc])
 
+    const value = useMemo(
+        () => new Authentication(user, handleSignIn, signInTestAccount, handleSignOut, userDoc, deleteAccount),
+        [deleteAccount, handleSignIn, handleSignOut, user, userDoc]
+    )
     return (
         <AuthenticationContext.Provider
-            value={(new Authentication(user, handleSignIn, signInTestAccount, handleSignOut, userDoc, deleteAccount))}
+            value={value}
         >
             {children}
             <SnackbarAccountDeleted eventOpen={openAccountDeletedSnackbar} setEventOpen={setOpenAccountDeletedSnackbar} />

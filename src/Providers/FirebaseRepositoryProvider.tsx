@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
 
 import { CollectionReference, DocumentData, DocumentReference, WithFieldValue, addDoc, collection, deleteDoc, doc, getDocs, setDoc } from 'firebase/firestore'
 
@@ -27,37 +27,37 @@ const FirebaseRepositoryContext = createContext(new FirebaseRepository(() => { }
 export const FirebaseRepositoryProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const [canUpdate, setCanUpdate] = useState<boolean>(false)
 
-    const setDocCustom = async (reference: docRef, data: dataType) => {
+    const setDocCustom = useCallback(async (reference: docRef, data: dataType) => {
         if (canUpdate) {
             return await setDoc(reference, data)
         }
-    }
+    }, [canUpdate])
 
-    const addDocCustom = async (reference: colRef, data: dataType) => {
+    const addDocCustom = useCallback(async (reference: colRef, data: dataType) => {
         if (!canUpdate) {
             return { id: generateRandomId() }
         } else {
             const document = await addDoc(reference, data)
             return { id: document.id }
         }
-    }
+    }, [canUpdate])
 
-    const deleteDocCustom = async (reference: delRef) => {
+    const deleteDocCustom = useCallback(async (reference: delRef) => {
         if (canUpdate) {
             return await deleteDoc(reference)
         }
-    }
+    }, [canUpdate])
 
-    const deleteCollection = async (collection: CollectionReference, docType: string) => {
+    const deleteCollection = useCallback(async (collection: CollectionReference, docType: string) => {
         const querySnapshot = await getDocs(collection)
 
         querySnapshot.forEach(async el => {
             await deleteDocCustom(doc(collection, el.id))
             console.log(`Delete successful: ${docType} ${el.id}`)
         })
-    }
+    }, [deleteDocCustom])
 
-    const deleteScenarioFirestore = async (scenariosCollection: CollectionReference, id: string) => {
+    const deleteScenarioFirestore = useCallback(async (scenariosCollection: CollectionReference, id: string) => {
         const scenarioDoc = doc(scenariosCollection, id)
 
         const expectationsCollection = collection(scenarioDoc, 'expectations')
@@ -70,10 +70,15 @@ export const FirebaseRepositoryProvider = ({ children }: React.PropsWithChildren
 
         await deleteDocCustom(doc(scenariosCollection, id))
         console.log(`Delete succesful: scenario ${id}`)
-    }
+    }, [deleteCollection, deleteDocCustom])
+
+    const value = useMemo(
+        () => new FirebaseRepository(setCanUpdate, setDocCustom, addDocCustom, deleteDocCustom, deleteScenarioFirestore),
+        [addDocCustom, deleteDocCustom, deleteScenarioFirestore, setDocCustom]
+    )
 
     return (
-        <FirebaseRepositoryContext.Provider value={new FirebaseRepository(setCanUpdate, setDocCustom, addDocCustom, deleteDocCustom, deleteScenarioFirestore)}>
+        <FirebaseRepositoryContext.Provider value={value}>
             {children}
         </FirebaseRepositoryContext.Provider>
     )

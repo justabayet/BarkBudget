@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { CollectionReference, FirestoreDataConverter, collection, doc, getDocs } from 'firebase/firestore'
 
@@ -158,7 +158,7 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
 
     const [newScenario, setNewScenario] = useState(new Scenario({ name: 'New Scenario' }))
 
-    const addScenario = () => {
+    const addScenario = useCallback(() => {
         console.log('add', newScenario)
 
         if (scenariosCollection === null || scenarios === null) {
@@ -171,9 +171,9 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
             setScenarioId(newScenario.id)
             setNewScenario(new Scenario({ name: 'New Scenario' }))
         })
-    }
+    }, [addDoc, newScenario, scenarios, scenariosCollection])
 
-    const deleteScenario = (scenario: Scenario, index: number): void => {
+    const deleteScenario = useCallback((scenario: Scenario, index: number): void => {
         console.log('delete', scenario)
 
         if (scenariosCollection === null || scenarios === null) {
@@ -190,9 +190,9 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
         }
 
         if (scenario.id) deleteScenarioFirestore(scenariosCollection, scenario.id)
-    }
+    }, [deleteScenarioFirestore, scenarios, scenariosCollection])
 
-    const updateScenario = (scenario: Scenario, index: number): void => {
+    const updateScenario = useCallback((scenario: Scenario, index: number): void => {
         console.log('update', scenario)
 
         if (scenariosCollection === null || scenarios === null) {
@@ -204,10 +204,14 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
         setScenarios(updatedScenarios)
 
         setDoc(doc(scenariosCollection, scenario.id), scenario)
-    }
+    }, [scenarios, scenariosCollection, setDoc])
+
+    const value = useMemo(() => {
+        return new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario)
+    }, [scenarios, scenariosCollection, scenarioId, addScenario, deleteScenario, updateScenario])
 
     return (
-        <ScenariosContext.Provider value={(new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario))}>
+        <ScenariosContext.Provider value={value}>
             {children}
         </ScenariosContext.Provider>
     )

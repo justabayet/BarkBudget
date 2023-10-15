@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useMemo, useState } from 'react'
 
-type setter = (newValue: boolean) => void
+type setter = React.Dispatch<React.SetStateAction<boolean>>
 
 class LoadingStatus {
     constructor(
@@ -23,8 +23,13 @@ export const LoadingStatusProvider = ({ children }: React.PropsWithChildren): JS
 
     const isLoading = signingIn || scenariosLoading || !currentScenarioLoading
 
+    const value = useMemo(
+        () => new LoadingStatus(isLoading, scenariosLoading, signingIn, currentScenarioLoading, setScenariosLoading, setSigningIn, setCurrentScenarioLoading),
+        [currentScenarioLoading, isLoading, scenariosLoading, signingIn]
+    )
+
     return (
-        <LoadingStatusContext.Provider value={new LoadingStatus(isLoading, scenariosLoading, signingIn, currentScenarioLoading, setScenariosLoading, setSigningIn, setCurrentScenarioLoading)}>
+        <LoadingStatusContext.Provider value={value}>
             {children}
         </LoadingStatusContext.Provider>
     )

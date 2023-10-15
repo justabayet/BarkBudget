@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 
 class DeviceDetails {
@@ -24,8 +24,10 @@ export const DeviceDetailsProvider = ({ children }: React.PropsWithChildren): JS
         return () => window.removeEventListener("resize", handleResize)
     })
 
+    const value = useMemo(() => new DeviceDetails(isMobile, isBodyFullSize), [isMobile, isBodyFullSize])
+
     return (
-        <DeviceDetailsContext.Provider value={new DeviceDetails(isMobile, isBodyFullSize)}>
+        <DeviceDetailsContext.Provider value={value}>
             {children}
         </DeviceDetailsContext.Provider>
     )

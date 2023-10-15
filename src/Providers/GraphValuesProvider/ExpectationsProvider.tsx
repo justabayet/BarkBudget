@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { CollectionReference, FirestoreDataConverter, collection, getDocs } from 'firebase/firestore'
 
@@ -145,7 +145,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
 
     }, [expectationsCollection])
 
-    const addExpectation = () => {
+    const addExpectation = useCallback(() => {
         addTransaction<Expectation>(
             newExpectation,
             expectations,
@@ -155,9 +155,9 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
             () => { setNewExpectation(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: 'New Expectation' })) },
             sortExpectationsFunction
         )
-    }
+    }, [addDoc, expectations, expectationsCollection, newExpectation, scenario.endDate, scenario.startDate])
 
-    const deleteExpectation = (expectation: Expectation) => {
+    const deleteExpectation = useCallback((expectation: Expectation) => {
         deleteTransaction<Expectation>(
             expectation,
             expectations,
@@ -165,9 +165,9 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
             setExpectations,
             deleteDoc
         )
-    }
+    }, [deleteDoc, expectations, expectationsCollection])
 
-    const updateExpectation = (expectation: Expectation) => {
+    const updateExpectation = useCallback((expectation: Expectation) => {
         updateTransaction<Expectation>(
             expectation,
             expectations,
@@ -176,7 +176,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
             setExpectations,
             setDoc
         )
-    }
+    }, [expectations, expectationsCollection, setDoc])
 
     useEffect(() => {
         const getEngine = (startDateRecords: Date, endDate: Date, startAmount: number) => {
@@ -203,23 +203,32 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
         setGraphExpectations(updatedGraphExpectations)
     }, [expectations, startDateRecords, endDate, startAmount])
 
-    const dummyStartRecords = new Expectation({ startDate: startDateRecords, endDate: startDateRecords, amount: startAmount, id: 'startRecords', name: 'startRecords' })
-    const dummyStartScenario = new Expectation({ startDate: scenario.startDate, endDate: scenario.startDate, amount: startAmount, id: 'startScenario', name: 'startScenario' })
-    const dummyEndScenario = new Expectation({ startDate: scenario.endDate, endDate: scenario.endDate, amount: startAmount, id: 'endScenario', name: 'endScenario', mode: modeNames.MONTHLY })
+    const expectationsWithDummy = useMemo(() => {
+        const dummyStartRecords = new Expectation({ startDate: startDateRecords, endDate: startDateRecords, amount: startAmount, id: 'startRecords', name: 'startRecords' })
+        const dummyStartScenario = new Expectation({ startDate: scenario.startDate, endDate: scenario.startDate, amount: startAmount, id: 'startScenario', name: 'startScenario' })
+        const dummyEndScenario = new Expectation({ startDate: scenario.endDate, endDate: scenario.endDate, amount: startAmount, id: 'endScenario', name: 'endScenario', mode: modeNames.MONTHLY })
 
-    let expectationsWithDummy: Expectation[] = []
+        let expectationsWithDummy: Expectation[] = []
 
-    if (expectations && expectations.length > 0) {
-        if (startDateRecords > scenario.startDate && expectations.find((expectation) => sortExpectationsFunction(expectation, dummyStartScenario) > 0 && sortExpectationsFunction(expectation, dummyStartRecords) < 0)) expectationsWithDummy.push(dummyStartRecords)
-        if (expectations.find((expectation) => sortExpectationsFunction(expectation, dummyStartScenario) < 0)) expectationsWithDummy.push(dummyStartScenario)
-        if (expectations.find((expectation) => sortExpectationsFunction(expectation, dummyEndScenario) > 0)) expectationsWithDummy.push(dummyEndScenario)
+        if (expectations && expectations.length > 0) {
+            if (startDateRecords > scenario.startDate && expectations.find((expectation) => sortExpectationsFunction(expectation, dummyStartScenario) > 0 && sortExpectationsFunction(expectation, dummyStartRecords) < 0)) expectationsWithDummy.push(dummyStartRecords)
+            if (expectations.find((expectation) => sortExpectationsFunction(expectation, dummyStartScenario) < 0)) expectationsWithDummy.push(dummyStartScenario)
+            if (expectations.find((expectation) => sortExpectationsFunction(expectation, dummyEndScenario) > 0)) expectationsWithDummy.push(dummyEndScenario)
 
-        expectationsWithDummy = expectationsWithDummy.concat(expectations).sort(sortExpectationsFunction)
-    }
+            expectationsWithDummy = expectationsWithDummy.concat(expectations).sort(sortExpectationsFunction)
+        }
+        return expectationsWithDummy
+
+    }, [expectations, scenario.endDate, scenario.startDate, startAmount, startDateRecords])
+
+    const value = useMemo(
+        () => new Expectations(expectationsWithDummy, graphExpectations, addExpectation, deleteExpectation, updateExpectation, isLoadingExpectations),
+        [addExpectation, deleteExpectation, expectationsWithDummy, graphExpectations, isLoadingExpectations, updateExpectation]
+    )
 
     return (
         <ExpectationsContext.Provider
-            value={(new Expectations(expectationsWithDummy, graphExpectations, addExpectation, deleteExpectation, updateExpectation, isLoadingExpectations))}
+            value={value}
         >
             {children}
         </ExpectationsContext.Provider>

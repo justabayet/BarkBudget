@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 import { DocumentReference, doc } from 'firebase/firestore'
 
@@ -31,8 +31,10 @@ export const ScenarioProvider = React.memo(({ scenario, children }: React.PropsW
         }
     }, [scenariosCollection, scenarioId])
 
+    const value = useMemo(() => new ScenarioDocumented(scenarioDoc, scenario), [scenarioDoc, scenario])
+
     return (
-        <ScenarioContext.Provider value={(new ScenarioDocumented(scenarioDoc, scenario))}>
+        <ScenarioContext.Provider value={value}>
             <RecordsProvider>
                 <ExpectationsProvider>
                     <LimitsProvider>

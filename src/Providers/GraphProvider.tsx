@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useState } from 'react'
+import React, { createContext, useContext, useMemo, useRef, useState } from 'react'
 
 import { Scenario } from 'Providers/ScenariosProvider'
 
@@ -68,9 +68,14 @@ export const GraphProvider = ({ children }: React.PropsWithChildren): JSX.Elemen
         })
     }
 
+    const value = useMemo(
+        () => new Graph(mainExpectations, setMainExpectations, mainRecords, setMainRecords, mainLimits, setMainLimits, pinnedScenarios, pinScenario, unpinScenario),
+        [mainExpectations, mainLimits, mainRecords, pinnedScenarios]
+    )
+
     return (
         <GraphContext.Provider
-            value={(new Graph(mainExpectations, setMainExpectations, mainRecords, setMainRecords, mainLimits, setMainLimits, pinnedScenarios, pinScenario, unpinScenario))}
+            value={value}
         >
             {children}
         </GraphContext.Provider>
