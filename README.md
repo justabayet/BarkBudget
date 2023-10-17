@@ -62,6 +62,16 @@ To run the app locally, you'll need to have Node.js and npm installed on your co
 
 The app will run on `http://localhost:3000/`.
 
+### Docker
+#### Building the image
+The docker image relies on the official Alpine-based Node image from [Docker hub](https://hub.docker.com/_/node)
+1. Clone the repository using `git clone https://github.com/justabayet/BarkBudget.git`
+2. Build the image using `docker build -t barkbudget .`
+
+#### Running the container
+To run the image, use `docker run -d barkbudget`
+
+The image will run on `http://your_local_ip:3000/`
 ## Deployment
 
 BarkBudget is hosted on Github Pages, a free hosting service provided by Github. The app is automatically deployed to Github Pages whenever changes are pushed to the `main` branch of the Github repository.
