@@ -1,13 +1,16 @@
 FROM node:18-alpine
 
+USER node
+
 WORKDIR /app
 # add local files
-COPY ./documents ./documents
-COPY ./src ./src
-COPY ./public ./public
-COPY ./package.json ./package.json
-COPY ./package-lock.json ./package-lock.json
-COPY ./tsconfig.json ./tsconfig.json
+COPY --chown=node:node ./documents ./documents
+COPY --chown=node:node ./src ./src
+COPY --chown=node:node ./public ./public
+COPY --chown=node:node ./package.json ./package.json
+COPY --chown=node:node ./package-lock.json ./package-lock.json
+COPY --chown=node:node ./tsconfig.json ./tsconfig.json
+
 
 RUN \
   echo " Installing dependencies..." && \
