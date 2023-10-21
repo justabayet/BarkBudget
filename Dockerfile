@@ -11,7 +11,7 @@ COPY ./tsconfig.json ./tsconfig.json
 
 RUN \
   echo " Installing dependencies..." && \
-  npm install && \
+  npm install --ignore-scripts && \
   echo "Done"
 
 CMD npm run start
