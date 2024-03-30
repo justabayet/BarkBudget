@@ -8,6 +8,7 @@ import { DataPinnedScenario, DataScenario } from './Data'
 import Graph from './Graph'
 
 import DashboardTransaction from './Dashboard'
+import DataTrackScenario from './Data/DataTrackScenario'
 
 interface ScenariosListProps {
     scenarios: Scenario[]
@@ -21,6 +22,7 @@ const ScenariosList = ({ scenarios }: ScenariosListProps): JSX.Element => {
             return (
                 <>
                     <DataScenario />
+                    <DataTrackScenario />
                     <DashboardTransaction />
                 </>
             )

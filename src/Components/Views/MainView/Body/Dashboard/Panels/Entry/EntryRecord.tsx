@@ -1,7 +1,9 @@
 import React from 'react'
 
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Box, IconButton, Typography } from '@mui/material'
+import PushPinIcon from '@mui/icons-material/PushPin'
+import PushPinOutlinedIcon from '@mui/icons-material/PushPinOutlined'
+import { Box, Checkbox, IconButton, Typography } from '@mui/material'
 
 import { GenericEntryType, Record } from 'Providers/GraphValuesProvider'
 import { compareDate, getFormattedDate } from 'helpers'
@@ -11,15 +13,29 @@ import EntryGeneric from './EntryGeneric'
 
 const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave }) => {
     const DialogElements = [
-        <CustomDatePicker
-            key='record-date'
-            label={'Date'}
-            value={value.date}
-            setValue={(newDate) => {
-                if (!compareDate(newDate, value.date)) {
-                    handleSave({ ...value, date: newDate })
-                }
-            }} />,
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} key='record-date-section'>
+            <CustomDatePicker
+                key='record-date'
+                label={'Date'}
+                value={value.date}
+                setValue={(newDate) => {
+                    if (!compareDate(newDate, value.date)) {
+                        handleSave({ ...value, date: newDate })
+                    }
+                }} />
+
+            <Checkbox
+                icon={<PushPinOutlinedIcon />}
+                checkedIcon={<PushPinIcon />}
+                checked={value.isPinned}
+                onChange={(event) => {
+                    const newIsPinned = event.target.checked
+                    handleSave({ ...value, isPinned: newIsPinned })
+                }}
+                color="default"
+                key='record-pin-button' />
+        </Box>,
+
         <AmountField
             key='record-amount'
             label='Amount'
@@ -60,9 +76,23 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
                 }
             }} />,
 
-        <IconButton onClick={handleDelete} style={{ 'marginLeft': 'auto' }} key='delete-button'>
-            <DeleteIcon />
-        </IconButton>
+        <Box key='records-buttons'>
+            <Checkbox
+                icon={<PushPinOutlinedIcon />}
+                checkedIcon={<PushPinIcon />}
+                checked={value.isPinned}
+                onChange={(event) => {
+                    const newIsPinned = event.target.checked
+                    handleSave({ ...value, isPinned: newIsPinned })
+                }}
+                color="default"
+                style={{ 'marginLeft': 'auto' }}
+                key='pin-button' />
+
+            <IconButton onClick={handleDelete} style={{ 'marginLeft': 'auto' }} key='delete-button'>
+                <DeleteIcon />
+            </IconButton>
+        </Box>
     ]
 
 

@@ -10,9 +10,25 @@ import { GenericValues, GenericValuesContext } from 'Providers/GraphValuesProvid
 import { useScenario } from 'Providers/ScenarioProvider'
 import { addTransaction, deleteTransaction, updateTransaction } from './GenericFunctions'
 
-export type RecordsContextType = GenericValuesContext<Record>
+export type RecordsContextType = GenericValuesContext<Record> & { graphValuesUnselected: GraphValue[] | null }
 
-class Records extends GenericValues<Record> { }
+class Records extends GenericValues<Record> {
+    graphValuesUnselected: GraphValue[] | null
+
+    constructor(
+        values: Record[] | null,
+        graphValues: GraphValue[] | null,
+        addValue: () => void,
+        deleteValue: (transaction: Record) => void,
+        updateValue: (newRecord: Record) => void,
+        isLoading: boolean,
+        graphValuesUnselected: GraphValue[] | null) {
+
+        super(values, graphValues, addValue, deleteValue, updateValue, isLoading)
+
+        this.graphValuesUnselected = graphValuesUnselected
+    }
+}
 
 interface RecordParameter {
     date?: Date
@@ -20,40 +36,45 @@ interface RecordParameter {
     id?: string
     new?: boolean
     edited?: boolean
+    isPinned?: boolean
 }
 
 export class Record {
     date: Date
     amount: number
+    isPinned: boolean
     id?: string
     new?: boolean
     edited?: boolean
 
-    constructor({ date, amount, id }: RecordParameter) {
+    constructor({ date, amount, id, isPinned }: RecordParameter) {
         this.date = getValidDate(date)
         this.amount = amount !== undefined && !isNaN(amount) ? amount : 0
+        this.isPinned = isPinned === undefined ? false : isPinned
         this.id = id
     }
 }
 
-const RecordsContext = createContext<RecordsContextType>(new Records([], [], () => { }, () => { }, () => { }, true))
+const RecordsContext = createContext<RecordsContextType>(new Records([], [], () => { }, () => { }, () => { }, true, []))
 
 interface RecordFirestore {
     date: string,
-    amount: string
+    amount: string,
+    isPinned: boolean
 }
 
 const converter: FirestoreDataConverter<Record> = {
     toFirestore(record: Record): RecordFirestore {
         console.log(record)
-        return { date: getFormattedDate(record.date), amount: record.amount.toString() };
+        return { date: getFormattedDate(record.date), amount: record.amount.toString(), isPinned: record.isPinned };
     },
     fromFirestore(snapshot: any, options?: any): Record {
         const recordDb: RecordFirestore = snapshot.data()
         const date = new Date(recordDb.date)
         const amount = parseInt(recordDb.amount)
         const id = snapshot.id
-        return new Record({ date, amount, id })
+        const isPinned = recordDb.isPinned
+        return new Record({ date, amount, id, isPinned })
     }
 }
 
@@ -68,6 +89,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
 
     const [records, setRecords] = useState<Record[] | null>(null)
     const [graphRecords, setGraphRecords] = useState<GraphValue[] | null>([])
+    const [graphRecordsUnselected, setGraphRecordsUnselected] = useState<GraphValue[] | null>([])
     const [recordsCollection, setRecordsCollection] = useState<CollectionReference<Record> | null>(null)
 
     const [newRecord, setNewRecord] = useState(new Record({}))
@@ -144,7 +166,7 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
         if (records === null) return
 
         console.log('RecordsProvider compute graph records:', startDate.toLocaleDateString('en-US'), endDate.toLocaleDateString('en-US'), records?.length)
-        const updatedGraphRecords = []
+        const updatedGraphRecords: { x: Date, y: number, isPinned?: boolean }[] = []
 
         updatedGraphRecords.push({
             x: new Date(startDate),
@@ -156,12 +178,24 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
                 updatedGraphRecords.push({
                     x: new Date(record.date),
                     y: record.amount,
+                    isPinned: record.isPinned
                 })
             }
         })
 
         updatedGraphRecords.sort(compareGraphValues)
-        setGraphRecords(updatedGraphRecords)
+
+        const lastPinnedIndexReversed = updatedGraphRecords.slice().reverse().findIndex(record => record.isPinned)
+        const thereIsNoPinned = lastPinnedIndexReversed === -1
+
+        if (thereIsNoPinned || lastPinnedIndexReversed === 0) {
+            setGraphRecords(updatedGraphRecords)
+            setGraphRecordsUnselected([])
+        } else {
+
+            setGraphRecords(updatedGraphRecords.slice(0, -lastPinnedIndexReversed))
+            setGraphRecordsUnselected(updatedGraphRecords.slice(-(lastPinnedIndexReversed + 1)))
+        }
     }, [records, startDate, endDate])
 
     const recordsWithDummy = useMemo(() => {
@@ -180,8 +214,8 @@ export const RecordsProvider = ({ children }: React.PropsWithChildren): JSX.Elem
     }, [records, scenario.endDate, scenario.startDate])
 
     const value = useMemo(
-        () => new Records(recordsWithDummy, graphRecords, addRecord, deleteRecord, updateRecord, isLoadingRecords),
-        [addRecord, deleteRecord, graphRecords, isLoadingRecords, recordsWithDummy, updateRecord]
+        () => new Records(recordsWithDummy, graphRecords, addRecord, deleteRecord, updateRecord, isLoadingRecords, graphRecordsUnselected),
+        [addRecord, deleteRecord, graphRecords, isLoadingRecords, recordsWithDummy, updateRecord, graphRecordsUnselected]
     )
     return (
         <RecordsContext.Provider value={value}>
