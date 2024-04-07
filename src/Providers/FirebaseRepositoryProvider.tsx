@@ -61,11 +61,9 @@ export const FirebaseRepositoryProvider = ({ children }: React.PropsWithChildren
         const scenarioDoc = doc(scenariosCollection, id)
 
         const expectationsCollection = collection(scenarioDoc, 'expectations')
-        const limitsCollection = collection(scenarioDoc, 'limits')
         const recordsCollection = collection(scenarioDoc, 'records')
 
         await deleteCollection(expectationsCollection, 'expectations')
-        await deleteCollection(limitsCollection, 'limits')
         await deleteCollection(recordsCollection, 'records')
 
         await deleteDocCustom(doc(scenariosCollection, id))

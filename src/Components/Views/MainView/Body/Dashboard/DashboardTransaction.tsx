@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
 
-import { AccountBalance, AddModerator, Home, Update } from '@mui/icons-material'
+import { AccountBalance, Home, Update } from '@mui/icons-material'
 import { BottomNavigation, BottomNavigationAction, Box, Paper, PaperProps, SxProps, Theme } from '@mui/material'
 
 import { useDeviceDetails } from 'Providers'
 
-import { PanelExpectations, PanelLimits, PanelRecords, PanelScenario } from './Panels'
+import { PanelExpectations, PanelRecords, PanelScenario } from './Panels'
 
 interface NavigationBarProps extends PaperProps {
     sx: SxProps<Theme>
@@ -22,7 +22,6 @@ const NavigationBar = ({ sx, tabIndex, handleTabChange }: NavigationBarProps) =>
                 value={tabIndex}
                 onChange={handleTabChange} >
 
-                <BottomNavigationAction label='Limits' icon={<AddModerator />} />
                 <BottomNavigationAction label='Home' icon={<Home />} />
                 <BottomNavigationAction label='Records' icon={<AccountBalance />} />
                 <BottomNavigationAction label='Expectations' icon={<Update />} />
@@ -32,7 +31,7 @@ const NavigationBar = ({ sx, tabIndex, handleTabChange }: NavigationBarProps) =>
 }
 
 const DashboardTransaction = () => {
-    const [tabIndex, setTabIndex] = useState(1)
+    const [tabIndex, setTabIndex] = useState(0)
     const { isMobile, isBodyFullSize } = useDeviceDetails()
 
     const handleTabChange = (_: React.SyntheticEvent<Element, Event>, newValue: number) => {
@@ -49,10 +48,9 @@ const DashboardTransaction = () => {
                     handleTabChange={handleTabChange} />}
 
             <Box sx={{ width: '100%' }} id='dashboard-list'>
-                {tabIndex === 0 && <PanelLimits />}
-                {tabIndex === 1 && <PanelScenario />}
-                {tabIndex === 2 && <PanelRecords />}
-                {tabIndex === 3 && <PanelExpectations />}
+                {tabIndex === 0 && <PanelScenario />}
+                {tabIndex === 1 && <PanelRecords />}
+                {tabIndex === 2 && <PanelExpectations />}
             </Box>
 
             <Box height={'124px'} />

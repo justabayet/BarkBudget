@@ -1,6 +1,5 @@
 import { GraphValue } from "Providers/GraphProvider"
 import { Expectation } from "Providers/GraphValuesProvider/ExpectationsProvider"
-import { Limit } from "Providers/GraphValuesProvider/LimitsProvider"
 import { Record } from "Providers/GraphValuesProvider/RecordsProvider"
 
 export interface EntryProps<Transaction extends TransactionType> {
@@ -10,7 +9,7 @@ export interface EntryProps<Transaction extends TransactionType> {
 }
 
 export type GenericEntryType<Transaction extends TransactionType> = ({ value, handleDelete, handleSave }: EntryProps<Transaction>) => JSX.Element
-export type TransactionType = Expectation | Limit | Record
+export type TransactionType = Expectation | Record
 
 export interface GenericValuesContext<Transaction extends TransactionType> {
     values: Transaction[] | null
@@ -21,7 +20,7 @@ export interface GenericValuesContext<Transaction extends TransactionType> {
     isLoading: boolean
 }
 
-export class GenericValues<Transaction extends TransactionType> implements GenericValuesContext<Transaction>{
+export class GenericValues<Transaction extends TransactionType> implements GenericValuesContext<Transaction> {
     values: Transaction[] | null
     graphValues: GraphValue[] | null
     addValue: () => void

@@ -3,8 +3,7 @@ import { ChartConfiguration, ChartOptions, Tick } from 'chart.js'
 import { GraphValue } from "../Providers/GraphProvider"
 
 const colorExpectation = '132, 94, 194'
-const colorRecord = '214, 93, 177'
-const colorTarget = '255, 111, 145'
+const colorRecord = '255, 111, 145'
 /**
     #845EC2 : rgba(132, 94, 194, 1)
     #D65DB1 : rgba(214, 93, 177, 1)
@@ -116,20 +115,11 @@ const config: ChartConfiguration<"line"> = {
             {
                 label: 'Record',
                 data: [],
-                backgroundColor: `rgba(${colorTarget}, 0.2)`,
-                borderColor: `rgba(${colorTarget}, 1)`,
-                borderWidth: 2,
-                pointRadius: 0,
-                fill: false,
-            },
-            {
-                label: 'Limit',
-                data: [],
                 backgroundColor: `rgba(${colorRecord}, 0.2)`,
                 borderColor: `rgba(${colorRecord}, 1)`,
                 borderWidth: 2,
                 pointRadius: 0,
-                fill: true,
+                fill: false,
             },
             {
                 label: 'Expected',

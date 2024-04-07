@@ -36,23 +36,22 @@ const Graph = (): JSX.Element => {
     }, [canvasRef, chartRef])
 
 
-    const { mainExpectations, mainLimits, mainRecords, pinnedScenarios } = useGraph()
+    const { mainExpectations, mainRecords, pinnedScenarios } = useGraph()
 
     useEffect(() => {
         console.log("Graph main data")
         if (!chartRef.current) return
         chartRef.current.data.datasets[0].data = mainRecords as any
-        chartRef.current.data.datasets[1].data = mainLimits as any
-        chartRef.current.data.datasets[2].data = mainExpectations as any
+        chartRef.current.data.datasets[1].data = mainExpectations as any
         console.log(chartRef.current?.data)
         chartRef.current.update()
-    }, [mainExpectations, mainLimits, mainRecords, chartRef])
+    }, [mainExpectations, mainRecords, chartRef])
 
 
     useEffect(() => {
         console.log("Graph pinned scenarios")
         if (chartRef.current === null) return
-        chartRef.current.data.datasets.splice(3)
+        chartRef.current.data.datasets.splice(2)
 
         // TODO update only data of the dataset, not the entire dataset
         pinnedScenarios.forEach(({ scenario, data }) => {

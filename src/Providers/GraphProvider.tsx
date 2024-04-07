@@ -23,8 +23,6 @@ class Graph {
         public setMainExpectations: (newMainExpectations: GraphValue[]) => void,
         public mainRecords: GraphValue[],
         public setMainRecords: (newMainRecords: GraphValue[]) => void,
-        public mainLimits: GraphValue[],
-        public setMainLimits: (newMainLimits: GraphValue[]) => void,
         public pinnedScenarios: PinnedScenario[],
         public pinScenario: React.MutableRefObject<((scenario: Scenario, data: GraphValue[]) => void)> | undefined,
         public unpinScenario: React.MutableRefObject<((scenario: Scenario) => void)> | undefined) { }
@@ -35,14 +33,13 @@ interface PinnedScenario {
     data: GraphValue[]
 }
 
-const GraphContext = createContext(new Graph([], () => { }, [], () => { }, [], () => { }, [], undefined, undefined))
+const GraphContext = createContext(new Graph([], () => { }, [], () => { }, [], undefined, undefined))
 
 export const GraphProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const [pinnedScenarios, setPinnedScenarios] = useState<PinnedScenario[]>([])
 
     const [mainExpectations, setMainExpectations] = useState<GraphValue[]>([])
     const [mainRecords, setMainRecords] = useState<GraphValue[]>([])
-    const [mainLimits, setMainLimits] = useState<GraphValue[]>([])
 
     const pinScenario = useRef<(scenario: Scenario, data: GraphValue[]) => void>(() => { })
     pinScenario.current = (scenario: Scenario, data: GraphValue[]): void => {
@@ -69,8 +66,8 @@ export const GraphProvider = ({ children }: React.PropsWithChildren): JSX.Elemen
     }
 
     const value = useMemo(
-        () => new Graph(mainExpectations, setMainExpectations, mainRecords, setMainRecords, mainLimits, setMainLimits, pinnedScenarios, pinScenario, unpinScenario),
-        [mainExpectations, mainLimits, mainRecords, pinnedScenarios]
+        () => new Graph(mainExpectations, setMainExpectations, mainRecords, setMainRecords, pinnedScenarios, pinScenario, unpinScenario),
+        [mainExpectations, mainRecords, pinnedScenarios]
     )
 
     return (
