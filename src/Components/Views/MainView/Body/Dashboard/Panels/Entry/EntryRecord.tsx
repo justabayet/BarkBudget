@@ -60,7 +60,7 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
 
     const CardDesktopElements = [
         <CustomDatePicker
-            key='record-data'
+            key='record-date'
             value={value.date}
             setValue={(newDate) => {
                 if (!compareDate(newDate, value.date)) {
