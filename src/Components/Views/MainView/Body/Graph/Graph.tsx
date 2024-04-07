@@ -15,7 +15,11 @@ import config from './graphConfig'
 
 Chart.register(...registerables)
 
-const Graph = (): JSX.Element => {
+interface GraphProps {
+    title?: string
+}
+
+const Graph = ({ title }: GraphProps): JSX.Element => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const chartRef = useRef<Chart | null>(null)
 
@@ -97,6 +101,15 @@ const Graph = (): JSX.Element => {
 
         chartRef.current.update()
     }, [theme])
+
+    useEffect(() => {
+        if (chartRef.current === null) return
+
+        chartRef.current.options.plugins.title = {
+            text: `Scenario ${title}`,
+            display: title != null
+        }
+    }, [title])
 
     /**
      * Way to keep the graph on top of the dialog: 

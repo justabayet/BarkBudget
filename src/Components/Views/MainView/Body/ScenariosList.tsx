@@ -37,7 +37,7 @@ const ScenariosList = ({ scenarios }: ScenariosListProps): JSX.Element => {
 
     return (
         <Stack>
-            <Graph />
+            <Graph title={currentScenario?.name} />
 
             {scenarios.map(scenario => {
                 return (
