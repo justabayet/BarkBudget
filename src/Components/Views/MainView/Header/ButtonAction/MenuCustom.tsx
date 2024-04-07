@@ -1,7 +1,8 @@
 
 import React from 'react'
 
-import { Logout, Settings } from '@mui/icons-material'
+import Logout from '@mui/icons-material/Logout'
+import Settings from '@mui/icons-material/Settings'
 import { Divider, ListItemIcon, Menu, MenuItem } from '@mui/material'
 
 import { DarkModeSwitch } from 'Components/Shared'

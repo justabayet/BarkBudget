@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { Add, Delete } from '@mui/icons-material'
+import Add from '@mui/icons-material/Add'
+import Delete from '@mui/icons-material/Delete'
 import { Box, IconButton, Stack } from '@mui/material'
 
 import { Scenario } from 'Providers'

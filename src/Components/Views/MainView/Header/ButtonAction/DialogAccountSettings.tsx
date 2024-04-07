@@ -1,7 +1,9 @@
 
 import React from 'react'
 
-import { Close, ExpandMore, ReportProblem } from '@mui/icons-material'
+import Close from '@mui/icons-material/Close'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import ReportProblem from '@mui/icons-material/ReportProblem'
 import { Box, Button, ButtonBase, Collapse, Dialog, DialogContent, DialogTitle, IconButton, Stack, Typography } from '@mui/material'
 
 import { useAuthentication } from 'Providers'

@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 
-import { AccountBalance, Home, Update } from '@mui/icons-material'
-import { BottomNavigation, BottomNavigationAction, Box, Paper, PaperProps, SxProps, Theme } from '@mui/material'
+import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
+import Settings from '@mui/icons-material/Settings';
+import Update from '@mui/icons-material/Update';
+import { BottomNavigation, BottomNavigationAction, Box, Paper, PaperProps, SxProps, Theme } from '@mui/material';
 
-import { useDeviceDetails } from 'Providers'
+import { useDeviceDetails } from 'Providers';
 
-import { PanelExpectations, PanelRecords, PanelScenario } from './Panels'
+import { PanelExpectations, PanelRecords, PanelScenario } from './Panels';
 
 interface NavigationBarProps extends PaperProps {
     sx: SxProps<Theme>
@@ -22,8 +24,8 @@ const NavigationBar = ({ sx, tabIndex, handleTabChange }: NavigationBarProps) =>
                 value={tabIndex}
                 onChange={handleTabChange} >
 
-                <BottomNavigationAction label='Home' icon={<Home />} />
-                <BottomNavigationAction label='Records' icon={<AccountBalance />} />
+                <BottomNavigationAction label='Settings' icon={<Settings />} />
+                <BottomNavigationAction label='Records' icon={<FileDownloadDoneIcon />} />
                 <BottomNavigationAction label='Expectations' icon={<Update />} />
             </BottomNavigation>
         </Paper>
