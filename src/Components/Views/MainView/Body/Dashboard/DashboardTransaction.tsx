@@ -33,7 +33,7 @@ const NavigationBar = ({ sx, tabIndex, handleTabChange }: NavigationBarProps) =>
 }
 
 const DashboardTransaction = () => {
-    const [tabIndex, setTabIndex] = useState(0)
+    const [tabIndex, setTabIndex] = useState(1)
     const { isMobile, isBodyFullSize } = useDeviceDetails()
 
     const handleTabChange = (_: React.SyntheticEvent<Element, Event>, newValue: number) => {
