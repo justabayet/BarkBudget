@@ -4,6 +4,10 @@ Unleash Your Financial Potential.
 
 BarkBudget is a web application that helps you achieve your financial goals by forecasting your future earnings and expenses, providing you with a clear view of your financial situation and guiding you towards your financial freedom.
 
+<img src="https://github.com/justabayet/BarkBudget/assets/36915264/0fc67500-ed05-4401-b98c-731be4942491" width="50" height="50">&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/justabayet/BarkBudget/assets/36915264/aa2346ad-93d4-45be-9b79-a96ef72394fe" width="50" height="50">&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/justabayet/BarkBudget/assets/36915264/7f4372c3-cc8f-4093-a14e-9ff6bf3f8414" width="50" height="50">
+
 ## Features
 
 BarkBudget offers several features that help users manage their finances more effectively:
