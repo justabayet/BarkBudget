@@ -2,12 +2,12 @@
 import React from 'react'
 
 import Logout from '@mui/icons-material/Logout'
-import Settings from '@mui/icons-material/Settings'
 import { Divider, ListItemIcon, Menu, MenuItem } from '@mui/material'
 
 import { DarkModeSwitch } from 'Components/Shared'
 import { useAuthentication } from 'Providers'
-import DialogAccountSettings from './DialogAccountSettings'
+import AboutUs from './AboutUs'
+import AccountSettings from './AccountSettings'
 
 
 interface MenuCustomProps {
@@ -19,11 +19,6 @@ const MenuCustom = ({ anchorEl, handleCloseMenu }: MenuCustomProps): JSX.Element
     const { handleSignOut } = useAuthentication()
 
     const open = Boolean(anchorEl)
-
-    const [openDialog, setOpenDialog] = React.useState(false)
-
-    const handleOpenDialog = () => setOpenDialog(true)
-    const handleCloseDialog = () => setOpenDialog(false)
 
     return (
         <Menu
@@ -66,16 +61,11 @@ const MenuCustom = ({ anchorEl, handleCloseMenu }: MenuCustomProps): JSX.Element
         >
             <DarkModeSwitch />
 
+            <AboutUs />
+
             <Divider />
 
-            <MenuItem onClick={handleOpenDialog}>
-                <ListItemIcon>
-                    <Settings fontSize="small" />
-                </ListItemIcon>
-                Settings
-            </MenuItem>
-
-            <DialogAccountSettings open={openDialog} close={handleCloseDialog} />
+            <AccountSettings />
 
             <MenuItem onClick={() => { handleCloseMenu(); handleSignOut() }}>
                 <ListItemIcon>

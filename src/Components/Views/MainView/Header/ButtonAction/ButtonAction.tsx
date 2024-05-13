@@ -4,7 +4,7 @@ import ButtonCustom from './ButtonCustom'
 import MenuCustom from './MenuCustom'
 
 
-const Authentication = (): JSX.Element => {
+const ButtonAction = (): JSX.Element => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
     const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)
@@ -18,4 +18,4 @@ const Authentication = (): JSX.Element => {
     )
 }
 
-export default Authentication
+export default ButtonAction
