@@ -28,6 +28,7 @@ const EntryExpectation: GenericEntryType<Expectation> = ({ value, handleDelete, 
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }} gap={3} key='expectation-dialog-dates'>
             <CustomDatePicker
+                key='expectation-dialog-start-date'
                 label={[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) ? 'Start Date' : 'Date'}
                 value={value.startDate}
                 setValue={(newDate) => {
@@ -38,6 +39,7 @@ const EntryExpectation: GenericEntryType<Expectation> = ({ value, handleDelete, 
 
             {[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) &&
                 <CustomDatePicker
+                    key='expectation-dialog-end-date'
                     label='End Date'
                     value={value.endDate}
                     setValue={(newDate) => {
@@ -57,10 +59,11 @@ const EntryExpectation: GenericEntryType<Expectation> = ({ value, handleDelete, 
                     }
                 }}
                 key='expectation-dialog-update-day' /> :
-            <></>,
+            <React.Fragment key='expectation-dialog-update-day'></React.Fragment>,
 
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }} gap={3} key='expectation-dialog-amount-mode'>
             <AmountField
+                key='expectation-dialog-amount'
                 label='Amount'
                 value={value.amount}
                 setValue={(newAmount) => {
@@ -70,6 +73,7 @@ const EntryExpectation: GenericEntryType<Expectation> = ({ value, handleDelete, 
                 }} />
 
             <ModeSelector
+                key='expectation-dialog-mode'
                 label='Mode'
                 mode={value.mode}
                 setMode={(newMode) => {
@@ -82,20 +86,20 @@ const EntryExpectation: GenericEntryType<Expectation> = ({ value, handleDelete, 
 
     const CardMobileElements = [
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} key='expectation-card-mobile-name-amount'>
-            <Typography>
+            <Typography key='expectation-card-mobile-name'>
                 {value.name}
             </Typography>
-            <Typography>
+            <Typography key='expectation-card-mobile-amount'>
                 {value.amount}
             </Typography>
         </Box>,
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} key='expectation-card-mobile-date-mode'>
-            <Typography variant='caption'>
+            <Typography variant='caption' key='expectation-card-mobile-date'>
                 {getFormattedDate(value.startDate)}
                 {[modeNames.DAILY, modeNames.MONTHLY].includes(value.mode) ? ` - ${getFormattedDate(value.endDate)}` : ''}
                 {[modeNames.MONTHLY].includes(value.mode) ? ` / every ${value.updateDay!}${getOrdinal(value.updateDay!)}` : ''}
             </Typography>
-            <Typography variant='caption'>
+            <Typography variant='caption' key='expectation-card-mobile-mode'>
                 {value.mode}
             </Typography>
         </Box>
