@@ -39,7 +39,7 @@ const DialogAccountSettings = ({ open, close }: DialogAccountSettingsProps): JSX
 
                     <Stack>
                         <ButtonBase sx={{ justifyContent: 'flex-start' }} onClick={() => { setExpanded(expanded => !expanded) }}>
-                            <Typography >Danger zone</Typography>
+                            <Typography>Danger zone</Typography>
                             <ExpandMore sx={{ transform: !expanded ? 'rotate(0deg)' : 'rotate(180deg)', ml: 1 }} />
                         </ButtonBase>
 

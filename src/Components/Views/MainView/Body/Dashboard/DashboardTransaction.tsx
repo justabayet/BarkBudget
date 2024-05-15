@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 
+import AssessmentIcon from '@mui/icons-material/Assessment';
 import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
 import Settings from '@mui/icons-material/Settings';
 import Update from '@mui/icons-material/Update';
@@ -8,7 +9,7 @@ import { BottomNavigation, BottomNavigationAction, Box, Paper, PaperProps, SxPro
 
 import { useDeviceDetails } from 'Providers';
 
-import { PanelExpectations, PanelRecords, PanelScenario } from './Panels';
+import { PanelAnalysis, PanelExpectations, PanelRecords, PanelScenario } from './Panels';
 
 interface NavigationBarProps extends PaperProps {
     sx: SxProps<Theme>
@@ -27,6 +28,7 @@ const NavigationBar = ({ sx, tabIndex, handleTabChange }: NavigationBarProps) =>
                 <BottomNavigationAction label='Settings' icon={<Settings />} />
                 <BottomNavigationAction label='Records' icon={<FileDownloadDoneIcon />} />
                 <BottomNavigationAction label='Expectations' icon={<Update />} />
+                <BottomNavigationAction label='Analysis' icon={<AssessmentIcon />} />
             </BottomNavigation>
         </Paper>
     )
@@ -53,6 +55,7 @@ const DashboardTransaction = () => {
                 {tabIndex === 0 && <PanelScenario />}
                 {tabIndex === 1 && <PanelRecords />}
                 {tabIndex === 2 && <PanelExpectations />}
+                {tabIndex === 3 && <PanelAnalysis />}
             </Box>
 
             <Box height={'124px'} />

@@ -1,11 +1,4 @@
-import { Mode } from './Mode'
-
-interface MonthlyParameters {
-    startDate: Date
-    endDate: Date
-    amount: number
-    updateDay?: number
-}
+import { Mode, ModeParameters } from './Mode'
 
 export class Monthly extends Mode {
     name: string
@@ -13,8 +6,9 @@ export class Monthly extends Mode {
     endDate: Date
     updateDay: number
 
-    constructor({ startDate, endDate, amount, updateDay }: MonthlyParameters) {
-        super({ amount })
+    constructor(expectation: ModeParameters) {
+        super(expectation)
+        const { startDate, endDate, updateDay } = expectation
         this.name = 'monthly'
         this.startDate = startDate
         this.endDate = endDate

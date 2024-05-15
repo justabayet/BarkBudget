@@ -17,6 +17,8 @@ export type ExpectationsContextType = GenericValuesContext<Expectation>
 
 class Expectations extends GenericValues<Expectation> { }
 
+export type GraphExpectation = GraphValue & { metadata: { influences: Expectation[] } }
+
 interface ExpectationParameter {
     startDate?: Date
     endDate?: Date
@@ -192,10 +194,11 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
         const engine = getEngine(startDateRecords, endDate, startAmount)
 
         engine.iterate()
-        const updatedGraphExpectations = engine.values?.map((computedValue): GraphValue => {
+        const updatedGraphExpectations: GraphExpectation[] = engine.values?.map((computedValue): GraphExpectation => {
             return {
                 x: new Date(computedValue.date),
                 y: computedValue.value,
+                metadata: { influences: computedValue.influences }
             }
         })
 

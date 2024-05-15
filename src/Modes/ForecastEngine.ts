@@ -1,3 +1,4 @@
+import { Expectation } from 'Providers/GraphValuesProvider'
 import { Mode } from './Mode'
 
 export class ForecastEngine {
@@ -26,11 +27,16 @@ export class ForecastEngine {
         while (currentDate <= this.endDate) {
 
             let diff: number = 0
-            this.modeEntries.forEach((modeEntry) => diff += modeEntry.getAmount(currentDate))
+            const influences: Expectation[] = []
+
+            this.modeEntries.forEach((modeEntry) => {
+                diff += modeEntry.getAmount(currentDate)
+                if (modeEntry.isValid(currentDate)) influences.push(modeEntry.expectation)
+            })
 
             currentBalance += diff
 
-            this.values.push(new AmountEntry(new Date(currentDate), currentBalance))
+            this.values.push(new AmountEntry(new Date(currentDate), currentBalance, influences))
 
             currentDate.setDate(currentDate.getDate() + 1)
         }
@@ -48,9 +54,11 @@ export class ForecastEngine {
 class AmountEntry {
     date: Date
     value: number
+    influences: Expectation[]
 
-    constructor(date: Date, value: number) {
+    constructor(date: Date, value: number, influences: Expectation[]) {
         this.date = date
         this.value = value
+        this.influences = influences
     }
 }

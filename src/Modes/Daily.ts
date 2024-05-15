@@ -1,18 +1,13 @@
-import { Mode } from './Mode'
-
-interface DailyParameters {
-    startDate: Date
-    endDate: Date
-    amount: number
-}
+import { Mode, ModeParameters } from './Mode'
 
 export class Daily extends Mode {
     name: string
     startDate: Date
     endDate: Date
 
-    constructor({ startDate, endDate, amount }: DailyParameters) {
-        super({ amount })
+    constructor(expectation: ModeParameters) {
+        super(expectation)
+        const { startDate, endDate } = expectation
         this.name = 'daily'
         this.startDate = startDate
         this.endDate = endDate

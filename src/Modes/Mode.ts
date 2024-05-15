@@ -1,13 +1,15 @@
+import { Expectation } from "Providers/GraphValuesProvider"
 
-interface ModeParameters {
-    amount: number
-}
+export type ModeParameters = Expectation
 
 export class Mode {
     name: string
     amount: number
+    expectation: Expectation
 
-    constructor({ amount = 0 }: ModeParameters) {
+    constructor(props: ModeParameters) {
+        const { amount } = props
+        this.expectation = props
         this.amount = amount
         this.name = 'default'
     }
