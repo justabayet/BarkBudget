@@ -1,15 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-import Add from '@mui/icons-material/Add'
-import Delete from '@mui/icons-material/Delete'
-import { Box, IconButton, Stack } from '@mui/material'
+import Add from '@mui/icons-material/Add';
+import ContentCopy from '@mui/icons-material/ContentCopy';
+import Delete from '@mui/icons-material/Delete';
+import { Box, IconButton, Stack } from '@mui/material';
 
-import { Scenario } from 'Providers'
-import { compareDate } from 'helpers'
+import { Scenario } from 'Providers';
+import { compareDate } from 'helpers';
 
-import { CustomDatePicker, CustomTextField } from '../Fields'
+import { CustomDatePicker, CustomTextField } from '../Fields';
 
-import DialogDeleteScenario from './DialogDeleteScenario'
+import DialogDeleteScenario from './DialogDeleteScenario';
 
 interface NameFieldProps {
     name: string
@@ -34,10 +35,11 @@ interface ActionsProps {
     scenario: Scenario
     addScenario: () => void
     deleteScenario: (scenario: Scenario, index: number) => void
+    cloneScenario: (scenario: Scenario) => void
     index: number
 }
 
-const Actions = ({ name, addScenario, deleteScenario, scenario, index }: ActionsProps) => {
+const Actions = ({ name, addScenario, deleteScenario, cloneScenario, scenario, index }: ActionsProps) => {
 
     const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false)
     const handleOpenDeleteDialog = () => setOpenDeleteDialog(true)
@@ -47,6 +49,10 @@ const Actions = ({ name, addScenario, deleteScenario, scenario, index }: Actions
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton color='primary' onClick={() => { addScenario() }} style={{ 'marginLeft': 'auto' }}>
                 <Add />
+            </IconButton>
+
+            <IconButton onClick={() => { cloneScenario(scenario) }} style={{ 'marginLeft': 'auto' }}>
+                <ContentCopy />
             </IconButton>
 
             <IconButton onClick={handleOpenDeleteDialog} style={{ 'marginLeft': 'auto' }}>
@@ -102,9 +108,10 @@ interface HeaderScenarioProps {
     addScenario: () => void
     deleteScenario: (scenario: Scenario, index: number) => void
     updateScenario: (scenario: Scenario, index: number) => void
+    cloneScenario: (scenario: Scenario) => void
 }
 
-const HeaderScenario = ({ scenario, scenarios, addScenario, deleteScenario, updateScenario }: HeaderScenarioProps) => {
+const HeaderScenario = ({ scenario, scenarios, addScenario, deleteScenario, updateScenario, cloneScenario }: HeaderScenarioProps) => {
     const index = scenarios.findIndex(scenarioObj => scenarioObj.id === scenario?.id)
     if (index === -1) console.log('Current scenario not found in scenarios')
 
@@ -112,7 +119,7 @@ const HeaderScenario = ({ scenario, scenarios, addScenario, deleteScenario, upda
         <Stack spacing={3}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <NameField name={scenario.name} index={index} scenario={scenario} updateScenario={updateScenario} />
-                <Actions name={scenario.name} index={index} scenario={scenario} deleteScenario={deleteScenario} addScenario={addScenario} />
+                <Actions name={scenario.name} index={index} scenario={scenario} deleteScenario={deleteScenario} addScenario={addScenario} cloneScenario={cloneScenario} />
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>

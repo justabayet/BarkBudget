@@ -11,7 +11,7 @@ import SelectorScenario from './SelectorScenario'
 
 
 const PanelScenario = () => {
-    const { currentScenario, scenarios, addScenario, deleteScenario, setScenarioId, updateScenario } = useScenarios()
+    const { currentScenario, scenarios, addScenario, deleteScenario, cloneScenario, setScenarioId, updateScenario } = useScenarios()
 
     if (!scenarios) {
         return <Typography>Error while getting scenarios</Typography>
@@ -32,7 +32,8 @@ const PanelScenario = () => {
                             scenarios={scenarios}
                             addScenario={addScenario}
                             deleteScenario={deleteScenario}
-                            updateScenario={updateScenario} />
+                            updateScenario={updateScenario}
+                            cloneScenario={cloneScenario} />
 
                         <SelectorScenario
                             currentScenario={currentScenario}

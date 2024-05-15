@@ -19,7 +19,8 @@ class Scenarios {
         public setScenarioId: (newScenarioId: string | null) => void,
         public addScenario: () => void,
         public deleteScenario: (scenario: Scenario, index: number) => void,
-        public updateScenario: (scenario: Scenario, index: number) => void) {
+        public updateScenario: (scenario: Scenario, index: number) => void,
+        public cloneScenario: (scenario: Scenario) => void) {
 
         this.currentScenario = null
         if (scenarios) {
@@ -63,7 +64,7 @@ export class Scenario {
     }
 }
 
-const ScenariosContext = createContext(new Scenarios([], null, null, () => { }, () => { }, () => { }, () => { }))
+const ScenariosContext = createContext(new Scenarios([], null, null, () => { }, () => { }, () => { }, () => { }, () => { }))
 
 interface ScenarioFirestore {
     startDate: string,
@@ -96,7 +97,7 @@ const converter: FirestoreDataConverter<Scenario> = {
 
 export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const { userDoc, user } = useAuthentication()
-    const { addDoc, setDoc, deleteScenarioFirestore } = useFirebaseRepository()
+    const { addDoc, setDoc, deleteScenarioFirestore, cloneScenarioFirestore } = useFirebaseRepository()
 
     const [scenarios, setScenarios] = useState<Scenario[] | null>(null)
     const [scenariosCollection, setScenariosCollection] = useState<CollectionReference<Scenario> | null>(null)
@@ -173,6 +174,32 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
         })
     }, [addDoc, newScenario, scenarios, scenariosCollection])
 
+    const cloneScenario = useCallback((scenario: Scenario) => {
+        console.log('clone')
+
+        if (scenariosCollection === null || scenarios === null) {
+            return
+        }
+
+        if (scenario.id == null) {
+            console.log('Source scenario id not initialized yet', scenario)
+            return
+        }
+
+        const clonedScenario = new Scenario({
+            startDate: scenario.startDate,
+            endDate: scenario.endDate,
+            name: `Copy of ${scenario.name}`,
+        })
+
+        addDoc(scenariosCollection, clonedScenario).then(async (document) => {
+            await cloneScenarioFirestore(scenariosCollection, scenario.id!, document.id)
+            clonedScenario.id = document.id
+            setScenarios([clonedScenario, ...scenarios])
+            setScenarioId(clonedScenario.id)
+        })
+    }, [addDoc, cloneScenarioFirestore, scenarios, scenariosCollection])
+
     const deleteScenario = useCallback((scenario: Scenario, index: number): void => {
         console.log('delete', scenario)
 
@@ -207,8 +234,8 @@ export const ScenariosProvider = ({ children }: React.PropsWithChildren): JSX.El
     }, [scenarios, scenariosCollection, setDoc])
 
     const value = useMemo(() => {
-        return new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario)
-    }, [scenarios, scenariosCollection, scenarioId, addScenario, deleteScenario, updateScenario])
+        return new Scenarios(scenarios, scenariosCollection, scenarioId, setScenarioId, addScenario, deleteScenario, updateScenario, cloneScenario)
+    }, [scenarios, scenariosCollection, scenarioId, addScenario, deleteScenario, updateScenario, cloneScenario])
 
     return (
         <ScenariosContext.Provider value={value}>

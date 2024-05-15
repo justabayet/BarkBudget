@@ -16,13 +16,14 @@ class FirebaseRepository {
         public setDoc: (reference: docRef, data: dataType) => Promise<void>,
         public addDoc: (reference: colRef, data: dataType) => Promise<objWithId>,
         public deleteDoc: (reference: delRef) => Promise<void>,
+        public cloneScenarioFirestore: (scenariosCollection: CollectionReference, sourceId: string, destinationId: string) => Promise<void>,
         public deleteScenarioFirestore: (scenariosCollection: CollectionReference, id: string) => Promise<void>
     ) { }
 }
 
 const dummyDoc = { id: generateRandomId() }
 
-const FirebaseRepositoryContext = createContext(new FirebaseRepository(() => { }, async () => { }, async () => { return dummyDoc }, async () => { }, async () => { }))
+const FirebaseRepositoryContext = createContext(new FirebaseRepository(() => { }, async () => { }, async () => { return dummyDoc }, async () => { }, async () => { }, async () => { }))
 
 export const FirebaseRepositoryProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const [canUpdate, setCanUpdate] = useState<boolean>(false)
@@ -70,9 +71,33 @@ export const FirebaseRepositoryProvider = ({ children }: React.PropsWithChildren
         console.log(`Delete succesful: scenario ${id}`)
     }, [deleteCollection, deleteDocCustom])
 
+    const cloneCollection = useCallback(async (source: CollectionReference, destination: CollectionReference, docType: string) => {
+        const querySnapshot = await getDocs(source)
+
+        querySnapshot.forEach(async el => {
+            await addDocCustom(destination, el.data())
+            console.log(`Cloning successful: ${docType} ${el.id}`)
+        })
+    }, [addDocCustom])
+
+    const cloneScenarioFirestore = useCallback(async (scenariosCollection: CollectionReference, sourceId: string, destinationId: string) => {
+        const sourceScenarioDoc = doc(scenariosCollection, sourceId)
+        const destinationScenarioDoc = doc(scenariosCollection, destinationId)
+
+        const sourceExpectationsCollection = collection(sourceScenarioDoc, 'expectations')
+        const destinationExpectationsCollection = collection(destinationScenarioDoc, 'expectations')
+
+        const sourceRecordsCollection = collection(sourceScenarioDoc, 'records')
+        const destinationRecordsCollection = collection(destinationScenarioDoc, 'records')
+
+        await cloneCollection(sourceExpectationsCollection, destinationExpectationsCollection, 'expectations')
+        await cloneCollection(sourceRecordsCollection, destinationRecordsCollection, 'records')
+
+    }, [cloneCollection])
+
     const value = useMemo(
-        () => new FirebaseRepository(setCanUpdate, setDocCustom, addDocCustom, deleteDocCustom, deleteScenarioFirestore),
-        [addDocCustom, deleteDocCustom, deleteScenarioFirestore, setDocCustom]
+        () => new FirebaseRepository(setCanUpdate, setDocCustom, addDocCustom, deleteDocCustom, cloneScenarioFirestore, deleteScenarioFirestore),
+        [addDocCustom, deleteDocCustom, cloneScenarioFirestore, deleteScenarioFirestore, setDocCustom]
     )
 
     return (
