@@ -2,14 +2,14 @@ import React from 'react'
 
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 
-import { modeNames } from 'Modes/const'
+import { ModeType, modeNames } from 'Modes/const'
 
 import { textFieldStyle } from 'style'
 
 
 interface SelectorModeProps {
-    mode: string
-    setMode: (newMode: string) => void
+    mode: ModeType
+    setMode: (newMode: ModeType) => void
     label?: string
 }
 
@@ -22,7 +22,7 @@ const SelectorMode = ({ mode, setMode, label }: SelectorModeProps): JSX.Element 
                 label={label}
                 inputProps={{ MenuProps: { disableScrollLock: true } }}
                 onChange={(event) => {
-                    setMode(event.target.value)
+                    setMode(event.target.value as ModeType)
                 }} >
 
                 {Object.values(modeNames).map(modeName => {

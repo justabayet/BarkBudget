@@ -10,6 +10,7 @@ import { GraphValue, compareGraphValues } from 'Providers/GraphProvider'
 import { useRecords } from 'Providers/GraphValuesProvider/RecordsProvider'
 import { useScenario } from 'Providers/ScenarioProvider'
 
+import { ModeType } from 'Modes/const'
 import { addTransaction, deleteTransaction, updateTransaction } from './GenericFunctions'
 import { GenericValues, GenericValuesContext } from './TransactionTypes'
 
@@ -35,7 +36,7 @@ export class Expectation {
     startDate: Date
     endDate: Date
     amount: number
-    mode: string
+    mode: ModeType
     name: string
     updateDay?: number
     id?: string
@@ -47,7 +48,7 @@ export class Expectation {
         this.startDate = getValidDate(startDate)
         this.endDate = getValidDate(endDate)
         this.amount = amount !== undefined && !isNaN(amount) ? amount : 0
-        this.mode = mode && Object.values(modeNames).includes(mode) ? mode : modeNames.ONE_TIME
+        this.mode = mode && Object.values(modeNames).includes(mode as ModeType) ? mode as ModeType : modeNames.ONE_TIME
         this.name = name ?? 'New Expectation'
         this.updateDay = updateDay ?? 1
     }
@@ -88,9 +89,7 @@ const converter: FirestoreDataConverter<Expectation> = {
     }
 }
 
-const sortExpectationsFunction = (expectation1: Expectation, expectation2: Expectation): number => {
-    return expectation1.startDate.getTime() - expectation2.startDate.getTime()
-}
+type SortExpectationsFunction = (expectation1: Expectation, expectation2: Expectation) => number
 
 export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX.Element => {
     const { scenario, scenarioDoc } = useScenario()
@@ -106,6 +105,23 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
         startDateRecords = lastRecord.x
         startAmount = lastRecord.y
     }
+
+    const sortExpectationsFunction = useCallback<SortExpectationsFunction>((expectation1, expectation2) => {
+        function getDate(expectation: Expectation) {
+            // If mode is periodical, and relevant, add it just after "Last Recorded Date" label
+            if (expectation.mode !== 'One time') {
+                if (
+                    expectation.startDate.getTime() < startDateRecords.getTime() &&
+                    expectation.endDate.getTime() > startDateRecords.getTime()
+                ) {
+                    return startDateRecords.getTime()
+                }
+            }
+            return expectation.startDate.getTime()
+        }
+        return getDate(expectation1) - getDate(expectation2)
+
+    }, [startDateRecords])
 
     const [expectations, setExpectations] = useState<Expectation[] | null>(null)
     const [graphExpectations, setGraphExpectations] = useState<GraphValue[] | null>(null)
@@ -145,7 +161,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
             setExpectations(null)
         }
 
-    }, [expectationsCollection])
+    }, [expectationsCollection, sortExpectationsFunction])
 
     const addExpectation = useCallback(() => {
         addTransaction<Expectation>(
@@ -157,7 +173,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
             () => { setNewExpectation(new Expectation({ startDate: scenario.startDate, endDate: scenario.endDate, amount: 0, mode: modeNames.ONE_TIME, name: 'New Expectation' })) },
             sortExpectationsFunction
         )
-    }, [addDoc, expectations, expectationsCollection, newExpectation, scenario.endDate, scenario.startDate])
+    }, [addDoc, expectations, expectationsCollection, sortExpectationsFunction, newExpectation, scenario.endDate, scenario.startDate])
 
     const deleteExpectation = useCallback((expectation: Expectation) => {
         deleteTransaction<Expectation>(
@@ -178,7 +194,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
             setExpectations,
             setDoc
         )
-    }, [expectations, expectationsCollection, setDoc])
+    }, [expectations, expectationsCollection, setDoc, sortExpectationsFunction])
 
     useEffect(() => {
         const getEngine = (startDateRecords: Date, endDate: Date, startAmount: number) => {
@@ -222,7 +238,7 @@ export const ExpectationsProvider = ({ children }: React.PropsWithChildren): JSX
         }
         return expectationsWithDummy
 
-    }, [expectations, scenario.endDate, scenario.startDate, startAmount, startDateRecords])
+    }, [expectations, scenario.endDate, scenario.startDate, startAmount, startDateRecords, sortExpectationsFunction])
 
     const value = useMemo(
         () => new Expectations(expectationsWithDummy, graphExpectations, addExpectation, deleteExpectation, updateExpectation, isLoadingExpectations),

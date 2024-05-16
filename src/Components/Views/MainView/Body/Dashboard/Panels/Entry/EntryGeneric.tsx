@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, RefObject, createRef, useEffect, useState } from 'react'
+import React, { PropsWithChildren, RefObject, createRef, useEffect, useRef, useState } from 'react'
 
 import { Box, Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent } from '@mui/material'
 
@@ -6,7 +6,7 @@ import { useDeviceDetails } from 'Providers'
 import { EntryProps, TransactionType } from 'Providers/GraphValuesProvider'
 
 import ButtonDelete from './ButtonDelete'
-import DummyEntry from './EntryDummy'
+import DummyEntry, { isDummy } from './EntryDummy'
 
 interface CardEntryProps extends PropsWithChildren {
     elementRef: RefObject<HTMLDivElement>
@@ -82,8 +82,20 @@ const EntryGeneric = <Transaction extends TransactionType>({ value, handleDelete
         }
     }
 
-    const dummy = DummyEntry({ id: value.id })
-    if (dummy) return dummy
+    const dummyRef = useRef<HTMLHRElement>(null)
+    useEffect(() => {
+        if (isDummy(value) && value.id === 'startRecords') {
+            const elementTop = dummyRef.current?.offsetTop
+            if (elementTop) {
+                window.scrollTo({ top: elementTop + 80 })
+            }
+        }
+    }, [value, elementRef])
+
+    if (isDummy(value)) {
+        return <DummyEntry id={value.id} ref={dummyRef} />
+    }
+
 
     if (isBodyFullSize) {
         return (
