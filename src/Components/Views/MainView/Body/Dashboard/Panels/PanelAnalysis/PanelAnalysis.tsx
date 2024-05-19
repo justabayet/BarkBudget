@@ -20,7 +20,7 @@ const PanelAnalysis = () => {
     } else if (data.values?.length === 0) {
         return (
             <Typography sx={{ fontWeight: 400, opacity: 0.38, textAlign: 'center', mt: '150px' }}>
-                Add expected earnings and expenses (e.g. salary, rent, trips)
+                Add expected expecations in the other tab to start having analytics
             </Typography>
         )
     } else {
