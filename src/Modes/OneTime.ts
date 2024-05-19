@@ -12,7 +12,7 @@ export class OneTime extends Mode {
         if (startDate instanceof Date) {
             this.date = startDate
         } else {
-            this.date = new Date(startDate)
+            this.date = new Date((startDate as unknown as any).replace(/-/g, "/"))
         }
     }
 

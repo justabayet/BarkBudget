@@ -70,7 +70,7 @@ const converter: FirestoreDataConverter<Record> = {
     },
     fromFirestore(snapshot: any, options?: any): Record {
         const recordDb: RecordFirestore = snapshot.data()
-        const date = new Date(recordDb.date)
+        const date = new Date(recordDb.date.replace(/-/g, "/"))
         const amount = parseInt(recordDb.amount)
         const id = snapshot.id
         const isPinned = recordDb.isPinned

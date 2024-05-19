@@ -78,8 +78,8 @@ const converter: FirestoreDataConverter<Expectation> = {
     },
     fromFirestore(snapshot: any, options?: any): Expectation {
         const expectationDb: ExpectationFirestore = snapshot.data()
-        const startDate = new Date(expectationDb.startDate)
-        const endDate = new Date(expectationDb.endDate)
+        const startDate = new Date(expectationDb.startDate.replace(/-/g, "/"))
+        const endDate = new Date(expectationDb.endDate.replace(/-/g, "/"))
         const amount = parseInt(expectationDb.amount)
         const mode = expectationDb.mode
         const name = expectationDb.name

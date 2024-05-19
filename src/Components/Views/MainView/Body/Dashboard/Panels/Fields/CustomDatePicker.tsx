@@ -21,7 +21,7 @@ const CustomDatePicker: FieldComponent<Date> = ({ value, setValue, label }) => {
             console.log('Invalid startDate', newValue)
             return
         }
-        const newDate = new Date(newValue)
+        const newDate = new Date(newValue.replace(/-/g, "/"))
         setValue(newDate)
     }
 

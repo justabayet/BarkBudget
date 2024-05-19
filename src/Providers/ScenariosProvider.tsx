@@ -84,8 +84,8 @@ const converter: FirestoreDataConverter<Scenario> = {
     },
     fromFirestore(snapshot: any, options?: any): Scenario {
         const scenarioDb: ScenarioFirestore = snapshot.data()
-        const startDate = new Date(scenarioDb.startDate)
-        const endDate = new Date(scenarioDb.endDate)
+        const startDate = new Date(scenarioDb.startDate.replace(/-/g, "/"))
+        const endDate = new Date(scenarioDb.endDate.replace(/-/g, "/"))
         const name = scenarioDb.name
         const id = snapshot.id
         const isPinned = scenarioDb.isPinned === 'true'
