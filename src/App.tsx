@@ -19,7 +19,7 @@ import Router from 'Components/Router'
 
 
 function App(): JSX.Element {
-    if (screen.width <= 425) screen.orientation.lock('portrait').catch(reason => console.log(reason))
+    if (screen.orientation.lock && screen.width <= 425) screen.orientation.lock('portrait').catch(reason => console.log(reason))
 
     return (
         <ToggleThemeProvider>
