@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
 
@@ -13,6 +13,10 @@ const PanelAnalysis = () => {
     const graphValues = data.graphValues as GraphExpectation[]
 
     const [stepping, setStepping] = useState<Step>('Monthly')
+
+    useEffect(() => {
+        window.scrollTo({ top: 85 })
+    }, [])
 
     if (data.graphValues == null) {
         return <Typography>Error while getting data</Typography>

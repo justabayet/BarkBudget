@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
 import { Button, Stack, Typography } from '@mui/material'
@@ -12,6 +12,10 @@ import SelectorScenario from './SelectorScenario'
 
 const PanelScenario = () => {
     const { currentScenario, scenarios, addScenario, deleteScenario, cloneScenario, setScenarioId, updateScenario } = useScenarios()
+
+    useEffect(() => {
+        window.scrollTo({ top: 85 })
+    }, [])
 
     if (!scenarios) {
         return <Typography>Error while getting scenarios</Typography>
