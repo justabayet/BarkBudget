@@ -27,7 +27,7 @@ interface EntryGenericProps<Transaction extends TransactionType> extends EntryPr
     Value: { new(transaction: Transaction): Transaction }
 }
 
-const EntryGeneric = <Transaction extends TransactionType>({ value, handleDelete, handleSave, CardDesktopElements, CardMobileElements, DialogElements, Value }: EntryGenericProps<Transaction>): JSX.Element => {
+const EntryGeneric = <Transaction extends TransactionType>({ value, handleDelete, handleSave, CardDesktopElements, CardMobileElements, DialogElements, Value, isFirstInit }: EntryGenericProps<Transaction>): JSX.Element => {
     const { isBodyFullSize } = useDeviceDetails()
 
     const [open, setOpen] = useState(!!value.new)
@@ -84,13 +84,13 @@ const EntryGeneric = <Transaction extends TransactionType>({ value, handleDelete
 
     const dummyRef = useRef<HTMLHRElement>(null)
     useEffect(() => {
-        if (isDummy(value) && value.id === 'startRecords') {
+        if (isFirstInit && isDummy(value) && value.id === 'startRecords') {
             const elementTop = dummyRef.current?.offsetTop
             if (elementTop) {
                 window.scrollTo({ top: elementTop + 80 })
             }
         }
-    }, [value, elementRef])
+    }, [value, elementRef, isFirstInit])
 
     if (isDummy(value)) {
         return <DummyEntry id={value.id} ref={dummyRef} />

@@ -11,7 +11,7 @@ import { AmountField, CustomDatePicker } from '../Fields'
 import EntryGeneric from './EntryGeneric'
 
 
-const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave }) => {
+const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave, isFirstInit }) => {
     const DialogElements = [
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} key='record-date-section'>
             <CustomDatePicker
@@ -104,7 +104,8 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
             handleSave={handleSave}
             DialogElements={DialogElements}
             CardMobileElements={CardMobileElements}
-            CardDesktopElements={CardDesktopElements} />
+            CardDesktopElements={CardDesktopElements}
+            isFirstInit={isFirstInit} />
     )
 
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Collapse, List } from '@mui/material'
 
@@ -16,6 +16,10 @@ type ListTransactionType = <Transaction extends TransactionType>({ values, delet
 
 
 const ListTransaction: ListTransactionType = ({ values, deleteValue, updateValue, ChildComponent }) => {
+    const [isFirstInit, setIsFirstInit] = useState(true)
+    useEffect(() => {
+        setIsFirstInit(false)
+    }, [])
 
     return (
         <List id='transaction-list'>
@@ -26,7 +30,8 @@ const ListTransaction: ListTransactionType = ({ values, deleteValue, updateValue
                             <ChildComponent
                                 value={value}
                                 handleDelete={() => { deleteValue(value) }}
-                                handleSave={(updatedValue) => { updateValue(updatedValue) }} />
+                                handleSave={(updatedValue) => { updateValue(updatedValue) }}
+                                isFirstInit={isFirstInit} />
                         </Collapse>
                     )
                 })}

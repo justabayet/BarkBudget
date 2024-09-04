@@ -6,9 +6,10 @@ export interface EntryProps<Transaction extends TransactionType> {
     value: Transaction
     handleDelete: () => void
     handleSave: (newValue: Transaction) => void
+    isFirstInit: boolean
 }
 
-export type GenericEntryType<Transaction extends TransactionType> = ({ value, handleDelete, handleSave }: EntryProps<Transaction>) => JSX.Element
+export type GenericEntryType<Transaction extends TransactionType> = ({ value, handleDelete, handleSave, isFirstInit }: EntryProps<Transaction>) => JSX.Element
 export type TransactionType = Expectation | Record
 
 export interface GenericValuesContext<Transaction extends TransactionType> {

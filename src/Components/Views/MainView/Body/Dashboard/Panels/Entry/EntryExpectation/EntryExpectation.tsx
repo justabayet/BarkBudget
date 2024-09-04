@@ -13,7 +13,7 @@ import SwitchingField from '../../Fields/SwitchingField'
 import EntryGeneric from '../EntryGeneric'
 
 
-const EntryExpectation: GenericEntryType<Expectation> = ({ value, handleDelete, handleSave }) => {
+const EntryExpectation: GenericEntryType<Expectation> = ({ value, handleDelete, handleSave, isFirstInit }) => {
     const DialogElements = [
         <CustomTextField
             key='expectation-dialog-name'
@@ -188,7 +188,8 @@ const EntryExpectation: GenericEntryType<Expectation> = ({ value, handleDelete, 
             handleSave={handleSave}
             DialogElements={DialogElements}
             CardMobileElements={CardMobileElements}
-            CardDesktopElements={CardDesktopElements} />
+            CardDesktopElements={CardDesktopElements}
+            isFirstInit={isFirstInit} />
     )
 }
 
