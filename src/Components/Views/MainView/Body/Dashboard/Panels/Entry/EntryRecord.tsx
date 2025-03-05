@@ -52,7 +52,13 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
             <Typography>
                 {getFormattedDate(value.date)}
             </Typography>
-            <Typography>
+            {value.isPinned && <PushPinIcon fontSize='small' style={{
+                position: 'absolute',
+                top: '4px',
+                right: '3px',
+                color: 'rgba(0, 0, 0, 0.84)'
+            }} />}
+            <Typography style={{ marginRight: '10px' }}>
                 {value.amount}
             </Typography>
         </Box>
