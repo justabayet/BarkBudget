@@ -52,9 +52,21 @@ const RecordEntry: GenericEntryType<Record> = ({ value, handleDelete, handleSave
             <Typography>
                 {getFormattedDate(value.date)}
             </Typography>
-            <Typography>
-                {value.amount}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Checkbox
+                    icon={<PushPinOutlinedIcon />}
+                    checkedIcon={<PushPinIcon />}
+                    checked={value.isPinned}
+                    onChange={(event) => {
+                        const newIsPinned = event.target.checked
+                        handleSave({ ...value, isPinned: newIsPinned })
+                    }}
+                    color="default"
+                    key='pin-button' />
+                <Typography>
+                    {value.amount}
+                </Typography>
+            </Box>
         </Box>
     ]
 
